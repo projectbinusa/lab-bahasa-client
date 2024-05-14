@@ -3,6 +3,7 @@ import Login from "./views/pages/auth/Login";
 import Register from "./views/pages/auth/Register";
 import ForgotPass from "./views/pages/auth/ForgotPass";
 import Dashboard from "./views/pages/dashboard/Dashboard";
+import Camera from "./views/pages/camera/camera";
 
 // END ADMIN MENU REGULASI
 
@@ -16,6 +17,7 @@ function App() {
           <Route path="/register" component={Register} exact />
           <Route path="/forgotpass" component={ForgotPass} exact />
           <Route path="/dashboard" component={Dashboard} exact />
+          <Route path="/camera" component={Camera} exact />
         </Switch>
       </main>
     </BrowserRouter>
