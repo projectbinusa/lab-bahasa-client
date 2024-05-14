@@ -1,4 +1,5 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
+import Draggable from 'react-draggable';
 
 function Camera() {
   const videoRef = useRef(null);
@@ -6,13 +7,16 @@ function Camera() {
   const screenRef = useRef(null);
   const peerConnectionRef = useRef(null);
   const socketRef = useRef(null);
-  const screenRecorderRef = useRef(null);
-  const recordedScreenChunksRef = useRef([]);
+  const mediaRecorderRef = useRef(null);
+  const recordedChunksRef = useRef([]);
+  const [screenRecording, setScreenRecording] = useState(false);
 
   const startCamera = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      videoRef.current.srcObject = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
 
       const configuration = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
       peerConnectionRef.current = new RTCPeerConnection(configuration);
@@ -29,7 +33,7 @@ function Camera() {
       peerConnectionRef.current = null;
     }
 
-    if (videoRef.current.srcObject) {
+    if (videoRef.current && videoRef.current.srcObject) {
       videoRef.current.srcObject.getTracks().forEach(track => track.stop());
       videoRef.current.srcObject = null;
     }
@@ -38,7 +42,9 @@ function Camera() {
   const startAudio = async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      audioRef.current.srcObject = stream;
+      if (audioRef.current) {
+        audioRef.current.srcObject = stream;
+      }
 
       stream.getAudioTracks().forEach(track => peerConnectionRef.current.addTrack(track, stream));
     } catch (error) {
@@ -47,7 +53,7 @@ function Camera() {
   };
 
   const stopAudio = () => {
-    if (audioRef.current.srcObject) {
+    if (audioRef.current && audioRef.current.srcObject) {
       audioRef.current.srcObject.getTracks().forEach(track => track.stop());
       audioRef.current.srcObject = null;
     }
@@ -56,7 +62,9 @@ function Camera() {
   const startScreenSharing = async () => {
     try {
       const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-      screenRef.current.srcObject = screenStream;
+      if (screenRef.current) {
+        screenRef.current.srcObject = screenStream;
+      }
 
       screenStream.getVideoTracks().forEach(track => peerConnectionRef.current.addTrack(track, screenStream));
     } catch (error) {
@@ -65,7 +73,7 @@ function Camera() {
   };
 
   const stopScreenSharing = () => {
-    if (screenRef.current.srcObject) {
+    if (screenRef.current && screenRef.current.srcObject) {
       screenRef.current.srcObject.getTracks().forEach(track => track.stop());
       screenRef.current.srcObject = null;
     }
@@ -74,16 +82,20 @@ function Camera() {
   const startScreenRecording = async () => {
     try {
       const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-      screenRecorderRef.current = new MediaRecorder(screenStream, { mimeType: 'video/webm' });
+      if (screenRef.current) {
+        screenRef.current.srcObject = screenStream;
+      }
 
-      screenRecorderRef.current.ondataavailable = event => {
+      mediaRecorderRef.current = new MediaRecorder(screenStream, { mimeType: 'video/webm' });
+
+      mediaRecorderRef.current.ondataavailable = event => {
         if (event.data.size > 0) {
-          recordedScreenChunksRef.current.push(event.data);
+          recordedChunksRef.current.push(event.data);
         }
       };
 
-      screenRecorderRef.current.onstop = () => {
-        const blob = new Blob(recordedScreenChunksRef.current, { type: 'video/webm' });
+      mediaRecorderRef.current.onstop = () => {
+        const blob = new Blob(recordedChunksRef.current, { type: 'video/webm' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.style.display = 'none';
@@ -92,19 +104,22 @@ function Camera() {
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
-        recordedScreenChunksRef.current = [];
+        recordedChunksRef.current = [];
       };
 
-      screenRecorderRef.current.start();
+      mediaRecorderRef.current.start();
+      setScreenRecording(true);
     } catch (error) {
       console.log('Gagal mengakses rekaman layar:', error);
     }
   };
 
   const stopScreenRecording = () => {
-    if (screenRecorderRef.current) {
-      screenRecorderRef.current.stop();
+    if (mediaRecorderRef.current) {
+      mediaRecorderRef.current.stop();
     }
+
+    setScreenRecording(false);
   };
 
   useEffect(() => {
@@ -125,24 +140,86 @@ function Camera() {
       console.log('Terhubung ke server sinyal');
     };
 
+    socketRef.current.onerror = error => {
+      console.log('WebSocket error:', error);
+    };
+
+    socketRef.current.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+
     return () => {
       socketRef.current.close();
     };
   }, []);
 
   return (
-    <div>
-      <button className='ml-5' onClick={startAudio}>Nyalakan Audio</button>
-      <button className='ml-5' onClick={stopAudio}>Matikan Audio</button>
-      <button className='ml-5' onClick={startCamera}>Nyalakan Kamera</button>
-      <button className='ml-5' onClick={stopCamera}>Matikan Kamera</button>
-      <button className='ml-5' onClick={startScreenSharing}>Mulai Berbagi Layar</button>
-      <button className='ml-5' onClick={stopScreenSharing}>Hentikan Berbagi Layar</button>
-      <button className='ml-5' onClick={startScreenRecording}>Mulai Rekam Layar</button>
-      <button className='ml-5' onClick={stopScreenRecording}>Hentikan Rekam Layar</button>
-      <video ref={videoRef} autoPlay></video> 
-      <audio ref={audioRef} autoPlay></audio>
-      <video ref={screenRef} autoPlay></video>
+    <div className="container">
+      <div className="controls">
+        <button className='ml-5' onClick={startAudio}>Nyalakan Audio</button>
+        <button className='ml-5' onClick={stopAudio}>Matikan Audio</button>
+        <button className='ml-5' onClick={startCamera}>Nyalakan Kamera</button>
+        <button className='ml-5' onClick={stopCamera}>Matikan Kamera</button>
+        <button className='ml-5' onClick={startScreenSharing}>Mulai Berbagi Layar</button>
+        <button className='ml-5' onClick={stopScreenSharing}>Hentikan Berbagi Layar</button>
+        <button className='ml-5' onClick={startScreenRecording} disabled={screenRecording}>
+          Mulai Rekam Layar
+        </button>
+        <button className='ml-5' onClick={stopScreenRecording} disabled={!screenRecording}>
+          Hentikan Rekam Layar
+        </button>
+      </div>
+      <div className="screen-container">
+        <video ref={screenRef} autoPlay className="screen"></video>
+      </div>
+      <Draggable>
+        <div className="camera-container">
+          <video ref={videoRef} autoPlay className="camera"></video>
+        </div>
+      </Draggable>
+      <style>{`
+      .container {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      
+      .controls {
+        display: flex;
+        justify-content: center;
+        margin: 10px 0;
+      }
+      
+      .screen-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .screen {
+        width: 80%;
+        height: 80%;
+        border: 2px solid #ccc;
+      }
+      
+      .camera-container {
+        position: absolute;
+        width: 230px;
+        height: 180px;
+        border: 2px solid #ccc;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        cursor: move;
+      }
+      
+      .camera {
+        width: 100%;
+        height: 100%;
+      }      
+      `}</style>
     </div>
   );
 }
