@@ -1,24 +1,25 @@
 import React from "react";
-// import "../../../css/login.css";
 function Login() {
   return (
     <body class="font-mono ">
       {/* <!-- Container --> */}
-      <div class="container mx-auto">
+      <div class="container mx-auto ">
+        <br />
+        <br />
         <div class="flex justify-center px-6 my-16">
           {/* <!-- Row --> */}
           <div class="w-full xl:w-3/4 lg:w-11/12 flex">
             {/* <!-- Col --> */}
             <div
-              class="w-full h-auto hidden lg:block lg:w-5/6 bg-cover rounded-l-lg"
+              class="w-full h-auto hidden lg:block lg:w-4/5 bg-cover rounded-l-lg"
               style={{
                 backgroundImage:
                   " url('https://img.freepik.com/free-vector/profile-interface-concept-illustration_114360-3360.jpg?t=st=1715662478~exp=1715666078~hmac=d78ead5c54d0721c4f7c007da66f71aef3ff0138faaa3cc16f9042adde7faa5a&w=740')",
               }}
             ></div>
             {/* <!-- Col --> */}
-            <div class="w-full lg:w-9/12 bg-white p-8 rounded-lg lg:rounded-l-none">
-              <h3 class="pt-4 text-2xl text-center">Create an Account!</h3>
+            <div class="w-full lg:w-9/12 bg-white p-8 rounded-lg lg:rounded-l-none shadow-lg shadow-slate-400">
+              <h3 class="pt-4 text-2xl text-center">Login!</h3>
               <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
                 <div class="mb-4 md:mr-2 md:mb-0">
                   <label

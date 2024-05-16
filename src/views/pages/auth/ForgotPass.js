@@ -5,6 +5,8 @@ function ForgotPass() {
     <body class="font-mono ">
       {/* <!-- Container --> */}
       <div class="container mx-auto">
+        <br />
+        <br />
         <div class="flex justify-center px-6 my-12">
           {/* <!-- Row --> */}
           <div class="w-full xl:w-3/4 lg:w-11/12 flex">
@@ -17,7 +19,7 @@ function ForgotPass() {
               }}
             ></div>
             {/* <!-- Col --> */}
-            <div class="w-full lg:w-1/2 bg-white p-5 rounded-lg lg:rounded-l-none">
+            <div class="w-full lg:w-1/2 bg-white p-5 rounded-lg lg:rounded-l-none shadow-lg shadow-slate-400">
               <div class="px-8 mb-4 text-center">
                 <h3 class="pt-4 mb-2 text-2xl">Forgot Your Password?</h3>
                 <p class="mb-4 text-sm text-gray-700">
@@ -52,7 +54,7 @@ function ForgotPass() {
                 <div class="text-center">
                   <a
                     class="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
-                    href="#"
+                    href="/register"
                   >
                     Create an Account!
                   </a>
@@ -60,7 +62,7 @@ function ForgotPass() {
                 <div class="text-center">
                   <a
                     class="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
-                    href="#"
+                    href="/"
                   >
                     Already have an account? Login!
                   </a>
