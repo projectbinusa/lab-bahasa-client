@@ -124,7 +124,8 @@ function Navbar() {
                       className="facebook"
                       href="https://www.facebook.com/Bawaslu.Kabupaten.Boyolali"
                       target="_blank"
-                      rel="noreferrer">
+                      rel="noreferrer"
+                    >
                       <i className="fab fa-facebook-f"></i>
                     </a>
                   </li>
@@ -133,7 +134,8 @@ function Navbar() {
                       className="twitter"
                       href="https://twitter.com/i/flow/login?redirect_after_login=%2Fbawasluboyolali"
                       target="_blank"
-                      rel="noreferrer">
+                      rel="noreferrer"
+                    >
                       <i className="fab fa-twitter"></i>
                     </a>
                   </li>
@@ -142,7 +144,8 @@ function Navbar() {
                       className="instagram"
                       href="https://www.instagram.com/bawaslu_boyolali/"
                       target="_blank"
-                      rel="noreferrer">
+                      rel="noreferrer"
+                    >
                       <i className="fab fa-instagram"></i>
                     </a>
                   </li>
@@ -151,7 +154,8 @@ function Navbar() {
                       className="youtube"
                       href="https://www.youtube.com/channel/UC-OZT-HT_Qg7cUmo-oHfkAw"
                       target="_blank"
-                      rel="noreferrer">
+                      rel="noreferrer"
+                    >
                       <i className="fab fa-youtube"></i>
                     </a>
                   </li>
@@ -164,7 +168,8 @@ function Navbar() {
       <nav
         className={`navbar-area navbar-area-2 navbar-expand-lg ${
           isSticky ? "sticky-active" : ""
-        }`}>
+        }`}
+      >
         <div className="container nav-container m-0">
           <div className="responsive-mobile-menu">
             <button
@@ -174,7 +179,8 @@ function Navbar() {
               onClick={toggleMenu}
               data-target="#Iitechie_main_menu"
               aria-expanded="false"
-              aria-label="Toggle navigation">
+              aria-label="Toggle navigation"
+            >
               <span className="icon-left"></span>
               <span className="icon-right"></span>
             </button>
@@ -191,28 +197,40 @@ function Navbar() {
               textAlign: "center",
             }}
             className={`collapse navbar-collapse ${menuOpen ? "sopen" : ""}`}
-            id="Iitechie_main_menu text-navbar-rspnv">
+            id="Iitechie_main_menu text-navbar-rspnv"
+          >
             <ul
               className="navbar-reponsive navbar-nav menu-open text-lg-start"
               style={{
                 marginLeft: "auto",
                 marginRight: "auto",
                 display: "flex",
-              }}>
+              }}
+            >
               <li className="">
-                <a href="/" style={{paddingLeft:"15px"}}>Home</a>
+                <a href="/" style={{ paddingLeft: "15px" }}>
+                  Home
+                </a>
               </li>
               <li className="">
-                <a href="/profil" style={{paddingLeft:"15px"}}>Profile</a>
+                <a href="/profil" style={{ paddingLeft: "15px" }}>
+                  Profile
+                </a>
               </li>
               <li className="">
-                <a href="/berita" style={{paddingLeft:"15px"}}>Berita</a>
+                <a href="/berita" style={{ paddingLeft: "15px" }}>
+                  Berita
+                </a>
               </li>
               <li className="">
-                <a href="/library" style={{paddingLeft:"15px"}}>E-Library</a>
+                <a href="/library" style={{ paddingLeft: "15px" }}>
+                  E-Library
+                </a>
               </li>
               <li className="">
-                <a href="/pengumuman" style={{paddingLeft:"15px"}}>Pengumuman</a>
+                <a href="/pengumuman" style={{ paddingLeft: "15px" }}>
+                  Pengumuman
+                </a>
               </li>
               <li className="menu-item-has-children">
                 <a
@@ -221,13 +239,15 @@ function Navbar() {
                   aria-controls="navbarSupportedContent"
                   aria-expanded="false"
                   aria-label="Toggle navigation"
-                  onClick={toggleSubmenu}>
+                  onClick={toggleSubmenu}
+                >
                   Informasi Publik
                 </a>
                 <ul
                   className={`${isMobile ? "collapse" : "sub-menu"}`}
                   id="submenu"
-                  data-bs-parent="#menu">
+                  data-bs-parent="#menu"
+                >
                   <li>
                     <a href="/informasi-serta-merta">Informasi Serta Merta</a>
                   </li>
@@ -252,13 +272,15 @@ function Navbar() {
                   aria-controls="navbarSupportedContent"
                   aria-expanded="false"
                   aria-label="Toggle navigation"
-                  onClick={toggleSubmenu}>
+                  onClick={toggleSubmenu}
+                >
                   Daftar Regulasi
                 </a>
                 <ul
                   className={`${isMobile ? "collapse" : "sub-menu"}`}
                   id="submenu2"
-                  data-bs-parent="#menu">
+                  data-bs-parent="#menu"
+                >
                   <li>
                     <a href="/regulasi-public">Regulasi</a>
                   </li>
@@ -280,13 +302,15 @@ function Navbar() {
                   aria-controls="navbarSupportedContent"
                   aria-expanded="false"
                   aria-label="Toggle navigation"
-                  onClick={toggleSubmenu}>
+                  onClick={toggleSubmenu}
+                >
                   Form Online
                 </a>
                 <ul
                   className={`${isMobile ? "collapse" : "sub-menu"}`}
                   id="submenu3"
-                  data-bs-parent="#menu">
+                  data-bs-parent="#menu"
+                >
                   <li>
                     <a href="/form-permohonan-informasi">
                       Form Permohonan Informasi
@@ -311,13 +335,15 @@ function Navbar() {
                   aria-controls="navbarSupportedContent"
                   aria-expanded="false"
                   aria-label="Toggle navigation"
-                  onClick={toggleSubmenu}>
+                  onClick={toggleSubmenu}
+                >
                   Prosedur
                 </a>
                 <ul
                   className={`${isMobile ? "collapse" : "sub-menu"}`}
                   id="submenu4"
-                  data-bs-parent="#menu">
+                  data-bs-parent="#menu"
+                >
                   <li>
                     <a href="/prosedur-permintaan-informasi">
                       Prosedur Permintaan Informasi
