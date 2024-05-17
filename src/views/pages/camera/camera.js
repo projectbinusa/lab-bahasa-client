@@ -1,5 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react';
-import Draggable from 'react-draggable';
+import React, { useRef, useEffect, useState } from "react";
+import Draggable from "react-draggable";
+import Navbar from "../../../component/Navbar1";
 
 function Camera() {
   const videoRef = useRef(null);
@@ -18,12 +19,16 @@ function Camera() {
         videoRef.current.srcObject = stream;
       }
 
-      const configuration = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] };
+      const configuration = {
+        iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+      };
       peerConnectionRef.current = new RTCPeerConnection(configuration);
 
-      stream.getVideoTracks().forEach(track => peerConnectionRef.current.addTrack(track, stream));
+      stream
+        .getVideoTracks()
+        .forEach((track) => peerConnectionRef.current.addTrack(track, stream));
     } catch (error) {
-      console.log('Gagal mengakses kamera:', error);
+      console.log("Gagal mengakses kamera:", error);
     }
   };
 
@@ -34,7 +39,7 @@ function Camera() {
     }
 
     if (videoRef.current && videoRef.current.srcObject) {
-      videoRef.current.srcObject.getTracks().forEach(track => track.stop());
+      videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
       videoRef.current.srcObject = null;
     }
   };
@@ -46,61 +51,75 @@ function Camera() {
         audioRef.current.srcObject = stream;
       }
 
-      stream.getAudioTracks().forEach(track => peerConnectionRef.current.addTrack(track, stream));
+      stream
+        .getAudioTracks()
+        .forEach((track) => peerConnectionRef.current.addTrack(track, stream));
     } catch (error) {
-      console.log('Gagal mengakses audio:', error);
+      console.log("Gagal mengakses audio:", error);
     }
   };
 
   const stopAudio = () => {
     if (audioRef.current && audioRef.current.srcObject) {
-      audioRef.current.srcObject.getTracks().forEach(track => track.stop());
+      audioRef.current.srcObject.getTracks().forEach((track) => track.stop());
       audioRef.current.srcObject = null;
     }
   };
 
   const startScreenSharing = async () => {
     try {
-      const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+      const screenStream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+      });
       if (screenRef.current) {
         screenRef.current.srcObject = screenStream;
       }
 
-      screenStream.getVideoTracks().forEach(track => peerConnectionRef.current.addTrack(track, screenStream));
+      screenStream
+        .getVideoTracks()
+        .forEach((track) =>
+          peerConnectionRef.current.addTrack(track, screenStream)
+        );
     } catch (error) {
-      console.log('Gagal mengakses berbagi layar:', error);
+      console.log("Gagal mengakses berbagi layar:", error);
     }
   };
 
   const stopScreenSharing = () => {
     if (screenRef.current && screenRef.current.srcObject) {
-      screenRef.current.srcObject.getTracks().forEach(track => track.stop());
+      screenRef.current.srcObject.getTracks().forEach((track) => track.stop());
       screenRef.current.srcObject = null;
     }
   };
 
   const startScreenRecording = async () => {
     try {
-      const screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+      const screenStream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+      });
       if (screenRef.current) {
         screenRef.current.srcObject = screenStream;
       }
 
-      mediaRecorderRef.current = new MediaRecorder(screenStream, { mimeType: 'video/webm' });
+      mediaRecorderRef.current = new MediaRecorder(screenStream, {
+        mimeType: "video/webm",
+      });
 
-      mediaRecorderRef.current.ondataavailable = event => {
+      mediaRecorderRef.current.ondataavailable = (event) => {
         if (event.data.size > 0) {
           recordedChunksRef.current.push(event.data);
         }
       };
 
       mediaRecorderRef.current.onstop = () => {
-        const blob = new Blob(recordedChunksRef.current, { type: 'video/webm' });
+        const blob = new Blob(recordedChunksRef.current, {
+          type: "video/webm",
+        });
         const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
+        const a = document.createElement("a");
+        a.style.display = "none";
         a.href = url;
-        a.download = 'screen_recording.webm';
+        a.download = "screen_recording.webm";
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
@@ -110,7 +129,7 @@ function Camera() {
       mediaRecorderRef.current.start();
       setScreenRecording(true);
     } catch (error) {
-      console.log('Gagal mengakses rekaman layar:', error);
+      console.log("Gagal mengakses rekaman layar:", error);
     }
   };
 
@@ -123,29 +142,33 @@ function Camera() {
   };
 
   useEffect(() => {
-    socketRef.current = new WebSocket('wss://your-signaling-server-url');
+    socketRef.current = new WebSocket("wss://your-signaling-server-url");
 
-    socketRef.current.onmessage = event => {
+    socketRef.current.onmessage = (event) => {
       const message = JSON.parse(event.data);
-      if (message.type === 'answer') {
-        peerConnectionRef.current.setRemoteDescription(new RTCSessionDescription(message.answer));
-      } else if (message.type === 'candidate') {
+      if (message.type === "answer") {
+        peerConnectionRef.current.setRemoteDescription(
+          new RTCSessionDescription(message.answer)
+        );
+      } else if (message.type === "candidate") {
         if (peerConnectionRef.current) {
-          peerConnectionRef.current.addIceCandidate(new RTCIceCandidate(message.candidate));
+          peerConnectionRef.current.addIceCandidate(
+            new RTCIceCandidate(message.candidate)
+          );
         }
       }
     };
 
     socketRef.current.onopen = () => {
-      console.log('Terhubung ke server sinyal');
+      console.log("Terhubung ke server sinyal");
     };
 
-    socketRef.current.onerror = error => {
-      console.log('WebSocket error:', error);
+    socketRef.current.onerror = (error) => {
+      console.log("WebSocket error:", error);
     };
 
     socketRef.current.onclose = () => {
-      console.log('WebSocket connection closed');
+      console.log("WebSocket connection closed");
     };
 
     return () => {
@@ -154,30 +177,52 @@ function Camera() {
   }, []);
 
   return (
-    <div className="container">
-      <div className="controls">
-        <button className='ml-5' onClick={startAudio}>Nyalakan Audio</button>
-        <button className='ml-5' onClick={stopAudio}>Matikan Audio</button>
-        <button className='ml-5' onClick={startCamera}>Nyalakan Kamera</button>
-        <button className='ml-5' onClick={stopCamera}>Matikan Kamera</button>
-        <button className='ml-5' onClick={startScreenSharing}>Mulai Berbagi Layar</button>
-        <button className='ml-5' onClick={stopScreenSharing}>Hentikan Berbagi Layar</button>
-        <button className='ml-5' onClick={startScreenRecording} disabled={screenRecording}>
-          Mulai Rekam Layar
-        </button>
-        <button className='ml-5' onClick={stopScreenRecording} disabled={!screenRecording}>
-          Hentikan Rekam Layar
-        </button>
-      </div>
-      <div className="screen-container">
-        <video ref={screenRef} autoPlay className="screen"></video>
-      </div>
-      <Draggable>
-        <div className="camera-container">
-          <video ref={videoRef} autoPlay className="camera"></video>
+    <div className="all bg-[#F4F4F4]">
+      <Navbar />
+      <div className="container">
+        <div className="controls">
+          <button className="ml-5" onClick={startAudio}>
+            Nyalakan Audio
+          </button>
+          <button className="ml-5" onClick={stopAudio}>
+            Matikan Audio
+          </button>
+          <button className="ml-5" onClick={startCamera}>
+            Nyalakan Kamera
+          </button>
+          <button className="ml-5" onClick={stopCamera}>
+            Matikan Kamera
+          </button>
+          <button className="ml-5" onClick={startScreenSharing}>
+            Mulai Berbagi Layar
+          </button>
+          <button className="ml-5" onClick={stopScreenSharing}>
+            Hentikan Berbagi Layar
+          </button>
+          <button
+            className="ml-5"
+            onClick={startScreenRecording}
+            disabled={screenRecording}
+          >
+            Mulai Rekam Layar
+          </button>
+          <button
+            className="ml-5"
+            onClick={stopScreenRecording}
+            disabled={!screenRecording}
+          >
+            Hentikan Rekam Layar
+          </button>
         </div>
-      </Draggable>
-      <style>{`
+        <div className="screen-container">
+          <video ref={screenRef} autoPlay className="screen"></video>
+        </div>
+        <Draggable>
+          <div className="camera-container">
+            <video ref={videoRef} autoPlay className="camera"></video>
+          </div>
+        </Draggable>
+        <style>{`
       .container {
         position: relative;
         width: 100%;
@@ -220,6 +265,7 @@ function Camera() {
         height: 100%;
       }      
       `}</style>
+      </div>
     </div>
   );
 }
