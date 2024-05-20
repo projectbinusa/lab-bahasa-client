@@ -11,10 +11,10 @@ import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 function ManageName() {
   return (
     <>
-      <div className="all bg-[#F4F4F4]">
+      <div className="flex flex-col h-screen">
         <Navbar />
-        <div className="min-h-screen px-32 mt-10">
-          <div className="tabel-absen bg-white p-5 rounded-xl shadow-xl border border-gray-300">
+        <div className="px-32">
+          <div className="tabel-absen bg-white p-5 rounded-xl shadow-xl border border-gray-300 mt-24">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold">Manage Name List</h2>
               <div className="flex gap-3">

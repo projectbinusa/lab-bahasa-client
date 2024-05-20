@@ -7,10 +7,10 @@ import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 function ManageClass() {
   return (
     <>
-      <div className="all bg-[#F4F4F4]">
+      <div className="flex flex-col h-screen">
         <Navbar />
-        <div className="min-h-screen px-32 mt-10">
-          <div className="tabel-absen bg-white p-5 rounded-xl shadow-xl border border-gray-300">
+        <div className="px-32">
+          <div className="bg-white p-5 rounded-xl shadow-xl border border-gray-300 mt-24">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold">Manage Class</h2>
               <button className="rounded-xl shadow-xl py-3 px-4 bg-gray-100">
