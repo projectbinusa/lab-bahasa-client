@@ -1,6 +1,8 @@
 import {
   faCaretDown,
   faComments,
+  faListOl,
+  faQuestion,
   faSignOutAlt,
   faUser,
   faUserFriends,
@@ -8,11 +10,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Assuming you're using react-router for navigation
+import { Link } from "react-router-dom";
 function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [chatDropdownOpen, setChatDropdownOpen] = useState(false);
   const [respDropdownOpen, setRespDropdownOpen] = useState(false);
+  const [manageDropdownOpen, setManageDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -25,6 +28,11 @@ function Navbar() {
   const toggleRespDropdown = () => {
     setRespDropdownOpen(!respDropdownOpen);
   };
+
+  const toggleManageDropdown = () => {
+    setManageDropdownOpen(!manageDropdownOpen);
+  };
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -40,20 +48,26 @@ function Navbar() {
               <img src="" className="h-11 me-3 text-white" alt="" />
             </a>
           </div>
-          <div className="link flex items-center gap-6">
-            <p className="text-sm font-semibold text-white">Dashboard</p>
-            <p className="text-sm font-semibold text-white">Screen Broadcast</p>
-            <p className="text-sm font-semibold text-white">Camera</p>
-            <p className="text-sm font-semibold text-white">
+          <div className="link flex items-center gap-6 text-white">
+            <Link to="/dashboard" className="text-sm font-semibold">
+              Dashboard
+            </Link>
+            <Link to="/screen-broadcast" className="text-sm font-semibold">
+              Screen Broadcast
+            </Link>
+            <Link to="/camera" className="text-sm font-semibold">
+              Camera
+            </Link>
+            <Link to="/whiteboard" className="text-sm font-semibold">
               Interactive Whiteboard
-            </p>
-            <p className="text-sm font-semibold text-white">
+            </Link>
+            <Link to="/interaction-student" className="text-sm font-semibold">
               Interaction Student
-            </p>
+            </Link>
             <div className="relative">
               <button
                 onClick={toggleChatDropdown}
-                className="text-sm font-semibold text-white flex items-center focus:outline-none"
+                className="text-sm font-semibold flex items-center focus:outline-none"
               >
                 Chat <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
               </button>
@@ -83,11 +97,60 @@ function Navbar() {
                 </div>
               )}
             </div>
-            <p className="text-sm font-semibold text-white">
-              Response Competition
-            </p>
-            <p className="text-sm font-semibold text-white">Manage Class</p>
-            <p className="text-sm font-semibold text-white">Manage Name List</p>
+            <div className="relative">
+              <button
+                onClick={toggleRespDropdown}
+                className="text-sm font-semibold flex items-center focus:outline-none"
+              >
+                Response Competition
+                <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
+              </button>
+              {respDropdownOpen && (
+                <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">
+                  <Link
+                    to="/response-competition"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    <FontAwesomeIcon icon={faQuestion} className="mr-2" />{" "}
+                    Questions
+                  </Link>
+                </div>
+              )}
+            </div>
+            <div className="relative">
+              <button
+                onClick={toggleManageDropdown}
+                className="text-sm font-semibold flex items-center focus:outline-none"
+              >
+                Manage Class
+                <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
+              </button>
+              {manageDropdownOpen && (
+                <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">
+                  <Link
+                    to="/manage-class"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    <FontAwesomeIcon icon={faUsers} className="mr-2" /> Manage
+                    Class
+                  </Link>
+                  <Link
+                    to="/manage-name"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    <FontAwesomeIcon icon={faListOl} className="mr-2" /> Manage
+                    Name List
+                  </Link>
+                  <Link
+                    to="/login-siswa"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    <FontAwesomeIcon icon={faUser} className="mr-2" />
+                    Sign In Student
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
           <div className="profile relative ml-6">
             <button
