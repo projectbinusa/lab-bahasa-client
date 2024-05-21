@@ -9,6 +9,8 @@ import ManageName from "./views/pages/manage/ManageName";
 import Whiteboard from "./views/pages/InteractiveWhiteboard/Whiteboard";
 import ResponseCompetition from "./views/pages/response/ResponseCompetition";
 import LoginSiswa from "./views/pages/auth/LoginSiswa";
+import Questions from "./views/pages/response/Questions";
+import SignedInformation from "./views/pages/cek sign in/SignedInformation";
 
 // END ADMIN MENU REGULASI
 
@@ -32,6 +34,12 @@ function App() {
             exact
           />
           <Route path="/login-siswa" component={LoginSiswa} exact />
+          <Route path="/questions" component={Questions} exact />
+          <Route
+            path="/signed-information"
+            component={SignedInformation}
+            exact
+          />
         </Switch>
       </main>
     </BrowserRouter>
