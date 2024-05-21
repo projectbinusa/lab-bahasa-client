@@ -1,7 +1,9 @@
 import {
   faCaretDown,
+  faCircleInfo,
   faComments,
   faListOl,
+  faMedal,
   faQuestion,
   faSignOutAlt,
   faUser,
@@ -111,7 +113,14 @@ function Navbar() {
                     to="/response-competition"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    <FontAwesomeIcon icon={faQuestion} className="mr-2" />{" "}
+                    <FontAwesomeIcon icon={faMedal} className="mr-1" />
+                    Response Competition
+                  </Link>
+                  <Link
+                    to="/questions"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    <FontAwesomeIcon icon={faQuestion} className="mr-2" />
                     Questions
                   </Link>
                 </div>
@@ -147,6 +156,13 @@ function Navbar() {
                   >
                     <FontAwesomeIcon icon={faUser} className="mr-2" />
                     Sign In Student
+                  </Link>
+                  <Link
+                    to="/signed-information"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    <FontAwesomeIcon icon={faCircleInfo} className="mr-2" />
+                    Signed Information
                   </Link>
                 </div>
               )}
