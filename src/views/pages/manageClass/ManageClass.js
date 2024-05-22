@@ -3,6 +3,7 @@ import Navbar from "../../../component/Navbar1";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 function ManageClass() {
   return (
@@ -13,12 +14,15 @@ function ManageClass() {
           <div className="bg-white p-5 rounded-xl shadow-xl border border-gray-300 mt-24">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold">Manage Class</h2>
-              <button className="rounded-xl shadow-xl py-3 px-4 bg-gray-100">
+              <Link
+                to="/add-class"
+                className="rounded-xl shadow-xl py-3 px-4 bg-gray-100"
+              >
                 <FontAwesomeIcon
                   icon={faPlus}
                   className="text-xl text-green-400"
                 />
-              </button>
+              </Link>
             </div>
 
             <div className="overflow-x-auto rounded-lg border border-gray-200 mt-4">
@@ -55,12 +59,21 @@ function ManageClass() {
                       <button className="py-3 px-4 bg-green-500 rounded-lg text-white ">
                         <FontAwesomeIcon className="text-lg" icon={faCheck} />
                       </button>
-                      <button className="py-3 px-4 bg-blue-500 rounded-lg text-white ">
+                      {/* <button className="py-3 px-4 bg-blue-500 rounded-lg text-white ">
                         <FontAwesomeIcon
                           className="text-lg"
                           icon={faPenToSquare}
                         />
-                      </button>
+                      </button> */}
+                      <Link
+                        to="/update-class"
+                        className="py-3 px-4 bg-blue-500 rounded-lg text-white "
+                      >
+                        <FontAwesomeIcon
+                          className="text-lg"
+                          icon={faPenToSquare}
+                        />
+                      </Link>
                       <button className="py-3 px-4 bg-red-500 rounded-lg text-white ">
                         <FontAwesomeIcon className="text-lg" icon={faTrash} />
                       </button>

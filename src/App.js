@@ -4,13 +4,16 @@ import Register from "./views/pages/auth/Register";
 import ForgotPass from "./views/pages/auth/ForgotPass";
 import Dashboard from "./views/pages/dashboard/Dashboard";
 import Camera from "./views/pages/camera/camera";
-import ManageClass from "./views/pages/manage/ManageClass";
-import ManageName from "./views/pages/manage/ManageName";
 import Whiteboard from "./views/pages/InteractiveWhiteboard/Whiteboard";
 import ResponseCompetition from "./views/pages/response/ResponseCompetition";
 import LoginSiswa from "./views/pages/auth/LoginSiswa";
 import Questions from "./views/pages/response/Questions";
 import SignedInformation from "./views/pages/cek sign in/SignedInformation";
+import ManageClass from "./views/pages/manageClass/ManageClass";
+import AddClass from "./views/pages/manageClass/AddClass";
+import UpdateClass from "./views/pages/manageClass/UpdateClass";
+import ManageName from "./views/pages/manageName/ManageName";
+import AddName from "./views/pages/manageName/AddName";
 
 // END ADMIN MENU REGULASI
 
@@ -27,7 +30,10 @@ function App() {
           <Route path="/camera" component={Camera} exact />
           <Route path="/whiteboard" component={Whiteboard} exact />
           <Route path="/manage-class" component={ManageClass} exact />
+          <Route path="/add-class" component={AddClass} exact />
+          <Route path="/update-class" component={UpdateClass} exact />
           <Route path="/manage-name" component={ManageName} exact />
+          <Route path="/add-name" component={AddName} exact />
           <Route
             path="/response-competition"
             component={ResponseCompetition}
