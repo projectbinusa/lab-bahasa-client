@@ -7,6 +7,7 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 function ManageName() {
   return (
@@ -14,7 +15,7 @@ function ManageName() {
       <div className="flex flex-col h-screen">
         <Navbar />
         <div className="px-32">
-          <div className="tabel-absen bg-white p-5 rounded-xl shadow-xl border border-gray-300 mt-24">
+          <div className="tabel-name bg-white p-5 rounded-xl shadow-xl border border-gray-300 mt-24">
             <div className="flex justify-between items-center">
               <h2 className="text-xl font-bold">Manage Name List</h2>
               <div className="flex gap-3">
@@ -24,12 +25,15 @@ function ManageName() {
                     className="text-xl text-green-400"
                   />
                 </button>
-                <button className="rounded-xl shadow-xl py-3 px-4 bg-gray-100">
+                <Link
+                  to="/add-name"
+                  className="rounded-xl shadow-xl py-3 px-4 bg-gray-100"
+                >
                   <FontAwesomeIcon
                     icon={faPlus}
                     className="text-xl text-green-400"
                   />
-                </button>
+                </Link>
               </div>
             </div>
 
