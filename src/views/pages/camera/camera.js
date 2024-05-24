@@ -1,270 +1,161 @@
-import React, { useRef, useEffect, useState } from "react";
-import Draggable from "react-draggable";
+import React, { useState, useRef } from "react";
 import Navbar from "../../../component/Navbar1";
+import { FaVideo, FaVideoSlash } from "react-icons/fa";
 
 function Camera() {
-  const videoRef = useRef(null);
-  const audioRef = useRef(null);
-  const screenRef = useRef(null);
-  const peerConnectionRef = useRef(null);
-  const socketRef = useRef(null);
-  const mediaRecorderRef = useRef(null);
-  const recordedChunksRef = useRef([]);
-  const [screenRecording, setScreenRecording] = useState(false);
+  const [selectedCards, setSelectedCards] = useState([]);
+  const [streams, setStreams] = useState([]);
+  const videoRefs = useRef({});
 
-  const startCamera = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-
-      const configuration = {
-        iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-      };
-      peerConnectionRef.current = new RTCPeerConnection(configuration);
-
-      stream
-        .getVideoTracks()
-        .forEach((track) => peerConnectionRef.current.addTrack(track, stream));
-    } catch (error) {
-      console.log("Gagal mengakses kamera:", error);
-    }
-  };
-
-  const stopCamera = () => {
-    if (peerConnectionRef.current) {
-      peerConnectionRef.current.close();
-      peerConnectionRef.current = null;
-    }
-
-    if (videoRef.current && videoRef.current.srcObject) {
-      videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
-      videoRef.current.srcObject = null;
-    }
-  };
-
-  const startAudio = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      if (audioRef.current) {
-        audioRef.current.srcObject = stream;
-      }
-
-      stream
-        .getAudioTracks()
-        .forEach((track) => peerConnectionRef.current.addTrack(track, stream));
-    } catch (error) {
-      console.log("Gagal mengakses audio:", error);
-    }
-  };
-
-  const stopAudio = () => {
-    if (audioRef.current && audioRef.current.srcObject) {
-      audioRef.current.srcObject.getTracks().forEach((track) => track.stop());
-      audioRef.current.srcObject = null;
-    }
-  };
-
-  const startScreenSharing = async () => {
-    try {
-      const screenStream = await navigator.mediaDevices.getDisplayMedia({
-        video: true,
-      });
-      if (screenRef.current) {
-        screenRef.current.srcObject = screenStream;
-      }
-
-      screenStream
-        .getVideoTracks()
-        .forEach((track) =>
-          peerConnectionRef.current.addTrack(track, screenStream)
-        );
-    } catch (error) {
-      console.log("Gagal mengakses berbagi layar:", error);
-    }
-  };
-
-  const stopScreenSharing = () => {
-    if (screenRef.current && screenRef.current.srcObject) {
-      screenRef.current.srcObject.getTracks().forEach((track) => track.stop());
-      screenRef.current.srcObject = null;
-    }
-  };
-
-  const startScreenRecording = async () => {
-    try {
-      const screenStream = await navigator.mediaDevices.getDisplayMedia({
-        video: true,
-      });
-      if (screenRef.current) {
-        screenRef.current.srcObject = screenStream;
-      }
-
-      mediaRecorderRef.current = new MediaRecorder(screenStream, {
-        mimeType: "video/webm",
-      });
-
-      mediaRecorderRef.current.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          recordedChunksRef.current.push(event.data);
+  const handleCardClick = (cardId) => {
+    if (!streams.length > 0) {
+      setSelectedCards((prevSelectedCards) => {
+        if (prevSelectedCards.includes(cardId)) {
+          return prevSelectedCards.filter((id) => id !== cardId);
+        } else {
+          return [...prevSelectedCards, cardId];
         }
-      };
+      });
+    }
+  };
 
-      mediaRecorderRef.current.onstop = () => {
-        const blob = new Blob(recordedChunksRef.current, {
-          type: "video/webm",
+  const handleCheckboxChange = (cardId) => {
+    setSelectedCards((prevSelectedCards) => {
+      if (prevSelectedCards.includes(cardId)) {
+        return prevSelectedCards.filter((id) => id !== cardId);
+      } else {
+        return [...prevSelectedCards, cardId];
+      }
+    });
+  };
+
+  const handleCameraOn = async () => {
+    const newStreams = [];
+
+    for (const cardId of selectedCards) {
+      try {
+        const userMediaStream = await navigator.mediaDevices.getUserMedia({
+          video: true,
         });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.style.display = "none";
-        a.href = url;
-        a.download = "screen_recording.webm";
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        recordedChunksRef.current = [];
-      };
-
-      mediaRecorderRef.current.start();
-      setScreenRecording(true);
-    } catch (error) {
-      console.log("Gagal mengakses rekaman layar:", error);
-    }
-  };
-
-  const stopScreenRecording = () => {
-    if (mediaRecorderRef.current) {
-      mediaRecorderRef.current.stop();
-    }
-
-    setScreenRecording(false);
-  };
-
-  useEffect(() => {
-    socketRef.current = new WebSocket("wss://your-signaling-server-url");
-
-    socketRef.current.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      if (message.type === "answer") {
-        peerConnectionRef.current.setRemoteDescription(
-          new RTCSessionDescription(message.answer)
-        );
-      } else if (message.type === "candidate") {
-        if (peerConnectionRef.current) {
-          peerConnectionRef.current.addIceCandidate(
-            new RTCIceCandidate(message.candidate)
-          );
+        newStreams.push({ cardId, stream: userMediaStream });
+        if (videoRefs.current[cardId]) {
+          videoRefs.current[cardId].srcObject = userMediaStream;
         }
+        console.log(`Menyalakan kamera untuk ${cardId}`);
+      } catch (error) {
+        console.error(`Error accessing camera for ${cardId}: `, error);
       }
-    };
+    }
 
-    socketRef.current.onopen = () => {
-      console.log("Terhubung ke server sinyal");
-    };
+    setStreams(newStreams);
+  };
 
-    socketRef.current.onerror = (error) => {
-      console.log("WebSocket error:", error);
-    };
+  const handleCameraOff = () => {
+    streams.forEach(({ stream }) => {
+      stream.getTracks().forEach((track) => track.stop());
+    });
 
-    socketRef.current.onclose = () => {
-      console.log("WebSocket connection closed");
-    };
-
-    return () => {
-      socketRef.current.close();
-    };
-  }, []);
+    setStreams([]);
+    Object.values(videoRefs.current).forEach((video) => {
+      if (video) video.srcObject = null;
+    });
+    console.log("Mematikan kamera");
+  };
 
   return (
-    <div className="all bg-[#F4F4F4]">
+    <div className="min-h-screen bg-gray-100">
       <Navbar />
-      <div className="container">
-        <div className="controls">
-          <button className="ml-5" onClick={startAudio}>
-            Nyalakan Audio
-          </button>
-          <button className="ml-5" onClick={stopAudio}>
-            Matikan Audio
-          </button>
-          <button className="ml-5" onClick={startCamera}>
-            Nyalakan Kamera
-          </button>
-          <button className="ml-5" onClick={stopCamera}>
-            Matikan Kamera
-          </button>
-          <button className="ml-5" onClick={startScreenSharing}>
-            Mulai Berbagi Layar
-          </button>
-          <button className="ml-5" onClick={stopScreenSharing}>
-            Hentikan Berbagi Layar
-          </button>
-          <button
-            className="ml-5"
-            onClick={startScreenRecording}
-            disabled={screenRecording}
+      <div className="container mx-auto p-8">
+        <div className="grid grid-cols-1 md:ml-10 mt-12 md:grid-cols-3 gap-8">
+          <div
+            className={`card border border-gray-300 rounded-md p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer ${
+              streams.length > 0 ? "pointer-events-none" : ""
+            }`}
+            onClick={() => handleCardClick("Card 1")}
           >
-            Mulai Rekam Layar
-          </button>
-          <button
-            className="ml-5"
-            onClick={stopScreenRecording}
-            disabled={!screenRecording}
-          >
-            Hentikan Rekam Layar
-          </button>
-        </div>
-        <div className="screen-container">
-          <video ref={screenRef} autoPlay className="screen"></video>
-        </div>
-        <Draggable>
-          <div className="camera-container">
-            <video ref={videoRef} autoPlay className="camera"></video>
+            <h3 className="text-lg font-semibold mb-2">Card 1</h3>
+            <p className="mb-4">Content for Card 1</p>
+            <input
+              type="checkbox"
+              className="form-checkbox h-5 w-5 text-blue-600"
+              checked={selectedCards.includes("Card 1")}
+              onChange={(e) =>
+                e.stopPropagation() || handleCheckboxChange("Card 1")
+              }
+              disabled={streams.length > 0}
+            />
           </div>
-        </Draggable>
-        <style>{`
-      .container {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-      }
-      
-      .controls {
-        display: flex;
-        justify-content: center;
-        margin: 10px 0;
-      }
-      
-      .screen-container {
-        flex: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-      
-      .screen {
-        width: 80%;
-        height: 80%;
-        border: 2px solid #ccc;
-      }
-      
-      .camera-container {
-        position: absolute;
-        width: 230px;
-        height: 180px;
-        border: 2px solid #ccc;
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        cursor: move;
-      }
-      
-      .camera {
-        width: 100%;
-        height: 100%;
-      }      
-      `}</style>
+          <div
+            className={`card border border-gray-300 rounded-md p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer ${
+              streams.length > 0 ? "pointer-events-none" : ""
+            }`}
+            onClick={() => handleCardClick("Card 2")}
+          >
+            <h3 className="text-lg font-semibold mb-2">Card 2</h3>
+            <p className="mb-4">Content for Card 2</p>
+            <input
+              type="checkbox"
+              className="form-checkbox h-5 w-5 text-blue-600"
+              checked={selectedCards.includes("Card 2")}
+              onChange={(e) =>
+                e.stopPropagation() || handleCheckboxChange("Card 2")
+              }
+              disabled={streams.length > 0}
+            />
+          </div>
+          <div
+            className={`card border border-gray-300 rounded-md p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer ${
+              streams.length > 0 ? "pointer-events-none" : ""
+            }`}
+            onClick={() => handleCardClick("Card 3")}
+          >
+            <h3 className="text-lg font-semibold mb-2">Card 3</h3>
+            <p className="mb-4">Content for Card 3</p>
+            <input
+              type="checkbox"
+              className="form-checkbox h-5 w-5 text-blue-600"
+              checked={selectedCards.includes("Card 3")}
+              onChange={(e) =>
+                e.stopPropagation() || handleCheckboxChange("Card 3")
+              }
+              disabled={streams.length > 0}
+            />
+          </div>
+        </div>
+        <div className="flex justify-center mt-8">
+          {!streams.length > 0 && (
+            <button
+              style={{ fontSize: "20px" }}
+              className="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded mr-4"
+              onClick={handleCameraOn}
+              disabled={selectedCards.length === 0}
+            >
+              <FaVideo />
+            </button>
+          )}
+          {streams.length > 0 && (
+            <button
+              style={{ fontSize: "20px" }}
+              className="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-6 rounded"
+              onClick={handleCameraOff}
+            >
+              <FaVideoSlash />
+            </button>
+          )}
+        </div>
+        <div className="video-container mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+          {selectedCards.map((cardId) => (
+            <div key={cardId} className="video-wrapper mb-4">
+              <h4 className="text-center mb-2">{cardId}</h4>
+              <video
+                ref={(el) => (videoRefs.current[cardId] = el)}
+                autoPlay
+                playsInline
+                className="w-full h-auto border border-gray-300 rounded-xl"
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

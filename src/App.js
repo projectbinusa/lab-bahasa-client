@@ -14,6 +14,7 @@ import AddClass from "./views/pages/manageClass/AddClass";
 import UpdateClass from "./views/pages/manageClass/UpdateClass";
 import ManageName from "./views/pages/manageName/ManageName";
 import AddName from "./views/pages/manageName/AddName";
+import ScreenBroadcast from "./views/pages/screenBroadcast/ScreenBroadcast";
 
 // END ADMIN MENU REGULASI
 
@@ -34,6 +35,7 @@ function App() {
           <Route path="/update-class" component={UpdateClass} exact />
           <Route path="/manage-name" component={ManageName} exact />
           <Route path="/add-name" component={AddName} exact />
+          <Route path="/screen-broadcast" component={ScreenBroadcast} exact />
           <Route
             path="/response-competition"
             component={ResponseCompetition}
