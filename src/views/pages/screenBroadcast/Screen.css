@@ -1,0 +1,80 @@
+.camerans {
+    display: flex;
+    padding-top: 4%;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f4f4f4;
+    height: 100vh;
+}
+  
+.camera-container {
+    width: 97%;
+    max-width: 1200px;
+    margin-top: 20px;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+  
+.video-containers {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    height: 70vh;
+    position: relative;
+}
+  
+.camera-video-container {
+    width: 200px;
+    height: 150px;
+    background-color: rgb(26, 199, 110);
+    border-radius: 10px;
+    overflow: hidden;
+    position: absolute;
+    cursor: move;
+}
+  
+.screen-video-container {
+    flex: 1;
+    background-color: black;
+    border-radius: 10px;
+    overflow: hidden;
+}
+  
+video {
+    width: 100%;
+    height: 100%;
+}
+  
+.camera-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+  
+.camera-control-button {
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    color: white;
+}
+  
+.start-button {
+    background-color: green;
+}
+  
+.stop-button {
+    background-color: red;
+}
+  
+.screen-share-button {
+    background-color: blue;
+}
