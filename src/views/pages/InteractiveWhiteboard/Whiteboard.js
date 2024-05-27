@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { ReactSketchCanvas } from "react-sketch-canvas";
 import {
   Button,
+  Grid,
   IconButton,
   Tooltip,
   Stack,
@@ -81,7 +82,7 @@ const Whiteboard = () => {
   return (
     <div className="all bg-[#F4F4F4]">
       <Navbar />
-      <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+      <Box sx={{ display: "flex", flexDirection: "column", height: "100%", marginTop: "60px", paddingBottom: "20px" }}>
         <Typography variant="h4" gutterBottom sx={{ p: 2 }}>
           Interactive Whiteboard
         </Typography>
@@ -107,11 +108,6 @@ const Whiteboard = () => {
               <FormatClear />
             </IconButton>
           </Tooltip>
-          {/* <Tooltip title="New">
-                    <IconButton onClick={handleNewBoard}>
-                        <Delete />
-                    </IconButton>
-                </Tooltip> */}
           <Tooltip title="Brush">
             <IconButton onClick={() => setTool("brush")}>
               <Brush />
@@ -140,16 +136,17 @@ const Whiteboard = () => {
           <TextField
             size="small"
             type="number"
+            sx={{ width: 75 }}
             value={width}
             onChange={(e) => setWidth(e.target.value)}
           />
         </Stack>
-        <Divider sx={{ my: 2 }} />
+        <Divider sx={{ my: 4 }} />
         <ReactSketchCanvas
           ref={canvasRef}
           style={{
             width: "95%",
-            height: "500px",
+            height: "350px",
             border: "2px solid black",
             margin: "0 auto",
           }}
@@ -181,13 +178,15 @@ const Whiteboard = () => {
         <Divider sx={{ my: 2 }} />
         <Box sx={{ p: 2 }}>
           <Typography variant="h6">History</Typography>
-          <Stack direction="row" spacing={2} sx={{ overflowX: "auto" }}>
+          <Grid container spacing={2}>
             {history.map((image, index) => (
-              <Box key={index} sx={{ minWidth: 100 }}>
-                <img src={image} alt={`Canvas ${index}`} width="100%" />
-              </Box>
+              <Grid item key={index} xs={12} sm={6}>
+                <Box sx={{ width: "100%" }}>
+                  <img src={image} alt={`Canvas ${index}`} width="100%" />
+                </Box>
+              </Grid>
             ))}
-          </Stack>
+          </Grid>
         </Box>
       </Box>
     </div>

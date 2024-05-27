@@ -65,8 +65,8 @@ function Camera() {
   return (
     <div className="min-h-screen bg-gray-100">
       <Navbar />
-      <div className="container mx-auto p-8">
-        <div className="grid grid-cols-1 md:ml-10 mt-12 md:grid-cols-3 gap-8">
+      <div className="container mx-auto py-10">
+        <div className="grid grid-cols-1 md:mx-10 mt-12 md:grid-cols-3 gap-8">
           <div
             className={`card border border-gray-300 rounded-md p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer ${
               streams.length > 0 ? "pointer-events-none" : ""
