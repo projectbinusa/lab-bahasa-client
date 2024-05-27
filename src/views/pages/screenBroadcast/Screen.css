@@ -29,7 +29,7 @@
 .camera-video-container {
     width: 200px;
     height: 150px;
-    background-color: rgb(26, 199, 110);
+    background-color: transparent;
     border-radius: 10px;
     overflow: hidden;
     position: absolute;
