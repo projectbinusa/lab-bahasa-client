@@ -16,6 +16,7 @@ import ManageName from "./views/pages/manageName/ManageName";
 import AddName from "./views/pages/manageName/AddName";
 import ScreenBroadcast from "./views/pages/screenBroadcast/ScreenBroadcast";
 import UpdateName from "./views/pages/manageName/UpdateName";
+import InteractionStudent from "./views/pages/InteractiveWhiteboard/InteractionStudent";
 
 // END ADMIN MENU REGULASI
 
@@ -48,6 +49,11 @@ function App() {
           <Route
             path="/signed-information"
             component={SignedInformation}
+            exact
+          />
+          <Route
+            path="/interaction-student"
+            component={InteractionStudent}
             exact
           />
         </Switch>

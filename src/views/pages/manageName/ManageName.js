@@ -92,12 +92,15 @@ function ManageName() {
                       888888
                     </td>
                     <td className="whitespace-nowrap text-center py-3 flex items-center gap-5 justify-center">
-                      <button className="py-3 px-4 bg-blue-500 rounded-lg text-white ">
+                      <Link
+                        to="/update-name"
+                        className="py-3 px-4 bg-blue-500 rounded-lg text-white "
+                      >
                         <FontAwesomeIcon
                           className="text-lg"
                           icon={faPenToSquare}
                         />
-                      </button>
+                      </Link>
                       <button className="py-3 px-4 bg-red-500 rounded-lg text-white ">
                         <FontAwesomeIcon className="text-lg" icon={faTrash} />
                       </button>
