@@ -27,7 +27,7 @@ import {
 } from "@mui/icons-material";
 import Navbar from "../../../component/Navbar1";
 
-const InteractionStudent = () => {
+const InteraksiStudent = () => {
   const [color, setColor] = useState("#000000");
   const [width, setWidth] = useState(5);
   const [tool, setTool] = useState("brush");
@@ -263,4 +263,4 @@ const InteractionStudent = () => {
   );
 };
 
-export default InteractionStudent;
+export default InteraksiStudent;
