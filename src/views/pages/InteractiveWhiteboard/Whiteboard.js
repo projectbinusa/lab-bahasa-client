@@ -11,16 +11,12 @@ import {
   Typography,
   Slider,
   TextField,
+  Dialog,
+  DialogContent,
+  DialogActions,
+  DialogTitle,
 } from "@mui/material";
-import {
-  Circle as CircleIcon,
-  FormatShapes,
-  Brush,
-  Delete,
-  FormatClear,
-  Undo,
-  Redo,
-} from "@mui/icons-material";
+import { Brush, Delete, Undo, Redo, AddCircleOutline, Share } from "@mui/icons-material";
 import Navbar from "../../../component/Navbar1";
 
 const Whiteboard = () => {
@@ -28,6 +24,8 @@ const Whiteboard = () => {
   const [width, setWidth] = useState(5);
   const [tool, setTool] = useState("brush");
   const [history, setHistory] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [selectedBoard, setSelectedBoard] = useState(null);
 
   const canvasRef = useRef();
 
@@ -48,23 +46,43 @@ const Whiteboard = () => {
   };
 
   const handleNewBoard = async () => {
-    const canvasData = await canvasRef.current.exportImage("png");
-    setHistory([...history, canvasData]);
+    const paths = await canvasRef.current.exportPaths();
+    const image = await canvasRef.current.exportImage("png");
+    const newBoard = { id: history.length + 1, paths: paths, image: image };
+    setHistory([...history, newBoard]);
     handleClearBoard();
+  };
+
+  const handleClickOpen = (board) => {
+    setSelectedBoard(board);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedBoard(null);
+  };
+
+  const handleLoadBoard = async (board) => {
+    setOpen(false);
+    if (board) {
+      await canvasRef.current.loadPaths(board.paths);
+    }
+  };
+
+  const handleDeleteBoard = (boardId) => {
+    setHistory(history.filter((board) => board.id !== boardId));
+    setSelectedBoard(null);
   };
 
   const getToolProps = () => {
     switch (tool) {
       case "brush":
-        return { tool: "pencil" };
-      case "shape":
-        return { tool: "rectangle" };
-      case "circle":
-        return { tool: "circle" };
+        return { tool: "pencil", strokeColor: color };
       case "eraser":
-        return { tool: "eraser" };
+        return { tool: "eraser", strokeColor: "#FFFFFF" };
       default:
-        return { tool: "pencil" };
+        return { tool: "pencil", strokeColor: color };
     }
   };
 
@@ -81,7 +99,7 @@ const Whiteboard = () => {
           overflowX: "hidden",
         }}
       >
-        <Typography variant="h4" gutterBottom sx={{ p: 2 }}>
+        <Typography variant="h4" gutterBottom sx={{ py: 1, px: 2 }}>
           Interactive Whiteboard
         </Typography>
         <Divider />
@@ -89,15 +107,15 @@ const Whiteboard = () => {
           <Grid item xs={12} md={9}>
             <ReactSketchCanvas
               ref={canvasRef}
-              strokeColor={color}
+              strokeColor={getToolProps().strokeColor}
               strokeWidth={width}
-              height="75vh"
-              {...getToolProps()}
+              height="77vh"
+              tool={getToolProps().tool}
               style={{ backgroundColor: "white" }}
             />
           </Grid>
           <Grid item xs={12} md={3}>
-            <Stack spacing={2} sx={{ mx: 2 }}>
+            <Stack spacing={2} sx={{ ml: 1, mr: 2, mt: 2 }}>
               <Box>
                 <Typography variant="h6">Tools</Typography>
                 <Tooltip title="Brush">
@@ -108,39 +126,25 @@ const Whiteboard = () => {
                     <Brush />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Shape">
-                  <IconButton
-                    color={tool === "shape" ? "primary" : "default"}
-                    onClick={() => setTool("shape")}
-                  >
-                    <FormatShapes />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Circle">
-                  <IconButton
-                    color={tool === "circle" ? "primary" : "default"}
-                    onClick={() => setTool("circle")}
-                  >
-                    <CircleIcon />
-                  </IconButton>
-                </Tooltip>
                 <Tooltip title="Eraser">
                   <IconButton
                     color={tool === "eraser" ? "primary" : "default"}
                     onClick={() => setTool("eraser")}
                   >
-                    <FormatClear />
+                    <i className="fa-solid fa-eraser"></i>{" "}
                   </IconButton>
                 </Tooltip>
               </Box>
               <Box>
                 <Typography variant="h6">Settings</Typography>
-                <Typography sx={{ mt: 1 }} gutterBottom>Stroke Width</Typography>
+                <Typography sx={{ mt: 1 }} gutterBottom>
+                  Stroke Width
+                </Typography>
                 <Slider
                   value={width}
                   onChange={(e, newValue) => setWidth(newValue)}
                   min={1}
-                  max={50}
+                  max={100}
                   valueLabelDisplay="auto"
                   sx={{ mx: 0 }}
                 />
@@ -166,19 +170,87 @@ const Whiteboard = () => {
                     <Redo />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="New Board">
-                  <IconButton onClick={handleNewBoard}>
+                <Tooltip title="Clear Board">
+                  <IconButton onClick={handleClearBoard}>
                     <Delete />
                   </IconButton>
                 </Tooltip>
-                <Button variant="contained" onClick={handleShare}>
-                  Share
-                </Button>
+                <Tooltip title="New Board">
+                  <IconButton onClick={handleNewBoard}>
+                    <AddCircleOutline />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Share">
+                  <IconButton onClick={handleShare}>
+                    <Share  />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+              <Divider />
+              <Box>
+                <Typography variant="h6">Board History</Typography>
+                <Box sx={{ maxHeight: "75px", overflowY: "auto" }}>
+                  <Stack
+                    spacing={0}
+                    direction="row"
+                    flexWrap="wrap"
+                    sx={{
+                      "& > *": {
+                        flexBasis: "50%",
+                        maxWidth: "50%",
+                      },
+                    }}
+                  >
+                    {history.map((board) => (
+                      <Button
+                        key={board.id}
+                        variant="outlined"
+                        onClick={() => handleClickOpen(board)}
+                        sx={{ flexBasis: "135px", maxWidth: "50%" }}
+                      >
+                        Board {board.id}
+                        <IconButton
+                          size="small"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteBoard(board.id);
+                          }}
+                          sx={{ marginLeft: "auto" }}
+                        >
+                          <Delete fontSize="small" />
+                        </IconButton>
+                      </Button>
+                    ))}
+                  </Stack>
+                </Box>
               </Box>
             </Stack>
           </Grid>
         </Grid>
       </Box>
+      <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
+        <DialogTitle>Board {selectedBoard?.id}</DialogTitle>
+        <DialogContent>
+          {selectedBoard && (
+            <img
+              src={selectedBoard.image}
+              alt={`Board ${selectedBoard.id}`}
+              style={{ width: "100%", height: "100%" }}
+            />
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() => handleLoadBoard(selectedBoard)}
+            color="primary"
+          >
+            Load into Whiteboard
+          </Button>
+          <Button onClick={handleClose} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
