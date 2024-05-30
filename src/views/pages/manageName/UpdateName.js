@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../../../component/Navbar1";
 
-function AddName() {
+function UpdateName() {
   return (
     <>
       <div className="flex flex-col h-screen bg-gray-100">
@@ -102,4 +102,4 @@ function AddName() {
   );
 }
 
-export default AddName;
+export default UpdateName;

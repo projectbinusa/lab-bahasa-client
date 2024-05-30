@@ -15,10 +15,12 @@ function ManageName() {
       <div className="flex flex-col h-screen">
         <Navbar />
         <div className="px-32">
-          <div className="tabel-name bg-white p-5 rounded-xl shadow-xl border border-gray-300 mt-24">
-            <div className="flex justify-between items-center">
-              <h2 className="text-xl font-bold">Manage Name List</h2>
-              <div className="flex gap-3">
+          <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-24">
+            <div className="flex justify-between">
+              <h6 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
+                Kelola Daftar Nama
+              </h6>
+              <div className="flex gap-3 mb-5">
                 <button className="rounded-xl shadow-xl py-3 px-4 bg-gray-100">
                   <FontAwesomeIcon
                     icon={faArrowUpFromBracket}
@@ -36,96 +38,85 @@ function ManageName() {
                 </Link>
               </div>
             </div>
-
-            <div className="overflow-x-auto rounded-lg border border-gray-200 mt-4">
-              <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm border border-gray-300">
-                <thead className="text-left">
+            <hr />
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
+              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
-                    <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+                    <th scope="col" className="px-6 py-3">
                       No
                     </th>
-                    <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                      Student ID
+                    <th scope="col" className="px-6 py-3">
+                      ID Siswa
                     </th>
-                    <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                      Name
+                    <th scope="col" className="px-6 py-3">
+                      Nama
                     </th>
-                    <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+                    <th scope="col" className="px-6 py-3">
                       Gender
                     </th>
-                    <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                      Department
+                    <th scope="col" className="px-6 py-3">
+                      Jurusan
                     </th>
-                    <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                      Class
+                    <th scope="col" className="px-6 py-3">
+                      Kelas
                     </th>
-                    <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+                    <th scope="col" className="px-6 py-3">
                       Password
                     </th>
-                    <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                      Action
+                    <th scope="col" className="px-6 py-3">
+                      Aksi
                     </th>
                   </tr>
                 </thead>
-
-                <tbody className="divide-y divide-gray-200">
-                  <tr>
-                    <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+                <tbody className="text-center">
+                  {/* {cutiData.map((cuti, index) => (
+                    <tr
+                      key={index}
+                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                    >
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {index + 1}
+                      </th>
+                      <td className="px-6 py-4">{cuti.username}</td>
+                      <td className="px-6 py-4">
+                        {formatDate(cuti.created_at)}
+                      </td>
+                      <td className="px-6 py-4">{cuti.durasi}</td>
+                      <td className="px-6 py-4">{cuti.status}</td>
+                    </tr>
+                  ))} */}
+                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
                       1
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-                      0899898
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-                      Dea
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-                      Female
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-                      Computer
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-                      One
-                    </td>
-                    <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-                      888888
-                    </td>
-                    <td className="whitespace-nowrap text-center py-3 flex items-center gap-5 justify-center">
-                      <button className="py-3 px-4 bg-blue-500 rounded-lg text-white ">
+                    </th>
+
+                    <td className="px-6 py-4">997764</td>
+                    <td className="px-6 py-4">Alex</td>
+                    <td className="px-6 py-4">Laki-Laki</td>
+                    <td className="px-6 py-4">Komputer</td>
+                    <td className="px-6 py-4">01</td>
+                    <td className="px-6 py-4">********</td>
+                    <td className="px-6 py-4 flex items-center gap-5 justify-center">
+                      <Link
+                        to="/update-name"
+                        className="py-3 px-4 bg-blue-500 rounded-lg text-white "
+                      >
                         <FontAwesomeIcon
                           className="text-lg"
                           icon={faPenToSquare}
                         />
-                      </button>
+                      </Link>
                       <button className="py-3 px-4 bg-red-500 rounded-lg text-white ">
                         <FontAwesomeIcon className="text-lg" icon={faTrash} />
                       </button>
                     </td>
-                    {/* <td className="whitespace-nowrap text-center py-3">
-                        <div className="flex items-center -space-x-4 ml-12">
-                          <Link to="/user/detail_absen">
-                            <button className="z-20 block rounded-full border-2 border-white bg-green-400 p-4 text-blue-700 active:bg-blue-50">
-                              <span className="relative inline-block">
-                                <FontAwesomeIcon
-                                  icon={""}
-                                  className="h-4 w-4"
-                                />
-                              </span>
-                            </button>
-                          </Link>
-                          <Link to="/user/izin_absen">
-                            <button className="z-30 block rounded-full border-2 border-white bg-green-700 p-4 text-red-700 active:bg-red-50">
-                              <span className="relative inline-block">
-                                <FontAwesomeIcon
-                                  className="h-4 w-4"
-                                  icon={""}
-                                />
-                              </span>
-                            </button>
-                          </Link>
-                        </div>
-                      </td> */}
                   </tr>
                 </tbody>
               </table>

@@ -12,10 +12,12 @@ function SignedInformation() {
     <div className="flex flex-col h-screen">
       <Navbar />
       <div className="px-32">
-        <div className="tabel-absen bg-white p-5 rounded-xl shadow-xl border border-gray-300 mt-24">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold">Signed Information</h2>
-            <div className="flex gap-3">
+        <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-24">
+          <div className="flex justify-between">
+            <h6 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
+              Informasi Sign In
+            </h6>
+            <div className="flex gap-3 mb-4">
               <button className="rounded-xl shadow-xl py-3 px-4 bg-gray-100">
                 <FontAwesomeIcon
                   icon={faArrowRightFromBracket}
@@ -36,76 +38,80 @@ function SignedInformation() {
               </button>
             </div>
           </div>
-
-          <div className="overflow-x-auto rounded-lg border border-gray-200 mt-4">
-            <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm border border-gray-300">
-              <thead className="text-left">
+          <hr />
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
+            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+              <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+                  <th scope="col" className="px-5 py-3">
                     No
                   </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                    Student ID
+                  <th scope="col" className="px-5 py-3">
+                    ID Siswa
                   </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                    Name
+                  <th scope="col" className="px-5 py-3">
+                    Nama
                   </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+                  <th scope="col" className="px-5 py-3">
                     Gender
                   </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                    Class
+                  <th scope="col" className="px-5 py-3">
+                    Kelas
                   </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                    Department
+                  <th scope="col" className="px-5 py-3">
+                    Jurusan
                   </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                    Computer Name
+                  <th scope="col" className="px-5 py-3">
+                    Nama Komputer
                   </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                    IP Address
+                  <th scope="col" className="px-5 py-3">
+                    Alamat IP
                   </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                    Signed Time
+                  <th scope="col" className="px-5 py-3">
+                    Waktu Sign in
                   </th>
-                  <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-                    Comment
+                  <th scope="col" className="px-5 py-3">
+                    Komentar
                   </th>
                 </tr>
               </thead>
-
-              <tbody className="divide-y divide-gray-200">
-                <tr>
-                  <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+              <tbody className="text-center">
+                {/* {absenData.map((absen, index) => (
+                    <tr
+                      key={index}
+                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                    >
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
+                        {index + 1}
+                      </th>
+                      <td className="px-6 py-4">{absen.username}</td>
+                      <td className="px-6 py-4">
+                        {formatDate(absen.tanggalAbsen)}
+                      </td>
+                      <td className="px-6 py-4">{absen.jamMasuk || "-"}</td>
+                      <td className="px-6 py-4">{absen.jamPulang || "-"}</td>
+                      <td className="px-6 py-4">{absen.kehadiran}</td>
+                    </tr>
+                  ))} */}
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <th
+                    scope="row"
+                    className="px-5 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
                     1
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-                    0899898
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-                    Dea
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-                    Female
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-                    One
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-                    Computer
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-                    A67dy
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-                    123.4989.09489
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-                    15/5/2024 07.00 WIB
-                  </td>
-                  <td className="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
-                    Absent
-                  </td>
+                  </th>
+                  <td className="px-3 py-4">93838789</td>
+                  <td className="px-3 py-4">Alexa</td>
+                  <td className="px-3 py-4">Perempuan</td>
+                  <td className="px-3 py-4">01</td>
+                  <td className="px-3 py-4">Komputer</td>
+                  <td className="px-3 py-4">Ay685</td>
+                  <td className="px-3 py-4">123.4989.09489</td>
+                  <td className="px-3 py-4">15/5/2024 07.00 WIB</td>
+                  <td className="px-3 py-4">Absen</td>
                 </tr>
               </tbody>
             </table>

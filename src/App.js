@@ -17,6 +17,8 @@ import AddName from "./views/pages/manageName/AddName";
 import ScreenBroadcast from "./views/pages/screenBroadcast/ScreenBroadcast";
 import ChatApp from "./views/pages/Chat/ChatApp";
 import TopikChat from "./views/pages/Chat/TopikChat";
+import UpdateName from "./views/pages/manageName/UpdateName";
+import InteraksiStudent from "./views/pages/InteractiveWhiteboard/InteraksiStudent";
 
 // END ADMIN MENU REGULASI
 
@@ -37,6 +39,7 @@ function App() {
           <Route path="/update-class" component={UpdateClass} exact />
           <Route path="/manage-name" component={ManageName} exact />
           <Route path="/add-name" component={AddName} exact />
+          <Route path="/update-name" component={UpdateName} exact />
           <Route path="/screen-broadcast" component={ScreenBroadcast} exact />
           <Route path="/group-chat" component={ChatApp} exact />
           <Route path="/topic-chat" component={TopikChat} exact />
@@ -50,6 +53,11 @@ function App() {
           <Route
             path="/signed-information"
             component={SignedInformation}
+            exact
+          />
+          <Route
+            path="/interaction-student"
+            component={InteraksiStudent}
             exact
           />
         </Switch>

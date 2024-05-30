@@ -62,7 +62,7 @@ function LoginSiswa() {
                     className="w-full px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700 focus:outline-none focus:shadow-outline"
                     type="button"
                   >
-                    Login Account
+                    Login
                   </button>
                 </div>
                 <hr className="mb-6 border-t" />
@@ -71,7 +71,7 @@ function LoginSiswa() {
                     className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
                     href="/forgotpass"
                   >
-                    Forgot Password?
+                    Lupa Password?
                   </a>
                 </div>
               </form>

@@ -46,64 +46,66 @@ function ResponseCompetition() {
   };
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-gray-100">
       <Navbar />
-      <div className="w-full px-24">
-        <div className="w-full p-5 bg-white rounded-lg shadow-2xl mt-24">
-          <h1 className="text-xl font-medium mb-2">Response Competition</h1>
-          <div className="mb-2">
+      <div className="content-page container mx-auto p-4 mt-20">
+        <div className="w-full p-4 bg-white rounded-xl shadow-xl border border-gray-300">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-5">
+            Kompetisi Respon
+          </h1>
+          <div className="mb-4">
             <label
               htmlFor="type"
-              className="block text-gray-700 font-medium mb-1"
+              className="block mb-2 text-sm font-semibold text-gray-700"
             >
-              Type:
+              Jenis:
             </label>
             <select
               id="type"
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
-              className="w-full bg-gray-200 border border-gray-300 text-gray-700 py-1 px-2 pr-8 rounded leading-tight focus:outline-none focus:bg-white"
+              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
             >
-              <option value="Fist to Answer">Fist to Answer</option>
-              <option value="Enter an Answer">Enter an Answer</option>
-              <option value="Demo to Answer">Demo to Answer</option>
+              <option value="Fist to Answer">Tinjau untuk menjawab</option>
+              <option value="Enter an Answer">Masukkan jawaban</option>
+              <option value="Demo to Answer">Demo untuk menjawab</option>
             </select>
           </div>
-          <div className="mb-2">
+          <div className="mb-4">
             <label
               htmlFor="think-time"
-              className="block text-gray-700 font-medium mb-1"
+              className="block mb-2 text-sm font-semibold text-gray-700"
             >
-              Think Time (seconds):
+              Pikirkan waktu (detik):
             </label>
             <input
               type="number"
               id="think-time"
               value={thinkTime}
               onChange={(e) => setThinkTime(Number(e.target.value))}
-              className="w-full bg-gray-200 border border-gray-300 text-gray-700 py-1 px-2 pr-8 rounded leading-tight focus:outline-none focus:bg-white"
+              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
             />
           </div>
-          <div className="mb-2">
+          <div className="mb-4">
             <label
               htmlFor="answer-time"
-              className="block text-gray-700 font-medium mb-1"
+              className="block mb-2 text-sm font-semibold text-gray-700"
             >
-              Answer Time (seconds):
+              Waktu jawab (detik):
             </label>
             <input
               type="number"
               id="answer-time"
               value={answerTime}
               onChange={(e) => setAnswerTime(Number(e.target.value))}
-              className="w-full bg-gray-200 border border-gray-300 text-gray-700 py-1 px-2 pr-8 rounded leading-tight focus:outline-none focus:bg-white"
+              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
             />
           </div>
-          <div className="mb-2">
-            <p className="text-gray-700 font-medium">Instructions:</p>
-            <p>{getInstructions()}</p>
+          <div className="mb-4">
+            <p className="text-sm font-semibold text-gray-700">Instructions:</p>
+            <p className="text-gray-700">{getInstructions()}</p>
           </div>
-          <div className="mb-2">
+          <div className="mb-4">
             {timeLeft !== null && (
               <p className="text-gray-700 font-medium">
                 {phase === "think"
@@ -115,16 +117,16 @@ function ResponseCompetition() {
             )}
           </div>
           <button
-            className="w-full bg-blue-500 text-white font-medium py-1 px-2 rounded shadow-md hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue mb-2"
+            className="w-full bg-green-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 mb-2"
             onClick={startCompetition}
           >
-            Start Competition
+            Mulai Kompetisi
           </button>
           <button
-            className="w-full bg-red-500 text-white font-medium py-1 px-2 rounded shadow-md hover:bg-red-700 focus:outline-none focus:shadow-outline-red"
+            className="w-full bg-red-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
             onClick={resetForm}
           >
-            Reset
+            Atur ulang
           </button>
         </div>
       </div>
