@@ -121,14 +121,14 @@ const InteraksiStudent = () => {
         }}
       >
         <Typography variant="h4" gutterBottom sx={{ p: 2 }}>
-          Interaction Student
+          Papan Interaksi Dengan Siswa
         </Typography>
         <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 2 }}>
           <Button variant="outlined" onClick={handleNewBoard}>
-            New
+            Baru
           </Button>
           <Button variant="outlined" onClick={handleShare}>
-            Share
+            Bagikan
           </Button>
           <Tooltip title="Undo">
             <IconButton onClick={handleUndo}>
@@ -183,13 +183,13 @@ const InteraksiStudent = () => {
             variant="contained"
             onClick={() => handleModeChange("co-draw")}
           >
-            Co-draw
+            Pemilihan murid
           </Button>
           <Button
             variant="contained"
             onClick={() => handleModeChange("individual")}
           >
-            Draw Individually
+            Menggambar secara individual
           </Button>
         </Stack>
         <Divider sx={{ my: 4 }} />
@@ -208,7 +208,7 @@ const InteraksiStudent = () => {
         />
         <Divider sx={{ my: 2 }} />
         <Box sx={{ p: 2 }}>
-          <Typography variant="h6">Chat</Typography>
+          <Typography variant="h6">Obrolan</Typography>
           <List sx={{ maxHeight: 300, overflow: "auto" }}>
             {messages.map((msg, index) => (
               <ListItem key={index}>{msg}</ListItem>

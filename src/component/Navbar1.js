@@ -1,7 +1,14 @@
+import { faMedapps } from "@fortawesome/free-brands-svg-icons";
 import {
+  faCamera,
   faCaretDown,
+  faChalkboard,
+  faChalkboardUser,
+  faChartLine,
   faCircleInfo,
   faComments,
+  faDisplay,
+  faListCheck,
   faListOl,
   faMedal,
   faQuestion,
@@ -50,20 +57,25 @@ function Navbar() {
               <img src="" className="h-11 me-3 text-white" alt="" />
             </a>
           </div>
-          <div className="link flex items-center gap-6 text-white">
+          <div className="link flex items-center gap-4 text-white">
             <Link to="/dashboard" className="text-sm font-semibold">
+              <FontAwesomeIcon icon={faChartLine} className="px-1" />
               Dashboard
             </Link>
             <Link to="/screen-broadcast" className="text-sm font-semibold">
+              <FontAwesomeIcon icon={faDisplay} className="px-1" />
               Screen Broadcast
             </Link>
             <Link to="/camera" className="text-sm font-semibold">
+              <FontAwesomeIcon icon={faCamera} className="px-1" />
               Camera
             </Link>
             <Link to="/whiteboard" className="text-sm font-semibold">
+              <FontAwesomeIcon icon={faChalkboard} className="px-1" />
               Interactive Whiteboard
             </Link>
             <Link to="/interaction-student" className="text-sm font-semibold">
+              <FontAwesomeIcon icon={faChalkboardUser} className="px-1" />
               Interaction Student
             </Link>
             <div className="relative">
@@ -71,6 +83,7 @@ function Navbar() {
                 onClick={toggleChatDropdown}
                 className="text-sm font-semibold flex items-center focus:outline-none"
               >
+                <FontAwesomeIcon icon={faComments} className="px-1" />
                 Chat <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
               </button>
               {chatDropdownOpen && (
@@ -104,6 +117,7 @@ function Navbar() {
                 onClick={toggleRespDropdown}
                 className="text-sm font-semibold flex items-center focus:outline-none"
               >
+                <FontAwesomeIcon icon={faMedapps} className="px-1" />
                 Response Competition
                 <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
               </button>
@@ -131,6 +145,7 @@ function Navbar() {
                 onClick={toggleManageDropdown}
                 className="text-sm font-semibold flex items-center focus:outline-none"
               >
+                <FontAwesomeIcon icon={faListCheck} className="px-1" />
                 Manage Class
                 <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
               </button>

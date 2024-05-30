@@ -51,14 +51,14 @@ function ResponseCompetition() {
       <div className="content-page container mx-auto p-4 mt-20">
         <div className="w-full p-4 bg-white rounded-xl shadow-xl border border-gray-300">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-5">
-            Response Competition
+            Kompetisi Respon
           </h1>
           <div className="mb-4">
             <label
               htmlFor="type"
               className="block mb-2 text-sm font-semibold text-gray-700"
             >
-              Type:
+              Jenis:
             </label>
             <select
               id="type"
@@ -66,9 +66,9 @@ function ResponseCompetition() {
               onChange={(e) => setSelectedType(e.target.value)}
               className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
             >
-              <option value="Fist to Answer">Fist to Answer</option>
-              <option value="Enter an Answer">Enter an Answer</option>
-              <option value="Demo to Answer">Demo to Answer</option>
+              <option value="Fist to Answer">Tinjau untuk menjawab</option>
+              <option value="Enter an Answer">Masukkan jawaban</option>
+              <option value="Demo to Answer">Demo untuk menjawab</option>
             </select>
           </div>
           <div className="mb-4">
@@ -76,7 +76,7 @@ function ResponseCompetition() {
               htmlFor="think-time"
               className="block mb-2 text-sm font-semibold text-gray-700"
             >
-              Think Time (seconds):
+              Pikirkan waktu (detik):
             </label>
             <input
               type="number"
@@ -91,7 +91,7 @@ function ResponseCompetition() {
               htmlFor="answer-time"
               className="block mb-2 text-sm font-semibold text-gray-700"
             >
-              Answer Time (seconds):
+              Waktu jawab (detik):
             </label>
             <input
               type="number"
@@ -120,13 +120,13 @@ function ResponseCompetition() {
             className="w-full bg-green-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 mb-2"
             onClick={startCompetition}
           >
-            Start Competition
+            Mulai Kompetisi
           </button>
           <button
             className="w-full bg-red-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
             onClick={resetForm}
           >
-            Reset
+            Atur ulang
           </button>
         </div>
       </div>

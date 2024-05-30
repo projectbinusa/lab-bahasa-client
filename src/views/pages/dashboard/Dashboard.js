@@ -5,29 +5,17 @@ import { faUsers } from "@fortawesome/free-solid-svg-icons";
 
 function Dashboard() {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col bg-gray-100">
       <div className="sticky top-0 z-50">
         <Navbar />
       </div>
       <div className="flex h-full">
         <div className="content-page container p-8 ml-0 md:ml-10 mt-12">
-          {/* <div className="mt-5 w-full">
-            <div className="p-4 text-center bg-slate-300 border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-              <h2 className="text-2xl font-semibold mb-4">
-                Selamat Datang di Absensi
-                <span> @{username}</span>
-              </h2>
-              <a className="profile-menu-link">{day}, </a>
-              <a className="profile-menu-link active">{date} - </a>
-              <a className="profile-menu-link">{time}</a>
-            </div>
-          </div> */}
-
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 mt-12">
             <div class="">
               <div class="relative cursor-pointer dark:text-white">
-                <span class="absolute top-0 left-0 w-full h-full mt-1 ml-1 bg-green-500 rounded-lg dark:bg-gray-200"></span>
-                <div class="relative p-6 bg-white dark:bg-gray-800 border-2 border-green-500 dark:border-gray-300 rounded-lg hover:scale-105 transition duration-500">
+                <span class="absolute top-0 left-0 w-full h-full mt-1 ml-1 bg-green-300 rounded-lg dark:bg-gray-200"></span>
+                <div class="relative p-6 bg-white dark:bg-gray-800 border-2 border-green-300 dark:border-gray-300 rounded-lg hover:scale-105 transition duration-500">
                   <div class="flex items-center">
                     <span class="text-xl">
                       <FontAwesomeIcon icon={faUsers} />
@@ -44,11 +32,14 @@ function Dashboard() {
             </div>
             <div class="">
               <div class="relative cursor-pointer dark:text-white">
-                <span class="absolute top-0 left-0 w-full h-full mt-1 ml-1 bg-green-500 rounded-lg dark:bg-gray-200"></span>
-                <div class="relative p-6 bg-white dark:bg-gray-800 border-2 border-green-500 dark:border-gray-300 rounded-lg hover:scale-105 transition duration-500">
+                <span class="absolute top-0 left-0 w-full h-full mt-1 ml-1 bg-green-300 rounded-lg dark:bg-gray-200"></span>
+                <div class="relative p-6 bg-white dark:bg-gray-800 border-2 border-green-300 dark:border-gray-300 rounded-lg hover:scale-105 transition duration-500">
                   <div class="flex items-center">
                     <span class="text-xl">
-                      <FontAwesomeIcon icon={faUsers} />
+                      <FontAwesomeIcon
+                        icon={faUsers}
+                        className="text-green-800"
+                      />
                     </span>
                     <h3 class="my-2 ml-3 text-lg font-bold text-gray-800 dark:text-white">
                       Jumlah Siswa
@@ -62,8 +53,8 @@ function Dashboard() {
             </div>
             <div class="">
               <div class="relative cursor-pointer dark:text-white">
-                <span class="absolute top-0 left-0 w-full h-full mt-1 ml-1 bg-green-500 rounded-lg dark:bg-gray-200"></span>
-                <div class="relative p-6 bg-white dark:bg-gray-800 border-2 border-green-500 dark:border-gray-300 rounded-lg hover:scale-105 transition duration-500">
+                <span class="absolute top-0 left-0 w-full h-full mt-1 ml-1 bg-green-300 rounded-lg dark:bg-gray-200"></span>
+                <div class="relative p-6 bg-white dark:bg-gray-800 border-2 border-green-300 dark:border-gray-300 rounded-lg hover:scale-105 transition duration-500">
                   <div class="flex items-center">
                     <span class="text-xl">
                       <FontAwesomeIcon icon={faUsers} />
@@ -85,14 +76,14 @@ function Dashboard() {
           {/* Tabel Absensi */}
           <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             <div className="flex justify-between">
-              <h6 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
+              <h6 className="mb-2 text-xl font-bold text-black dark:text-white ">
                 Manage Class
               </h6>
             </div>
             <hr />
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5 ">
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead className="text-center text-xs text-white uppercase bg-green-500 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th scope="col" className="px-6 py-3">
                       No
@@ -153,7 +144,7 @@ function Dashboard() {
             <hr />
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead className="text-center text-xs text-white uppercase bg-green-500 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th scope="col" className="px-6 py-3">
                       No

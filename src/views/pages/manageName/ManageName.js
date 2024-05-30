@@ -18,7 +18,7 @@ function ManageName() {
           <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-24">
             <div className="flex justify-between">
               <h6 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
-                Manage Name List
+                Kelola Daftar Nama
               </h6>
               <div className="flex gap-3 mb-5">
                 <button className="rounded-xl shadow-xl py-3 px-4 bg-gray-100">
@@ -47,25 +47,25 @@ function ManageName() {
                       No
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Student ID
+                      ID Siswa
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Name
+                      Nama
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Gender
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Department
+                      Jurusan
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Class
+                      Kelas
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Password
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Action
+                      Aksi
                     </th>
                   </tr>
                 </thead>
@@ -99,9 +99,9 @@ function ManageName() {
 
                     <td className="px-6 py-4">997764</td>
                     <td className="px-6 py-4">Alex</td>
-                    <td className="px-6 py-4">Female</td>
-                    <td className="px-6 py-4">Computer</td>
-                    <td className="px-6 py-4">One</td>
+                    <td className="px-6 py-4">Laki-Laki</td>
+                    <td className="px-6 py-4">Komputer</td>
+                    <td className="px-6 py-4">01</td>
                     <td className="px-6 py-4">********</td>
                     <td className="px-6 py-4 flex items-center gap-5 justify-center">
                       <Link
