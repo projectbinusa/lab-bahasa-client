@@ -146,7 +146,7 @@ function ScreenBroadcast() {
   return (
     <div className="all">
       <Navbar />
-      <div className="camerans">
+      <div className="camerans pt-20 sm:pt-16">
         <div className="camera-container" ref={cameraContainerRef}> 
           <div
             className="video-containers"
