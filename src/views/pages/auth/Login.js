@@ -1,8 +1,55 @@
+import axios from "axios";
 import React, { useState } from "react";
-import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import ikon dari react-icons
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { API_DUMMY } from "../../../utils/api";
+import Swal from "sweetalert2";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false); // State untuk mengontrol apakah password ditampilkan atau tidak
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [show, setShow] = useState(false);
+  const history = useHistory()
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const data = {
+      email: email,
+      password: password,
+    };
+    try {
+      const response = await axios.post(`${API_DUMMY}/api/user/login`, data);
+
+      if (response.status === 200) {
+        localStorage.setItem("id", response.data.data.id);
+        localStorage.setItem("token", response.data.data.token);
+        localStorage.setItem("role", response.data.data.role);
+        localStorage.setItem("name", response.data.data.name);
+        setShow(false);
+        Swal.fire({
+          icon: "success",
+          title: "Berhasil Login",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        history.push("/dashboard");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      }
+    } catch (error) {
+      console.error(error);
+      setShow(false);
+      Swal.fire({
+        icon: "error",
+        title: "Terjadi kesalahan saat login. Coba lagi nanti.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
 
   return (
     <body class="font-mono ">
@@ -24,7 +71,7 @@ function Login() {
             {/* Col */}
             <div class="w-full lg:w-9/12 bg-white p-8 rounded-lg lg:rounded-l-none shadow-lg shadow-slate-400">
               <h3 class="pt-4 text-2xl text-center">Login!</h3>
-              <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
+              <form onSubmit={handleLogin} class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
                 <div class="mb-4 md:mr-2 md:mb-0">
                   <label
                     class="block mb-2 text-sm font-bold text-gray-700"
@@ -37,6 +84,9 @@ function Login() {
                     id="email"
                     type="email"
                     placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                 </div>
                 <div class="mb-4 md:mr-2 md:mb-0 relative">
@@ -51,8 +101,11 @@ function Login() {
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="******************"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
                   />
-                  <span 
+                  <span
                     class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer mt-5"
                     onClick={() => setShowPassword(!showPassword)} // Mengubah state showPassword ketika ikon diklik
                   >
@@ -62,7 +115,7 @@ function Login() {
                 <div class="mb-6 text-center">
                   <button
                     class="w-full px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700 focus:outline-none focus:shadow-outline"
-                    type="button"
+                    type="submit"
                   >
                     Masuk akun
                   </button>

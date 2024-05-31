@@ -1,0 +1,1 @@
+export const API_DUMMY = "http://localhost:9701";

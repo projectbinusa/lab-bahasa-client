@@ -1,11 +1,62 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../../component/Navbar1";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import axios from "axios";
+import { API_DUMMY } from "../../../utils/api";
+import Swal from "sweetalert2";
+
+const authConfig = {
+  headers: {
+    "auth-event": `jwt ${localStorage.getItem("token")}`,
+  },
+};
 
 function ManageClass() {
+  const [list, setList] = useState([]);
+  const [is_active, setIs_active] = useState(1);
+  const [show, setShow] = useState(false);
+
+  const getAllDAta = async () => {
+    try {
+      const response = await axios.get(
+        `${API_DUMMY}/api/instructur/class`,
+        authConfig
+      );
+      setList(response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const Put = async (id) => {
+    // e.preventDefault();
+    console.log(id);
+    try {
+      await axios.put(
+        `${API_DUMMY}/api/instructur/class_active/${id}`,
+        is_active,
+        authConfig
+      );
+      setShow(false);
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil Mengaktifkan Kelas",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      getAllDAta();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllDAta();
+  }, []);
+
   return (
     <>
       <div className="flex flex-col h-screen">
@@ -18,8 +69,7 @@ function ManageClass() {
               </h6>
               <Link
                 to="/add-class"
-                className="rounded-xl shadow-xl py-3 px-4 bg-gray-100 mb-5"
-              >
+                className="rounded-xl shadow-xl py-3 px-4 bg-gray-100 mb-5">
                 <FontAwesomeIcon
                   icon={faPlus}
                   className="text-xl text-green-400"
@@ -35,7 +85,13 @@ function ManageClass() {
                       No
                     </th>
                     <th scope="col" className="px-6 py-3">
+                      Gambar
+                    </th>
+                    <th scope="col" className="px-6 py-3">
                       Nama Kelas
+                    </th>
+                    <th scope="col" className="px-6 py-3">
+                      Deskripsi
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Aktif
@@ -66,39 +122,57 @@ function ManageClass() {
                       <td className="px-6 py-4">{absen.kehadiran}</td>
                     </tr>
                   ))} */}
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <th
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      1
-                    </th>
-                    <td className="px-6 py-4">Kelas 01</td>
-                    <td className="px-6 py-4">Ya</td>
-                    <td className="px-6 py-4 flex items-center gap-5 justify-center">
-                      <button className="py-3 px-4 bg-green-500 rounded-lg text-white ">
-                        <FontAwesomeIcon className="text-lg" icon={faCheck} />
-                      </button>
-                      {/* <button className="py-3 px-4 bg-blue-500 rounded-lg text-white ">
+                  {list.map((data, index) => {
+                    return (
+                      <tr
+                        key={index}
+                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <th
+                          scope="row"
+                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                          {index + 1}
+                        </th>
+                        <td className="px-6 py-4">
+                          <img src={data.file} alt="" />
+                        </td>
+                        <td className="px-6 py-4">{data.name}</td>
+                        <td className="px-6 py-4">{data.description}</td>
+                        <td className="px-6 py-4">
+                          {data.is_active ? "Aktif" : "Tidak Aktif"}
+                        </td>
+                        <td className="px-6 py-4 flex items-center gap-5 justify-center">
+                          <button className="py-3 px-4 bg-green-500 rounded-lg text-white ">
+                            <FontAwesomeIcon
+                              className="text-lg"
+                              icon={faCheck}
+                              type="button"
+                              onClick={() => Put(data.id)}
+                            />
+                          </button>
+                          {/* <button className="py-3 px-4 bg-blue-500 rounded-lg text-white ">
                         <FontAwesomeIcon
                           className="text-lg"
                           icon={faPenToSquare}
                         />
                       </button> */}
-                      <Link
-                        to="/update-class"
-                        className="py-3 px-4 bg-blue-500 rounded-lg text-white "
-                      >
-                        <FontAwesomeIcon
-                          className="text-lg"
-                          icon={faPenToSquare}
-                        />
-                      </Link>
-                      <button className="py-3 px-4 bg-red-500 rounded-lg text-white ">
-                        <FontAwesomeIcon className="text-lg" icon={faTrash} />
-                      </button>
-                    </td>
-                  </tr>
+                          <Link
+                            to="/update-class"
+                            className="py-3 px-4 bg-blue-500 rounded-lg text-white ">
+                            <FontAwesomeIcon
+                              className="text-lg"
+                              icon={faPenToSquare}
+                            />
+                          </Link>
+                          <button className="py-3 px-4 bg-red-500 rounded-lg text-white ">
+                            <FontAwesomeIcon
+                              className="text-lg"
+                              icon={faTrash}
+                            />
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

@@ -1,9 +1,72 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import ikon dari react-icons
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import Swal from "sweetalert2";
+import { API_DUMMY } from "../../../utils/api";
 
 function Register() {
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("instructur");
+  const [show, setShow] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State untuk mengontrol apakah password ditampilkan atau tidak
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State untuk mengontrol apakah konfirmasi password ditampilkan atau tidak
+  const history = useHistory()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (password != confirmPassword) {
+      Swal.fire({
+        icon: "error",
+        title: "Password dan Konfirmasi Password tidak cocok",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${API_DUMMY}/api/user/signup`, {
+        name,
+        email,
+        password,
+        role,
+      });
+
+      if (response.data === "Username already taken") {
+        Swal.fire({
+          icon: "error",
+          title: "Username sudah terdaftar. Pilih username lain.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      } else {
+        setShow(false);
+        Swal.fire({
+          icon: "success",
+          title: "Berhasil Register",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        history.push("/");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
+      setShow(false);
+      Swal.fire({
+        icon: "error",
+        title: "Terjadi kesalahan saat mendaftar. Coba lagi nanti.",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    }
+  };
 
   return (
     <body class="font-mono ">
@@ -25,7 +88,7 @@ function Register() {
             <div class="w-full lg:w-9/12 bg-white p-5 rounded-lg lg:rounded-l-none shadow-lg shadow-slate-400">
               {/* <h3 class="pt-4 text-2xl text-center">Create an Account!</h3> */}
               <h3 class="pt-4 text-2xl text-center">Buat Akun!</h3>
-              <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
+              <form onSubmit={handleSubmit} class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
                 <div class="mb-4 md:flex md:justify-between">
                   <div class="mb-4 md:mr-2 md:mb-0">
                     <label
@@ -39,6 +102,9 @@ function Register() {
                       id="email"
                       type="email"
                       placeholder="Email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                   <div class="md:ml-2">
@@ -53,6 +119,9 @@ function Register() {
                       id="username"
                       type="text"
                       placeholder="Username"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                     />
                   </div>
                 </div>
@@ -69,6 +138,8 @@ function Register() {
                       id="password"
                       type={showPassword ? "text" : "password"}
                       placeholder="***************"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
                     />
                     <span
                       class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer mb-5"
@@ -78,7 +149,7 @@ function Register() {
                       {/* Menampilkan ikon view atau hide password sesuai dengan state showPassword */}
                     </span>
                     <p class="text-xs italic text-red-500">
-                    Kata sandi 8 digit huruf 
+                    Kata sandi 8 digit huruf
                     </p>
                     <p class="text-xs italic text-red-500">besar & kecil</p>
                   </div>
@@ -94,6 +165,9 @@ function Register() {
                       id="c_password"
                       type={showConfirmPassword ? "text" : "password"}
                       placeholder="**************"
+                      required
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                     <span
                       class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer mb-5"
@@ -109,7 +183,7 @@ function Register() {
                 <div class="mb-6 text-center">
                   <button
                     class="w-full px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700 focus:outline-none focus:shadow-outline"
-                    type="button"
+                    type="submit"
                   >
                     Daftar Akun
                   </button>
