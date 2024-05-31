@@ -1,4 +1,5 @@
 import { faMedapps } from "@fortawesome/free-brands-svg-icons";
+import Logo from "../component/Asset/programmer.png";
 import {
   faCamera,
   faCaretDown,
@@ -54,29 +55,29 @@ function Navbar() {
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-start rtl:justify-end">
             <a href="" className="flex ms-2 md:me-24">
-              <img src="" className="h-11 me-3 text-white" alt="" />
+              <img src={Logo} className="h-11 me-3 text-white" alt="" />
             </a>
           </div>
           <div className="link flex items-center gap-4 text-white">
             <Link to="/dashboard" className="text-sm font-semibold">
               <FontAwesomeIcon icon={faChartLine} className="px-1" />
-              Dashboard
+              Dasbor
             </Link>
             <Link to="/screen-broadcast" className="text-sm font-semibold">
               <FontAwesomeIcon icon={faDisplay} className="px-1" />
-              Screen Broadcast
+              Siaran Layar
             </Link>
             <Link to="/camera" className="text-sm font-semibold">
               <FontAwesomeIcon icon={faCamera} className="px-1" />
-              Camera
+              Kamera
             </Link>
             <Link to="/whiteboard" className="text-sm font-semibold">
               <FontAwesomeIcon icon={faChalkboard} className="px-1" />
-              Interactive Whiteboard
+              Papan tulis interaktif
             </Link>
             <Link to="/interaction-student" className="text-sm font-semibold">
               <FontAwesomeIcon icon={faChalkboardUser} className="px-1" />
-              Interaction Student
+              Siswa Interaksi
             </Link>
             <div className="relative">
               <button
@@ -84,7 +85,7 @@ function Navbar() {
                 className="text-sm font-semibold flex items-center focus:outline-none"
               >
                 <FontAwesomeIcon icon={faComments} className="px-1" />
-                Chat <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
+                Obrolan <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
               </button>
               {chatDropdownOpen && (
                 <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">
@@ -92,22 +93,20 @@ function Navbar() {
                     to="/group-chat"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    <FontAwesomeIcon icon={faUsers} className="mr-2" /> Group
-                    Chat
+                    <FontAwesomeIcon icon={faUsers} className="mr-2" /> Obrolan Grup
                   </Link>
                   <Link
                     to="/topic-chat"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    <FontAwesomeIcon icon={faComments} className="mr-2" /> Topic
-                    Chat
+                    <FontAwesomeIcon icon={faComments} className="mr-2" /> Topik Obrolan
                   </Link>
                   <Link
                     to="/face-to-face-chat"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     <FontAwesomeIcon icon={faUserFriends} className="mr-2" />{" "}
-                    Face to Face Chat
+                    Obrolan Tatap Muka
                   </Link>
                 </div>
               )}
@@ -118,7 +117,7 @@ function Navbar() {
                 className="text-sm font-semibold flex items-center focus:outline-none"
               >
                 <FontAwesomeIcon icon={faMedapps} className="px-1" />
-                Response Competition
+                Kompetisi Respon
                 <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
               </button>
               {respDropdownOpen && (
@@ -128,14 +127,14 @@ function Navbar() {
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     <FontAwesomeIcon icon={faMedal} className="mr-1" />
-                    Response Competition
+                    Kompetisi Respon{" "}
                   </Link>
                   <Link
                     to="/questions"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     <FontAwesomeIcon icon={faQuestion} className="mr-2" />
-                    Questions
+                    Pertanyaan
                   </Link>
                 </div>
               )}
@@ -146,7 +145,7 @@ function Navbar() {
                 className="text-sm font-semibold flex items-center focus:outline-none"
               >
                 <FontAwesomeIcon icon={faListCheck} className="px-1" />
-                Manage Class
+                Kelola Kelas
                 <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
               </button>
               {manageDropdownOpen && (
@@ -155,29 +154,29 @@ function Navbar() {
                     to="/manage-class"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    <FontAwesomeIcon icon={faUsers} className="mr-2" /> Manage
-                    Class
+                    <FontAwesomeIcon icon={faUsers} className="mr-2" /> Kelola
+                    Kelas
                   </Link>
                   <Link
                     to="/manage-name"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    <FontAwesomeIcon icon={faListOl} className="mr-2" /> Manage
-                    Name List
+                    <FontAwesomeIcon icon={faListOl} className="mr-2" />
+                    Kelola Daftar Nama
                   </Link>
                   <Link
                     to="/login-siswa"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     <FontAwesomeIcon icon={faUser} className="mr-2" />
-                    Sign In Student
+                    Masuk Siswa
                   </Link>
                   <Link
                     to="/signed-information"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     <FontAwesomeIcon icon={faCircleInfo} className="mr-2" />
-                    Signed Information
+                    Informasi yang Ditandatangani
                   </Link>
                 </div>
               )}
@@ -200,14 +199,14 @@ function Navbar() {
                   to="/profile"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                 >
-                  <FontAwesomeIcon icon={faUser} className="mr-2" /> My Profile
+                  <FontAwesomeIcon icon={faUser} className="mr-2" /> Profil saya
                 </Link>
                 <Link
                   to="/logout"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                 >
                   <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />{" "}
-                  Logout
+                  Keluar
                 </Link>
               </div>
             )}

@@ -64,7 +64,7 @@ function Login() {
                     class="w-full px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700 focus:outline-none focus:shadow-outline"
                     type="button"
                   >
-                    Login Account
+                    Masuk akun
                   </button>
                 </div>
                 <hr class="mb-6 border-t" />
@@ -73,7 +73,7 @@ function Login() {
                     class="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
                     href="/forgotpass"
                   >
-                    Forgot Password?
+                   Tidak ingat kata sandi?
                   </a>
                 </div>
               </form>

@@ -100,7 +100,7 @@ const Whiteboard = () => {
         }}
       >
         <Typography variant="h4" gutterBottom sx={{ py: 1, px: 2 }}>
-          Interactive Whiteboard
+        Papan tulis interaktif
         </Typography>
         <Divider />
         <Grid container spacing={2} sx={{ flexGrow: 1 }}>
@@ -117,7 +117,7 @@ const Whiteboard = () => {
           <Grid item xs={12} md={3}>
             <Stack spacing={2} sx={{ ml: 1, mr: 2, mt: 2 }}>
               <Box>
-                <Typography variant="h6">Tools</Typography>
+                <Typography variant="h6">Peralatan</Typography>
                 <Tooltip title="Brush">
                   <IconButton
                     color={tool === "brush" ? "primary" : "default"}
@@ -136,9 +136,9 @@ const Whiteboard = () => {
                 </Tooltip>
               </Box>
               <Box>
-                <Typography variant="h6">Settings</Typography>
+                <Typography variant="h6">Pengaturan</Typography>
                 <Typography sx={{ mt: 1 }} gutterBottom>
-                  Stroke Width
+                Lebar Goresan
                 </Typography>
                 <Slider
                   value={width}
@@ -149,7 +149,7 @@ const Whiteboard = () => {
                   sx={{ mx: 0 }}
                 />
                 <TextField
-                  label="Color"
+                  label="Warna"
                   type="color"
                   value={color}
                   onChange={(e) => setColor(e.target.value)}
@@ -159,7 +159,7 @@ const Whiteboard = () => {
               </Box>
               <Divider />
               <Box>
-                <Typography variant="h6">Controls</Typography>
+                <Typography variant="h6">Kontrol</Typography>
                 <Tooltip title="Undo">
                   <IconButton onClick={handleUndo}>
                     <Undo />
@@ -188,7 +188,7 @@ const Whiteboard = () => {
               </Box>
               <Divider />
               <Box>
-                <Typography variant="h6">Board History</Typography>
+                <Typography variant="h6">Sejarah Dewan</Typography>
                 <Box sx={{ maxHeight: "75px", overflowY: "auto" }}>
                   <Stack
                     spacing={0}
@@ -208,7 +208,7 @@ const Whiteboard = () => {
                         onClick={() => handleClickOpen(board)}
                         sx={{ flexBasis: "135px", maxWidth: "50%" }}
                       >
-                        Board {board.id}
+                        Papan {board.id}
                         <IconButton
                           size="small"
                           onClick={(e) => {
@@ -229,7 +229,7 @@ const Whiteboard = () => {
         </Grid>
       </Box>
       <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
-        <DialogTitle>Board {selectedBoard?.id}</DialogTitle>
+        <DialogTitle>Papan {selectedBoard?.id}</DialogTitle>
         <DialogContent>
           {selectedBoard && (
             <img
@@ -244,10 +244,10 @@ const Whiteboard = () => {
             onClick={() => handleLoadBoard(selectedBoard)}
             color="primary"
           >
-            Load into Whiteboard
+            Muat ke Papan Tulis
           </Button>
           <Button onClick={handleClose} color="primary">
-            Close
+          Menutup
           </Button>
         </DialogActions>
       </Dialog>

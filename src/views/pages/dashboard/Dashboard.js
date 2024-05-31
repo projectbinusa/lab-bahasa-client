@@ -25,7 +25,7 @@ function Dashboard() {
                     </h3>
                   </div>
                   <p class="text-gray-600 dark:text-gray-300">
-                    This is the short description of your feature.
+                    1
                   </p>
                 </div>
               </div>
@@ -46,7 +46,7 @@ function Dashboard() {
                     </h3>
                   </div>
                   <p class="text-gray-600 dark:text-gray-300">
-                    This is the short description of your feature.
+                    1
                   </p>
                 </div>
               </div>
@@ -64,7 +64,7 @@ function Dashboard() {
                     </h3>
                   </div>
                   <p class="text-gray-600 dark:text-gray-300">
-                    This is the short description of your feature.
+                   10
                   </p>
                 </div>
               </div>
@@ -77,7 +77,7 @@ function Dashboard() {
           <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             <div className="flex justify-between">
               <h6 className="mb-2 text-xl font-bold text-black dark:text-white ">
-                Manage Class
+              Kelola Kelas
               </h6>
             </div>
             <hr />
@@ -89,10 +89,10 @@ function Dashboard() {
                       No
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Class Name
+                      Nama Kelas
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Active
+                     Aktif
                     </th>
                   </tr>
                 </thead>
@@ -124,8 +124,8 @@ function Dashboard() {
                     >
                       1
                     </th>
-                    <td className="px-6 py-4">Class 1</td>
-                    <td className="px-6 py-4">Yes</td>
+                    <td className="px-6 py-4">Kelas 1</td>
+                    <td className="px-6 py-4">Ya</td>
                   </tr>
                 </tbody>
               </table>
@@ -138,7 +138,7 @@ function Dashboard() {
           <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             <div className="flex justify-between">
               <h6 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
-                Manage Name List
+              Kelola Daftar Nama
               </h6>
             </div>
             <hr />
@@ -150,19 +150,19 @@ function Dashboard() {
                       No
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Student ID
+                    Id Siswa
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Name
+                      Nama
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Gender
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Department
+                      Jurusan
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Class
+                      Kelas
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Password
@@ -200,8 +200,8 @@ function Dashboard() {
                     <td className="px-6 py-4">997764</td>
                     <td className="px-6 py-4">Alex</td>
                     <td className="px-6 py-4">Female</td>
-                    <td className="px-6 py-4">Computer</td>
-                    <td className="px-6 py-4">One</td>
+                    <td className="px-6 py-4">Komputer</td>
+                    <td className="px-6 py-4">01</td>
                     <td className="px-6 py-4">********</td>
                   </tr>
                 </tbody>
