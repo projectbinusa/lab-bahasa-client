@@ -19,6 +19,7 @@ import ChatApp from "./views/pages/Chat/ChatApp";
 import TopikChat from "./views/pages/Chat/TopikChat";
 import UpdateName from "./views/pages/manageName/UpdateName";
 import InteraksiStudent from "./views/pages/InteractiveWhiteboard/InteraksiStudent";
+import VerifyCode from "./views/pages/auth/VerifyCode";
 
 // END ADMIN MENU REGULASI
 
@@ -35,6 +36,7 @@ function App() {
           <Route path="/camera" component={Camera} exact />
           <Route path="/whiteboard" component={Whiteboard} exact />
           <Route path="/manage-class" component={ManageClass} exact />
+          <Route path="/verify-code" component={VerifyCode} exact />
           <Route path="/add-class" component={AddClass} exact />
           <Route path="/update-class" component={UpdateClass} exact />
           <Route path="/manage-name" component={ManageName} exact />
