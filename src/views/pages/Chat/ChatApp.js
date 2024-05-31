@@ -117,14 +117,14 @@ function ChatApp() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Type your message..."
+              placeholder="Ketik pesan anda..."
             />
             <input type="file" onChange={handleFileChange} />
             <button
               class="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-full"
               onClick={sendMessage}
             >
-              Send
+              Kirim
             </button>
           </div>
         </div>
