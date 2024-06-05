@@ -5,9 +5,15 @@ import {
   FaMicrophoneSlash,
   FaDesktop,
   FaVideoSlash,
+  FaHandPaper,
+  FaHandPointer,
 } from "react-icons/fa";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Navbar from "../../../component/Navbar1";
 import "./Screen.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHandPaper } from '@fortawesome/free-regular-svg-icons';
 
 function ScreenBroadcast() {
   const refCameraVideo = useRef(null);
@@ -20,6 +26,7 @@ function ScreenBroadcast() {
   const [cameraStream, setCameraStream] = useState(null);
   const [screenStream, setScreenStream] = useState(null);
   const [cameraPosition, setCameraPosition] = useState({ top: 0, left: 0 });
+  const [isHandRaised, setIsHandRaised] = useState(false);
 
   const startStreaming = async () => {
     try {
@@ -143,6 +150,20 @@ function ScreenBroadcast() {
     event.preventDefault();
   };
 
+  const toggleHandRaise = () => {
+    if (isHandRaised) {
+      toast.dismiss();
+    } else {
+      toast("Mengangkat Tangan", {
+        type: "success",
+        autoClose: false,
+        closeButton: false,
+        icon: <FontAwesomeIcon icon={faHandPaper} style={{ width: "25px", height: "30px" }} />,
+      });
+    }
+    setIsHandRaised(!isHandRaised);
+  };
+  
   return (
     <div className="all">
       <Navbar />
@@ -166,6 +187,7 @@ function ScreenBroadcast() {
             </div>
           </div>
           <div className="camera-controls">
+
             {isCameraActive ? (
               <button
                 onClick={stopStreaming}
@@ -181,6 +203,7 @@ function ScreenBroadcast() {
                 <FaVideo />
               </button>
             )}
+
             {isAudioActive ? (
               <button
                 onClick={stopAudio}
@@ -196,6 +219,7 @@ function ScreenBroadcast() {
                 <FaMicrophone />
               </button>
             )}
+
             {isScreenSharing ? (
               <button
                 onClick={stopScreenSharing}
@@ -211,9 +235,27 @@ function ScreenBroadcast() {
                 <FaDesktop />
               </button>
             )}
+
+            {isHandRaised ? (
+              <button
+                onClick={toggleHandRaise}
+                className="camera-control-button stop-button"
+              >
+                <FaHandPointer />
+              </button>
+            ) : (
+              <button
+                onClick={toggleHandRaise}
+                className="camera-control-button start-button"
+              >
+                <FaHandPaper />
+              </button>
+            )}
+
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }

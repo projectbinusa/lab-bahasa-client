@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+// Mengganti icon di dalam button dengan link
+import React, { useState, useRef, useEffect } from "react";
 import { ReactSketchCanvas } from "react-sketch-canvas";
 import {
   Button,
@@ -15,10 +16,30 @@ import {
   DialogContent,
   DialogActions,
   DialogTitle,
+  Checkbox,
+  ListItem,
+  ListItemText,
 } from "@mui/material";
-import { Brush, Delete, Undo, Redo, AddCircleOutline, Share } from "@mui/icons-material";
+import {
+  Brush,
+  Delete,
+  Undo,
+  Redo,
+  AddCircleOutline,
+  Share,
+} from "@mui/icons-material";
 import Navbar from "../../../component/Navbar1";
 
+const users = [
+  { id: 1, name: "User 1" },
+  { id: 2, name: "User 2" },
+  { id: 3, name: "User 3" },
+  { id: 4, name: "User 4" },
+  { id: 5, name: "User 5" },
+  { id: 6, name: "User 6" },
+];
+
+const green500 = "#4caf50";
 const Whiteboard = () => {
   const [color, setColor] = useState("#000000");
   const [width, setWidth] = useState(5);
@@ -26,11 +47,102 @@ const Whiteboard = () => {
   const [history, setHistory] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedBoard, setSelectedBoard] = useState(null);
+  const [selectedBoards, setSelectedBoards] = useState([]);
+  const [openShareDialog, setOpenShareDialog] = useState(false);
+  const [selectedUsers, setSelectedUsers] = useState([]);
+  const [modalSize, setModalSize] = useState({ width: "20%", height: "50%" });
+  const [isResponsive, setIsResponsive] = useState(false);
+  const [modalsSize, setModalsSize] = useState({
+    width: "100%",
+    height: "65%",
+  });
 
   const canvasRef = useRef();
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsResponsive(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isResponsive) {
+      setModalSize({ width: "90%", height: "60%" });
+    } else {
+      setModalSize({ width: "20%", height: "50%" });
+    }
+  }, [isResponsive]);
+
   const handleShare = () => {
-    console.log("Sharing the board");
+    setOpenShareDialog(true);
+  };
+
+  const handleSelectAll = (event) => {
+    if (event.target.checked) {
+      const allUserIds = users.map((user) => user.id);
+      setSelectedUsers(allUserIds);
+    } else {
+      setSelectedUsers([]);
+    }
+  };
+
+  const handleCheckboxChange = (boardId) => {
+    const isSelected = selectedBoards.some((board) => board.id === boardId);
+    if (isSelected) {
+      setSelectedBoards(selectedBoards.filter((board) => board.id !== boardId));
+    } else {
+      const boardToAdd = history.find((board) => board.id === boardId);
+      setSelectedBoards([...selectedBoards, boardToAdd]);
+    }
+  };
+
+  const handleUserToggle = (userId) => {
+    const isSelected = selectedUsers.includes(userId);
+    if (isSelected) {
+      setSelectedUsers(selectedUsers.filter((id) => id !== userId));
+    } else {
+      setSelectedUsers([...selectedUsers, userId]);
+    }
+  };
+
+  const handleCloseShareDialog = () => {
+    setOpenShareDialog(false);
+  };
+
+  const handleShareImages = () => {
+    const selectedImages = history.filter((board) =>
+      selectedBoards.some((selected) => selected.id === board.id)
+    );
+
+    const imagesToShare = selectedImages.map((board) => board.image);
+
+    const imageLinks = imagesToShare.map((image) => {
+      const imageLink = document.createElement("a");
+      imageLink.href = image;
+      imageLink.target = "_blank";
+      imageLink.rel = "noopener noreferrer";
+      imageLink.textContent = image;
+      return imageLink;
+    });
+
+    selectedUsers.forEach((userId) => {
+      const user = users.find((user) => user.id === userId);
+      if (user) {
+        console.log(`Mengirim link gambar kepada ${user.name}:`);
+        imageLinks.forEach((link) => {
+          console.log(link.href);
+        });
+      }
+    });
+
+    setOpenShareDialog(false);
   };
 
   const handleClearBoard = () => {
@@ -45,12 +157,19 @@ const Whiteboard = () => {
     canvasRef.current.redo();
   };
 
+  // Fungsi untuk menambah papan tulis baru
   const handleNewBoard = async () => {
     const paths = await canvasRef.current.exportPaths();
-    const image = await canvasRef.current.exportImage("png");
-    const newBoard = { id: history.length + 1, paths: paths, image: image };
-    setHistory([...history, newBoard]);
-    handleClearBoard();
+    if (paths.length > 0) {
+      const image = await canvasRef.current.exportImage("png");
+      const newBoard = { paths: paths, image: image };
+      setHistory([...history, newBoard]);
+      handleClearBoard();
+    } else {
+      alert(
+        "Papan tulis kosong. Tambahkan sesuatu sebelum membuat papan tulis baru."
+      );
+    }
   };
 
   const handleClickOpen = (board) => {
@@ -67,12 +186,19 @@ const Whiteboard = () => {
     setOpen(false);
     if (board) {
       await canvasRef.current.loadPaths(board.paths);
+      setHistory(history.filter((item) => item.id !== board.id));
+      setSelectedBoard(null);
     }
   };
 
-  const handleDeleteBoard = (boardId) => {
-    setHistory(history.filter((board) => board.id !== boardId));
-    setSelectedBoard(null);
+  const handleDeleteBoard = (index) => {
+    const isConfirmed = window.confirm(
+      `Apakah Anda yakin ingin menghapus papan tulis ${index + 1}?`
+    );
+    if (isConfirmed) {
+      setHistory(history.filter((board, idx) => idx !== index));
+      setSelectedBoard(null);
+    }
   };
 
   const getToolProps = () => {
@@ -100,7 +226,7 @@ const Whiteboard = () => {
         }}
       >
         <Typography variant="h4" gutterBottom sx={{ py: 1, px: 2 }}>
-        Papan tulis interaktif
+          Papan tulis interaktif
         </Typography>
         <Divider />
         <Grid container spacing={2} sx={{ flexGrow: 1 }}>
@@ -109,16 +235,22 @@ const Whiteboard = () => {
               ref={canvasRef}
               strokeColor={getToolProps().strokeColor}
               strokeWidth={width}
-              height="77vh"
+              height="76vh"
               tool={getToolProps().tool}
-              style={{ backgroundColor: "white" }}
+              style={{
+                backgroundColor: "white",
+                borderRadius: "20px",
+                overflow: "hidden",
+                marginLeft: "10px",
+                marginTop: "10px",
+              }}
             />
           </Grid>
           <Grid item xs={12} md={3}>
             <Stack spacing={2} sx={{ ml: 1, mr: 2, mt: 2 }}>
               <Box>
                 <Typography variant="h6">Peralatan</Typography>
-                <Tooltip title="Brush">
+                <Tooltip title="Kuas">
                   <IconButton
                     color={tool === "brush" ? "primary" : "default"}
                     onClick={() => setTool("brush")}
@@ -126,7 +258,7 @@ const Whiteboard = () => {
                     <Brush />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Eraser">
+                <Tooltip title="Penghapus">
                   <IconButton
                     color={tool === "eraser" ? "primary" : "default"}
                     onClick={() => setTool("eraser")}
@@ -138,7 +270,7 @@ const Whiteboard = () => {
               <Box>
                 <Typography variant="h6">Pengaturan</Typography>
                 <Typography sx={{ mt: 1 }} gutterBottom>
-                Lebar Goresan
+                  Lebar Goresan
                 </Typography>
                 <Slider
                   value={width}
@@ -160,30 +292,35 @@ const Whiteboard = () => {
               <Divider />
               <Box>
                 <Typography variant="h6">Kontrol</Typography>
-                <Tooltip title="Undo">
+                <Tooltip title="Batalkan">
                   <IconButton onClick={handleUndo}>
                     <Undo />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Redo">
+                <Tooltip title="Ulangi">
                   <IconButton onClick={handleRedo}>
                     <Redo />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Clear Board">
+                <Tooltip title="Bersihkan Papan Tulis">
                   <IconButton onClick={handleClearBoard}>
                     <Delete />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="New Board">
+                <Tooltip title="Papan Tulis Baru">
                   <IconButton onClick={handleNewBoard}>
                     <AddCircleOutline />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Share">
-                  <IconButton onClick={handleShare}>
-                    <Share  />
-                  </IconButton>
+                <Tooltip title="Bagikan">
+                  <span>
+                    <IconButton
+                      onClick={handleShare}
+                      disabled={selectedBoards.length === 0}
+                    >
+                      <Share />
+                    </IconButton>
+                  </span>
                 </Tooltip>
               </Box>
               <Divider />
@@ -196,30 +333,65 @@ const Whiteboard = () => {
                     flexWrap="wrap"
                     sx={{
                       "& > *": {
-                        flexBasis: "50%",
-                        maxWidth: "50%",
+                        flexBasis: "calc(50% - 8px)",
+                        margin: "4px",
                       },
                     }}
                   >
-                    {history.map((board) => (
-                      <Button
-                        key={board.id}
-                        variant="outlined"
-                        onClick={() => handleClickOpen(board)}
-                        sx={{ flexBasis: "135px", maxWidth: "50%" }}
+                    {history.map((board, index) => (
+                      <Box
+                        key={index}
+                        sx={{
+                          position: "relative",
+                          borderRadius: "10px",
+                          border: "1px solid #ccc",
+                          overflow: "hidden",
+                          width: "calc(50% - 8px)",
+                          margin: "4px",
+                        }}
                       >
-                        Papan {board.id}
-                        <IconButton
-                          size="small"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteBoard(board.id);
+                        <img
+                          src={board.image}
+                          alt={`Board ${index + 1}`}
+                          style={{
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            cursor: "pointer",
                           }}
-                          sx={{ marginLeft: "auto" }}
+                          onClick={() => handleClickOpen(board)}
+                        />
+                        <Checkbox
+                          checked={selectedBoards.some(
+                            (selected) => selected.id === board.id
+                          )}
+                          onChange={() => handleCheckboxChange(board.id)}
+                          color="default"
+                          size="small"
+                          sx={{
+                            position: "absolute",
+                            top: 0,
+                            left: 0,
+                            zIndex: 1,
+                            color: green500,
+                            "&.Mui-checked": {
+                              color: "green500",
+                            },
+                          }}
+                        />
+                        <IconButton
+                          onClick={() => handleDeleteBoard(index)}
+                          sx={{
+                            position: "absolute",
+                            top: 0,
+                            right: 0,
+                            zIndex: 1,
+                            color: green500,
+                          }}
                         >
-                          <Delete fontSize="small" />
+                          <Delete />
                         </IconButton>
-                      </Button>
+                      </Box>
                     ))}
                   </Stack>
                 </Box>
@@ -228,27 +400,86 @@ const Whiteboard = () => {
           </Grid>
         </Grid>
       </Box>
-      <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth>
-        <DialogTitle>Papan {selectedBoard?.id}</DialogTitle>
+
+      <Dialog
+        open={openShareDialog}
+        onClose={handleCloseShareDialog}
+        fullWidth
+        maxWidth="sm"
+        PaperProps={{
+          style: {
+            width: modalSize.width,
+            height: modalSize.height,
+          },
+        }}
+      >
+        <DialogTitle>Bagikan Papan</DialogTitle>
+        <DialogContent>
+          <Box>
+            <ListItem>
+              <Checkbox
+                checked={selectedUsers.length === users.length}
+                onChange={handleSelectAll}
+              />
+              <ListItemText primary="Pilih Semua" />
+            </ListItem>
+            {users.map((user) => (
+              <ListItem key={user.id}>
+                <Checkbox
+                  checked={selectedUsers.includes(user.id)}
+                  onChange={() => handleUserToggle(user.id)}
+                />
+                <ListItemText primary={user.name} />
+              </ListItem>
+            ))}
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseShareDialog}>Batal</Button>
+          <Button
+            onClick={handleShareImages}
+            color="primary"
+            disabled={selectedUsers.length === 0}
+          >
+            Bagikan
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        fullWidth
+        maxWidth="sm"
+        PaperProps={{
+          style: {
+            width: modalsSize.width,
+            height: modalsSize.height,
+          },
+        }}
+      >
+        <DialogTitle>
+          Papan Tulis {history.indexOf(selectedBoard) + 1} Tersimpan
+        </DialogTitle>
         <DialogContent>
           {selectedBoard && (
-            <img
-              src={selectedBoard.image}
-              alt={`Board ${selectedBoard.id}`}
-              style={{ width: "100%", height: "100%" }}
-            />
+            <Box>
+              <img
+                src={selectedBoard.image}
+                alt={`Papan ${selectedBoard.id}`}
+                style={{ width: "100%", height: "auto" }}
+              />
+            </Box>
           )}
         </DialogContent>
         <DialogActions>
           <Button
-            onClick={() => handleLoadBoard(selectedBoard)}
             color="primary"
+            onClick={() => handleLoadBoard(selectedBoard)}
           >
             Muat ke Papan Tulis
           </Button>
-          <Button onClick={handleClose} color="primary">
-          Menutup
-          </Button>
+          <Button onClick={handleClose}>Tutup</Button>
         </DialogActions>
       </Dialog>
     </div>
