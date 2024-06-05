@@ -21,11 +21,15 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import ChatApp from "../views/pages/Chat/ChatApp";
+
 function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [chatDropdownOpen, setChatDropdownOpen] = useState(false);
   const [respDropdownOpen, setRespDropdownOpen] = useState(false);
   const [manageDropdownOpen, setManageDropdownOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -43,10 +47,12 @@ function Navbar() {
     setManageDropdownOpen(!manageDropdownOpen);
   };
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  const handleModalToggle = () => {
+    setIsModalOpen(!isModalOpen);
   };
 
   return (
@@ -90,7 +96,8 @@ function Navbar() {
               {chatDropdownOpen && (
                 <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">
                   <Link
-                    to="/group-chat"
+                    to="#"
+                    onClick={handleModalToggle}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     <FontAwesomeIcon icon={faUsers} className="mr-2" /> Obrolan Grup
@@ -105,8 +112,7 @@ function Navbar() {
                     to="/face-to-face-chat"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    <FontAwesomeIcon icon={faUserFriends} className="mr-2" />{" "}
-                    Obrolan Tatap Muka
+                    <FontAwesomeIcon icon={faUserFriends} className="mr-2" /> Obrolan Tatap Muka
                   </Link>
                 </div>
               )}
@@ -205,16 +211,36 @@ function Navbar() {
                   to="/logout"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                 >
-                  <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />{" "}
-                  Keluar
+                  <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" /> Keluar
                 </Link>
               </div>
             )}
           </div>
         </div>
       </div>
+      {isModalOpen && <GroupChatModal handleModalToggle={handleModalToggle} />}
     </nav>
   );
 }
+
+function GroupChatModal({ handleModalToggle }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-[70%] h-[90%]">
+        <h2 className="text-xl font-semibold mb-4">Obrolan Grup</h2>
+        <div className="h-[80%] overflow-auto">
+          <ChatApp />
+        </div>
+        <button
+          onClick={handleModalToggle}
+          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Tutup
+        </button>
+      </div>
+    </div>
+  );
+}
+
 
 export default Navbar;
