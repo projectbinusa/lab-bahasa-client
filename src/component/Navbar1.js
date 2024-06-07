@@ -1,4 +1,5 @@
 import { faMedapps } from "@fortawesome/free-brands-svg-icons";
+import { ResizableBox } from "react-resizable";
 import Logo from "../component/Asset/programmer.png";
 import {
   faCamera,
@@ -22,6 +23,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ChatApp from "../views/pages/Chat/ChatApp";
+import "react-resizable/css/styles.css";
+import Draggable from "react-draggable";
 
 function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -224,23 +227,45 @@ function Navbar() {
 }
 
 function GroupChatModal({ handleModalToggle }) {
+  const [width, setWidth] = useState(0.7 * window.innerWidth);
+  const [height, setHeight] = useState(0.9 * window.innerHeight);
+
+  const handleResize = (event, { size }) => {
+    setWidth(size.width);
+    setHeight(size.height);
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-[70%] h-[90%]">
-        <h2 className="text-xl font-semibold mb-4">Obrolan Grup</h2>
-        <div className="h-[80%] overflow-auto">
-          <ChatApp />
+      <Draggable handle=".handle">
+        <div className="relative">
+          <ResizableBox
+            width={width}
+            height={height}
+            minConstraints={[300, 300]}
+            maxConstraints={[window.innerWidth, window.innerHeight]}
+            onResize={handleResize}
+            className="bg-white p-8 rounded-lg shadow-lg overflow-hidden"
+          >
+              <h2 className="text-xl font-semibold">Obrolan Grup</h2>
+            <div className="handle cursor-move p-2 bg-gray-200 rounded-t-lg">
+            </div>
+            <div className="h-[80%] overflow-auto">
+              <ChatApp />
+            </div>
+            <button
+              onClick={handleModalToggle}
+              className="mt-7 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Tutup
+            </button>
+          </ResizableBox>
         </div>
-        <button
-          onClick={handleModalToggle}
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Tutup
-        </button>
-      </div>
+      </Draggable>
     </div>
   );
 }
+
 
 
 export default Navbar;

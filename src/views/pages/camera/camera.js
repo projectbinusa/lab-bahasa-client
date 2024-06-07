@@ -152,6 +152,7 @@ function Camera() {
                 autoPlay
                 playsInline
                 className="w-full h-auto border border-gray-300 rounded-xl"
+                style={{ transform: "scaleX(-1)" }}
               />
             </div>
           ))}
