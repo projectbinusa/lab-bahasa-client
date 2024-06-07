@@ -25,6 +25,8 @@ import { Link } from "react-router-dom";
 import ChatApp from "../views/pages/Chat/ChatApp";
 import "react-resizable/css/styles.css";
 import Draggable from "react-draggable";
+import Questions from "../views/pages/response/Questions";
+import ResponseCompetition from "../views/pages/response/ResponseCompetition";
 
 function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -33,6 +35,8 @@ function Navbar() {
   const [manageDropdownOpen, setManageDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isModalQuestion, setIsModalQuestion] = useState(false);
+  const [isModalResponse, setIsModalResponse] = useState(false);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -56,6 +60,14 @@ function Navbar() {
 
   const handleModalToggle = () => {
     setIsModalOpen(!isModalOpen);
+  };
+
+  const toggleModalQuestion = () => {
+    setIsModalQuestion(!isModalQuestion);
+  };
+
+  const toggleModalResponse = () => {
+    setIsModalResponse(!isModalResponse);
   };
 
   return (
@@ -103,19 +115,22 @@ function Navbar() {
                     onClick={handleModalToggle}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    <FontAwesomeIcon icon={faUsers} className="mr-2" /> Obrolan Grup
+                    <FontAwesomeIcon icon={faUsers} className="mr-2" /> Obrolan
+                    Grup
                   </Link>
                   <Link
                     to="/topic-chat"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    <FontAwesomeIcon icon={faComments} className="mr-2" /> Topik Obrolan
+                    <FontAwesomeIcon icon={faComments} className="mr-2" /> Topik
+                    Obrolan
                   </Link>
                   <Link
                     to="/face-to-face-chat"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
-                    <FontAwesomeIcon icon={faUserFriends} className="mr-2" /> Obrolan Tatap Muka
+                    <FontAwesomeIcon icon={faUserFriends} className="mr-2" />{" "}
+                    Obrolan Tatap Muka
                   </Link>
                 </div>
               )}
@@ -132,14 +147,16 @@ function Navbar() {
               {respDropdownOpen && (
                 <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">
                   <Link
-                    to="/response-competition"
+                    to="#"
+                    onClick={toggleModalResponse}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     <FontAwesomeIcon icon={faMedal} className="mr-1" />
-                    Kompetisi Respon{" "}
+                    Kompetisi Respon
                   </Link>
                   <Link
-                    to="/questions"
+                    to="#"
+                    onClick={toggleModalQuestion}
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     <FontAwesomeIcon icon={faQuestion} className="mr-2" />
@@ -214,7 +231,8 @@ function Navbar() {
                   to="/logout"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
                 >
-                  <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" /> Keluar
+                  <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />{" "}
+                  Keluar
                 </Link>
               </div>
             )}
@@ -222,6 +240,12 @@ function Navbar() {
         </div>
       </div>
       {isModalOpen && <GroupChatModal handleModalToggle={handleModalToggle} />}
+      {isModalQuestion && (
+        <QuestionsModal toggleModalQuestion={toggleModalQuestion} />
+      )}
+      {isModalResponse && (
+        <ResponseModal toggleModalResponse={toggleModalResponse} />
+      )}
     </nav>
   );
 }
@@ -247,9 +271,8 @@ function GroupChatModal({ handleModalToggle }) {
             onResize={handleResize}
             className="bg-white p-8 rounded-lg shadow-lg overflow-hidden"
           >
-              <h2 className="text-xl font-semibold">Obrolan Grup</h2>
-            <div className="handle cursor-move p-2 bg-gray-200 rounded-t-lg">
-            </div>
+            <h2 className="text-xl font-semibold">Obrolan Grup</h2>
+            <div className="handle cursor-move p-2 bg-gray-200 rounded-t-lg"></div>
             <div className="h-[80%] overflow-auto">
               <ChatApp />
             </div>
@@ -266,6 +289,62 @@ function GroupChatModal({ handleModalToggle }) {
   );
 }
 
+function QuestionsModal({ toggleModalQuestion }) {
+  const [width, setWidth] = useState(0.7 * window.innerWidth);
+  const [height, setHeight] = useState(0.9 * window.innerHeight);
 
+  const handleResize = (event, { size }) => {
+    setWidth(size.width);
+    setHeight(size.height);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <Draggable handle=".handle">
+        <div className="relative">
+          <ResizableBox
+            width={width}
+            height={height}
+            minConstraints={[300, 300]}
+            maxConstraints={[window.innerWidth, window.innerHeight]}
+            onResize={handleResize}
+            className="bg-white p-8 rounded-lg shadow-lg overflow-hidden"
+          >
+            <h2 className="text-xl font-semibold mb-4">Pertanyaan</h2>
+            <div className="handle cursor-move p-2 bg-gray-200 rounded-t-lg"></div>
+            <div className="h-[80%] overflow-auto">
+              <Questions />
+            </div>
+            <button
+              onClick={toggleModalQuestion}
+              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Tutup
+            </button>
+          </ResizableBox>
+        </div>
+      </Draggable>
+    </div>
+  );
+}
+
+function ResponseModal({ toggleModalResponse }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white p-8 rounded-lg shadow-lg w-[70%] h-[90%]">
+        <h2 className="text-xl font-semibold mb-4">Kompetisi Respon</h2>
+        <div className="h-[80%] overflow-auto">
+          <ResponseCompetition />
+        </div>
+        <button
+          onClick={toggleModalResponse}
+          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        >
+          Tutup
+        </button>
+      </div>
+    </div>
+  );
+}
 
 export default Navbar;

@@ -47,8 +47,8 @@ function ResponseCompetition() {
 
   return (
     <div className="flex flex-col h-screen bg-gray-100">
-      <Navbar />
-      <div className="content-page container mx-auto p-4 mt-20">
+      {/* <Navbar /> */}
+      <div className="content-page container mx-auto p-4">
         <div className="w-full p-4 bg-white rounded-xl shadow-xl border border-gray-300">
           <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-5">
             Kompetisi Respon

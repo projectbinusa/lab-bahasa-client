@@ -14,6 +14,11 @@ import {
   ListItem,
   Checkbox,
   FormControlLabel,
+  Slider,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import {
   Circle,
@@ -21,9 +26,10 @@ import {
   Brush,
   Send,
   Delete,
-  FormatClear,
   Undo,
   Redo,
+  AddCircleOutline,
+  Share,
 } from "@mui/icons-material";
 import Navbar from "../../../component/Navbar1";
 
@@ -41,6 +47,7 @@ const InteraksiStudent = () => {
     { id: "student3", name: "Murid 3" },
   ]);
   const [mode, setMode] = useState("individual"); // Mode: "individual" atau "co-draw"
+  const [openDialog, setOpenDialog] = useState(false); // State untuk mengelola dialog
 
   const canvasRef = useRef();
 
@@ -108,6 +115,14 @@ const InteraksiStudent = () => {
     }
   };
 
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
   return (
     <div className="all bg-[#F4F4F4]">
       <Navbar />
@@ -118,95 +133,125 @@ const InteraksiStudent = () => {
           height: "100%",
           marginTop: "60px",
           paddingBottom: "20px",
+          overflowX: "hidden",
         }}
       >
-        <Typography variant="h4" gutterBottom sx={{ p: 2 }}>
+        <Typography variant="h4" gutterBottom sx={{ py: 1, px: 2, mt: 2 }}>
           Papan Interaksi Dengan Siswa
         </Typography>
-        <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 2 }}>
-          <Button variant="outlined" onClick={handleNewBoard}>
-            Baru
-          </Button>
-          <Button variant="outlined" onClick={handleShare}>
-            Bagikan
-          </Button>
-          <Tooltip title="Undo">
-            <IconButton onClick={handleUndo}>
-              <Undo />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Redo">
-            <IconButton onClick={handleRedo}>
-              <Redo />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Bersihkan Papan">
-            <IconButton onClick={handleClearBoard}>
-              <FormatClear />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Kuas">
-            <IconButton onClick={() => setTool("brush")}>
-              <Brush />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Bentuk">
-            <IconButton onClick={() => setTool("shape")}>
-              <FormatShapes />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Lingkaran">
-            <IconButton onClick={() => setTool("circle")}>
-              <Circle />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Penghapus">
-            <IconButton onClick={() => setTool("eraser")}>
-              <Delete />
-            </IconButton>
-          </Tooltip>
-          <input
-            type="color"
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
-          />
-          <TextField
-            size="small"
-            type="number"
-            sx={{ width: 75 }}
-            value={width}
-            onChange={(e) => setWidth(e.target.value)}
-          />
-        </Stack>
-        <Stack direction="row" spacing={2} alignItems="center" sx={{ p: 2 }}>
-          <Button
-            variant="contained"
-            onClick={() => handleModeChange("co-draw")}
-          >
-            Pemilihan murid
-          </Button>
-          <Button
-            variant="contained"
-            onClick={() => handleModeChange("individual")}
-          >
-            Menggambar secara individual
-          </Button>
-        </Stack>
-        <Divider sx={{ my: 4 }} />
-        <ReactSketchCanvas
-          ref={canvasRef}
-          style={{
-            width: "95%",
-            height: "350px",
-            border: "2px solid black",
-            margin: "0 auto",
-          }}
-          {...getToolProps()}
-          strokeWidth={width}
-          strokeColor={tool === "eraser" ? "#ffffff" : color}
-          allowOnlyPointerType="all"
-        />
-        <Divider sx={{ my: 2 }} />
+        <Divider />
+        <Grid container spacing={2} sx={{ flexGrow: 1 }}>
+          <Grid item xs={12} md={9}>
+            <ReactSketchCanvas
+              ref={canvasRef}
+              height="77vh"
+              style={{ backgroundColor: "white" }}
+              {...getToolProps()}
+              strokeWidth={width}
+              strokeColor={tool === "eraser" ? "#ffffff" : color}
+              allowOnlyPointerType="all"
+            />
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <Stack spacing={2} sx={{ ml: 1, mr: 2, mt: 2 }}>
+              <Box>
+                <Typography variant="h6">Peralatan</Typography>
+                <Tooltip title="Kuas">
+                  <IconButton onClick={() => setTool("brush")}>
+                    <Brush />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Bentuk">
+                  <IconButton onClick={() => setTool("shape")}>
+                    <FormatShapes />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Lingkaran">
+                  <IconButton onClick={() => setTool("circle")}>
+                    <Circle />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Penghapus">
+                  <IconButton onClick={() => setTool("eraser")}>
+                    <i className="fa-solid fa-eraser"></i>{" "}
+                  </IconButton>
+                </Tooltip>
+              </Box>
+              <Box>
+                <Typography variant="h6">Pengaturan</Typography>
+                <Typography sx={{ mt: 1 }} gutterBottom>
+                  Ketebalan Garis
+                </Typography>
+                <Slider
+                  value={width}
+                  onChange={(e, newValue) => setWidth(newValue)}
+                  min={1}
+                  max={100}
+                  valueLabelDisplay="auto"
+                  sx={{ mx: 0 }}
+                />
+                <TextField
+                  label="Warna"
+                  type="color"
+                  value={color}
+                  onChange={(e) => setColor(e.target.value)}
+                  fullWidth
+                  sx={{ mt: 2 }}
+                />
+              </Box>
+              <Divider />
+              <Box>
+                <Typography variant="h6">Kontrol</Typography>
+                <Tooltip title="Undo">
+                  <IconButton onClick={handleUndo}>
+                    <Undo />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Redo">
+                  <IconButton onClick={handleRedo}>
+                    <Redo />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Bersihkan Papan">
+                  <IconButton onClick={handleClearBoard}>
+                    <Delete />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Papan Baru">
+                  <IconButton onClick={handleNewBoard}>
+                    <AddCircleOutline />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Papan Baru">
+                  <IconButton onClick={handleShare}>
+                    <Share />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+              <Box>
+                <Typography variant="h6">Interaksi</Typography>
+                <Box sx={{ mt: 2 }}>
+                  <Button
+                    variant="contained"
+                    onClick={handleOpenDialog}
+                    sx={{ mb: 2 }}
+                  >
+                    Pemilihan murid
+                  </Button>
+                </Box>
+                <Box>
+                  <Button
+                    variant="contained"
+                    onClick={() => handleModeChange("individual")}
+                  >
+                    Menggambar secara individual
+                  </Button>
+                </Box>
+              </Box>
+            </Stack>
+          </Grid>
+        </Grid>
+        <Divider sx={{ mt: 2 }} />
         <Box sx={{ p: 2 }}>
           <Typography variant="h6">Obrolan</Typography>
           <List sx={{ maxHeight: 300, overflow: "auto" }}>
@@ -239,9 +284,11 @@ const InteraksiStudent = () => {
             ))}
           </Grid>
         </Box>
-        <Divider sx={{ my: 2 }} />
-        <Box sx={{ p: 2 }}>
-          <Typography variant="h6">Pilih Murid</Typography>
+      </Box>
+
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Pilih Murid</DialogTitle>
+        <DialogContent>
           <List>
             {students.map((student) => (
               <ListItem key={student.id}>
@@ -257,8 +304,16 @@ const InteraksiStudent = () => {
               </ListItem>
             ))}
           </List>
-        </Box>
-      </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Tutup
+          </Button>
+          <Button onClick={handleCloseDialog} color="primary">
+            Pilih
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

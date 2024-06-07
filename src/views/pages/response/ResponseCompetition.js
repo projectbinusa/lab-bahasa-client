@@ -6,9 +6,9 @@ import Navbar from "../../../component/Navbar1";
 function ResponseCompetition() {
   return (
     <div className="flex flex-col h-screen">
-      <div className="sticky top-0 z-50">
+      {/* <div className="sticky top-0 z-50">
         <Navbar />
-      </div>
+      </div> */}
       <div className="flex h-full">
         <div className="content-page container p-8 ml-0 md:ml-10 mt-12">
           <div className="grid grid-cols-5 gap-5 mt-5">
