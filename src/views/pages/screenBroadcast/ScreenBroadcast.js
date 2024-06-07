@@ -181,7 +181,7 @@ function ScreenBroadcast() {
               className="camera-video-container"
               draggable
               onDragStart={handleDragStart}
-              style={{ top: `${cameraPosition.top}px`, left: `${cameraPosition.left}px` }}
+              style={{ top: `${cameraPosition.top}px`, left: `${cameraPosition.left}px`, transform: "scaleX(-1)" }}
             >
               <video ref={refCameraVideo} autoPlay playsInline></video>
             </div>
