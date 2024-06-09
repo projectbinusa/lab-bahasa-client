@@ -20,12 +20,15 @@ import TopikChat from "./views/pages/Chat/TopikChat";
 import UpdateName from "./views/pages/manageName/UpdateName";
 import InteraksiStudent from "./views/pages/InteractiveWhiteboard/InteraksiStudent";
 import VerifyCode from "./views/pages/auth/VerifyCode";
+import ResetPassword from "./views/pages/auth/ResetPassword";
+import Navbar1 from "./component/Navbar1";
 
 // END ADMIN MENU REGULASI
 
 function App() {
   return (
     <BrowserRouter>
+    {/* <Navbar1/> */}
       <main>
         <Switch>
           {/* auth */}
@@ -62,6 +65,7 @@ function App() {
             component={InteraksiStudent}
             exact
           />
+          <Route path="/reset-password/:token" component={ResetPassword} exact />
         </Switch>
       </main>
     </BrowserRouter>
