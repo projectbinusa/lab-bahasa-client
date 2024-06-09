@@ -57,7 +57,7 @@ function Login() {
       <div class="container mx-auto ">
         <br />
         <br />
-        <div class="flex justify-center px-6 my-16">
+        <div class="flex justify-center px-6">
           {/* Row */}
           <div class="w-full xl:w-3/4 lg:w-11/12 flex">
             {/* Col */}

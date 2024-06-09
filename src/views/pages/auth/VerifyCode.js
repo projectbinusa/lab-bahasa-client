@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { API_DUMMY } from "../../../utils/api";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 function VerifyCode() {
   const [email, setEmail] = useState("");
@@ -19,7 +19,7 @@ function VerifyCode() {
         code,
       });
       if (response.status == 200) {
-        history.push("/reset-password");
+        history.push("/reset-password/" + code);
         setShow(false);
         Swal.fire({
           icon: "success",
