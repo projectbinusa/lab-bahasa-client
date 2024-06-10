@@ -15,6 +15,7 @@ function Register() {
   const [showPassword, setShowPassword] = useState(false); // State untuk mengontrol apakah password ditampilkan atau tidak
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State untuk mengontrol apakah konfirmasi password ditampilkan atau tidak
   const history = useHistory()
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();

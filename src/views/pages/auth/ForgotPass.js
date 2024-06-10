@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { API_DUMMY } from "../../../utils/api";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function ForgotPass() {
   const [email, setEmail] = useState("");
+  const history = useHistory()
 
   const send_email = async (e) => {
     e.preventDefault();
@@ -20,6 +22,7 @@ function ForgotPass() {
           showConfirmButton: false,
           timer: 1500,
         });
+        history.push("/verify-code")
       }
     } catch (error) {
       console.log(error);
@@ -82,23 +85,6 @@ function ForgotPass() {
                   >
                     Mengatur Ulang Kata Sandi
                   </button>
-                </div>
-                <hr class="mb-6 border-t" />
-                <div class="text-center">
-                  <a
-                    class="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
-                    href="/register"
-                  >
-                    Buat sebuah akun!
-                  </a>
-                </div>
-                <div class="text-center">
-                  <a
-                    class="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
-                    href="/"
-                  >
-                    Sudah memiliki akun? Login!
-                  </a>
                 </div>
               </form>
             </div>
