@@ -10,8 +10,8 @@ function Dashboard() {
         <Navbar />
       </div>
       <div className="flex h-full">
-        <div className="content-page container p-8 ml-0 md:ml-10 mt-12">
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 mt-12">
+        <div className="content-page container p-2 ml-20 mr-20 mt-12">
+          {/* <div className="grid grid-cols-1 gap-4 lg:grid-cols-3 lg:gap-8 mt-12">
             <div class="">
               <div class="relative cursor-pointer dark:text-white">
                 <span class="absolute top-0 left-0 w-full h-full mt-1 ml-1 bg-green-300 rounded-lg dark:bg-gray-200"></span>
@@ -69,15 +69,104 @@ function Dashboard() {
                 </div>
               </div>
             </div>
+          </div> */}
+          <div class="md:flex block justify-center -m-4 text-center mt-12">
+            {/* <div class="p-4 md:w-1/4 sm:w-1/2 w-full">
+              <div class="border-2 border-gray-600 px-4 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  class="text-indigo-500 w-12 h-12 mb-3 inline-block"
+                  viewBox="0 0 24 24">
+                  <path d="M8 17l4 4 4-4m-4-5v9"></path>
+                  <path d="M20.88 18.09A5 5 0 0018 9h-1.26A8 8 0 103 16.29"></path>
+                </svg>
+                <h2 class="title-font font-medium text-3xl text-gray-900">
+                  2.7K
+                </h2>
+                <p class="leading-relaxed">Downloads</p>
+              </div>
+            </div> */}
+            <div class="p-4 w-full">
+              <div class="border-2 bg-green-50 border-green-400 shadow-md white px-2 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  class="text-green-600 w-12 h-12 mb-3 inline-block"
+                  viewBox="0 0 24 24">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75"></path>
+                </svg>
+                <h2 class="title-font font-medium text-3xl text-gray-900">
+                  1.3K
+                </h2>
+                <p class="leading-relaxed mt-3">
+                  {" "}
+                  <span className="bg-green-600 text-white p-1 rounded-lg text-sm">Total Client</span>
+                </p>
+              </div>
+            </div>
+            <div class="p-4 w-full">
+              <div class="border-2 bg-green-50 border-green-400 shadow-md white px-2 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  class="text-green-600 w-12 h-12 mb-3 inline-block"
+                  viewBox="0 0 24 24">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75"></path>
+                </svg>
+                <h2 class="title-font font-medium text-3xl text-gray-900">
+                  1.3K
+                </h2>
+                <p class="leading-relaxed mt-3">
+                  {" "}
+                  <span className="bg-green-600 text-white p-1 rounded-lg text-sm">Total Client</span>
+                </p>
+              </div>
+            </div>
+            <div class="p-4 w-full">
+              <div class="border-2 bg-green-50 border-green-400 shadow-md white px-2 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+                <svg
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  class="text-green-600 w-12 h-12 mb-3 inline-block"
+                  viewBox="0 0 24 24">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                  <path d="M23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75"></path>
+                </svg>
+                <h2 class="title-font font-medium text-3xl text-gray-900">
+                  1.3K
+                </h2>
+                <p class="leading-relaxed mt-3">
+                  {" "}
+                  <span className="bg-green-600 text-white p-1 rounded-lg text-sm">Total Client</span>
+                </p>
+              </div>
+            </div>
           </div>
-
           <br />
           <br />
           {/* Tabel Absensi */}
           <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             <div className="flex justify-between">
               <h6 className="mb-2 text-xl font-bold text-black dark:text-white ">
-              Kelola Kelas
+                Kelola Kelas
               </h6>
             </div>
             <hr />
@@ -92,7 +181,7 @@ function Dashboard() {
                       Nama Kelas
                     </th>
                     <th scope="col" className="px-6 py-3">
-                     Aktif
+                      Aktif
                     </th>
                   </tr>
                 </thead>
@@ -120,8 +209,7 @@ function Dashboard() {
                   <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th
                       scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                       1
                     </th>
                     <td className="px-6 py-4">Kelas 1</td>
@@ -138,7 +226,7 @@ function Dashboard() {
           <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             <div className="flex justify-between">
               <h6 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
-              Kelola Daftar Nama
+                Kelola Daftar Nama
               </h6>
             </div>
             <hr />
@@ -150,7 +238,7 @@ function Dashboard() {
                       No
                     </th>
                     <th scope="col" className="px-6 py-3">
-                    Id Siswa
+                      Id Siswa
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Nama
@@ -192,8 +280,7 @@ function Dashboard() {
                   <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th
                       scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                       1
                     </th>
 

@@ -27,6 +27,8 @@ import Questions from "../views/pages/response/Questions";
 import ResponseCompetition from "../views/pages/response/ResponseCompetition";
 import TopikChat from "../views/pages/Chat/TopikChat";
 import TopikObrolan from "./Modal/TopikObrolan";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import Swal from "sweetalert2";
 
 function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -38,6 +40,18 @@ function Navbar() {
   const [showChatGroup, setShowChatGroup] = useState(false);
   const [showChatGroup1, setShowChatGroup1] = useState(false);
   const [isModalOpen1, setIsModalOpen1] = useState(false);
+  const history = useHistory();
+
+  const logout = () => {
+    history.push("/");
+    localStorage.clear();
+    Swal.fire({
+      icon: "success",
+      title: "Berhasil logout.",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
 
   const handleObrolanGrupClick = () => {
     setShowChatGroup(true);
@@ -113,8 +127,7 @@ function Navbar() {
               <div className="relative">
                 <button
                   onClick={toggleChatDropdown}
-                  className="text-sm font-semibold flex items-center focus:outline-none"
-                >
+                  className="text-sm font-semibold flex items-center focus:outline-none">
                   <FontAwesomeIcon icon={faComments} className="px-1" />
                   Obrolan{" "}
                   <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
@@ -124,16 +137,14 @@ function Navbar() {
                     <button
                       type="button"
                       onClick={handleObrolanGrupClick}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                       <FontAwesomeIcon icon={faUsers} className="mr-2" />{" "}
                       Obrolan Grup
                     </button>
                     <button
                       type="button"
                       onClick={handleObrolanGrupClick1}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                       <FontAwesomeIcon icon={faComments} className="mr-2" />{" "}
                       Topik Obrolan
                     </button>
@@ -147,8 +158,7 @@ function Navbar() {
                     </Link> */}
                     <Link
                       to="/face-to-face-chat"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                       <FontAwesomeIcon icon={faUserFriends} className="mr-2" />{" "}
                       Obrolan Tatap Muka
                     </Link>
@@ -158,8 +168,7 @@ function Navbar() {
               <div className="relative">
                 <button
                   onClick={toggleRespDropdown}
-                  className="text-sm font-semibold flex items-center focus:outline-none"
-                >
+                  className="text-sm font-semibold flex items-center focus:outline-none">
                   <FontAwesomeIcon icon={faMedapps} className="px-1" />
                   Kompetisi Respon
                   <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
@@ -168,15 +177,13 @@ function Navbar() {
                   <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">
                     <Link
                       to="/response-competition"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                       <FontAwesomeIcon icon={faMedal} className="mr-1" />
                       Kompetisi Respon{" "}
                     </Link>
                     <Link
                       to="/questions"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                       <FontAwesomeIcon icon={faQuestion} className="mr-2" />
                       Pertanyaan
                     </Link>
@@ -186,8 +193,7 @@ function Navbar() {
               <div className="relative">
                 <button
                   onClick={toggleManageDropdown}
-                  className="text-sm font-semibold flex items-center focus:outline-none"
-                >
+                  className="text-sm font-semibold flex items-center focus:outline-none">
                   <FontAwesomeIcon icon={faListCheck} className="px-1" />
                   Kelola Kelas
                   <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
@@ -196,29 +202,25 @@ function Navbar() {
                   <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">
                     <Link
                       to="/manage-class"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                       <FontAwesomeIcon icon={faUsers} className="mr-2" /> Kelola
                       Kelas
                     </Link>
                     <Link
                       to="/manage-name"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                       <FontAwesomeIcon icon={faListOl} className="mr-2" />
                       Kelola Daftar Nama
                     </Link>
                     <Link
                       to="/login-siswa"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                       <FontAwesomeIcon icon={faUser} className="mr-2" />
                       Masuk Siswa
                     </Link>
                     <Link
                       to="/signed-information"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                       <FontAwesomeIcon icon={faCircleInfo} className="mr-2" />
                       Informasi yang Ditandatangani
                     </Link>
@@ -228,8 +230,7 @@ function Navbar() {
               <div className="profile relative ml-6">
                 <button
                   onClick={toggleDropdown}
-                  className="flex items-center focus:outline-none"
-                >
+                  className="flex items-center focus:outline-none">
                   <img
                     className="w-10 h-10 rounded-full"
                     src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
@@ -240,15 +241,14 @@ function Navbar() {
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">
                     <Link
                       to="/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
-                    >
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
                       <FontAwesomeIcon icon={faUser} className="mr-2" /> Profil
                       saya
                     </Link>
                     <Link
-                      to="/logout"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center"
-                    >
+                      to=""
+                      onClick={logout}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center">
                       <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
                       Keluar
                     </Link>
@@ -320,8 +320,7 @@ function ResponseModal({ toggleModalResponse }) {
         </div>
         <button
           onClick={toggleModalResponse}
-          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
+          className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
           Tutup
         </button>
       </div>

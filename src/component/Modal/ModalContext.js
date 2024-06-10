@@ -8,7 +8,7 @@ export const ModalProvider = ({ children }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleModalToggle = () => {
-    console.log("Toggle modal:", !isModalOpen); // Debugging log
+    console.log("Toggle modal:", !isModalOpen); 
     setIsModalOpen(!isModalOpen);
   };
 
