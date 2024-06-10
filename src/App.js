@@ -22,54 +22,95 @@ import InteraksiStudent from "./views/pages/InteractiveWhiteboard/InteraksiStude
 import VerifyCode from "./views/pages/auth/VerifyCode";
 import ResetPassword from "./views/pages/auth/ResetPassword";
 import Navbar1 from "./component/Navbar1";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { jwtDecode } from 'jwt-decode';
+import { useEffect } from "react";
+import PrivateRoute from "./utils/PrivateRoutes";
 
-// END ADMIN MENU REGULASI
+const checkTokenExpiration = () => {
+  const token = localStorage.getItem('token');
+  if (!token) return false;
 
-function App() {
+  try {
+    const decoded = jwtDecode(token);
+    const currentTime = Date.now() / 1000;
+    if (decoded.exp < currentTime) {
+      localStorage.removeItem('token');
+      return false;
+    }
+    return true;
+  } catch (error) {
+    localStorage.removeItem('token');
+    return false;
+  }
+};
+
+const App = () => {
+  const history = useHistory();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!checkTokenExpiration()) {
+        history.push('/');
+      }
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [history]);
+
+
   return (
     <BrowserRouter>
-    {/* <Navbar1/> */}
+      {/* <Navbar1/> */}
       <main>
         <Switch>
           {/* auth */}
           <Route path="/" component={Login} exact />
           <Route path="/register" component={Register} exact />
           <Route path="/forgotpass" component={ForgotPass} exact />
-          <Route path="/dashboard" component={Dashboard} exact />
-          <Route path="/camera" component={Camera} exact />
-          <Route path="/whiteboard" component={Whiteboard} exact />
-          <Route path="/manage-class" component={ManageClass} exact />
-          <Route path="/verify-code" component={VerifyCode} exact />
-          <Route path="/add-class" component={AddClass} exact />
-          <Route path="/update-class" component={UpdateClass} exact />
-          <Route path="/manage-name" component={ManageName} exact />
-          <Route path="/add-name" component={AddName} exact />
-          <Route path="/update-name" component={UpdateName} exact />
-          <Route path="/screen-broadcast" component={ScreenBroadcast} exact />
-          <Route path="/group-chat" component={ChatApp} exact />
-          <Route path="/topic-chat" component={TopikChat} exact />
-          <Route
+          <PrivateRoute path="/dashboard" component={Dashboard} exact />
+          <PrivateRoute path="/camera" component={Camera} exact />
+          <PrivateRoute path="/whiteboard" component={Whiteboard} exact />
+          <PrivateRoute path="/manage-class" component={ManageClass} exact />
+          <PrivateRoute path="/verify-code" component={VerifyCode} exact />
+          <PrivateRoute path="/add-class" component={AddClass} exact />
+          <PrivateRoute path="/update-class/:id" component={UpdateClass} exact />
+          <PrivateRoute path="/manage-name" component={ManageName} exact />
+          <PrivateRoute path="/add-name" component={AddName} exact />
+          <PrivateRoute path="/update-name" component={UpdateName} exact />
+          <PrivateRoute
+            path="/screen-broadcast"
+            component={ScreenBroadcast}
+            exact
+          />
+          <PrivateRoute path="/group-chat" component={ChatApp} exact />
+          <PrivateRoute path="/topic-chat" component={TopikChat} exact />
+          <PrivateRoute
             path="/response-competition"
             component={ResponseCompetition}
             exact
           />
           <Route path="/login-siswa" component={LoginSiswa} exact />
-          <Route path="/questions" component={Questions} exact />
-          <Route
+          <PrivateRoute path="/questions" component={Questions} exact />
+          <PrivateRoute
             path="/signed-information"
             component={SignedInformation}
             exact
           />
-          <Route
+          <PrivateRoute
             path="/interaction-student"
             component={InteraksiStudent}
             exact
           />
-          <Route path="/reset-password/:token" component={ResetPassword} exact />
+          <Route
+            path="/reset-password/:token"
+            component={ResetPassword}
+            exact
+          />
         </Switch>
       </main>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

@@ -36,7 +36,7 @@ function ChatApp() {
   };
 
   return (
-    <div class="h-60 flex flex-col">
+    <div class="h-96 flex flex-col">
       <div class="bg-gray-200 flex-1 overflow-y-hidden">
         {messages.map((message, index) => (
           <div class="px-4 py-2" key={index}>
