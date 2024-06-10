@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function ResponseCompetition() {
+function Questions() {
   const [selectedType, setSelectedType] = useState("Fist to Answer");
   const [thinkTime, setThinkTime] = useState(30);
   const [answerTime, setAnswerTime] = useState(60);
@@ -11,9 +11,10 @@ function ResponseCompetition() {
   const startTimer = (duration) => {
     clearInterval(timer);
     setTimeLeft(duration);
-    const newTimer = setInterval(() => {
-      setTimeLeft((prevTime) => prevTime - 1);
-    }, 1000);
+    const newTimer = setInterval(
+      () => setTimeLeft((prevTime) => prevTime - 1),
+      1000
+    );
     setTimer(newTimer);
   };
 
@@ -45,16 +46,16 @@ function ResponseCompetition() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
-      <div className="content-page container mx-auto p-4">
+    <div className="flex bg-gray-100">
+      <div className="content-page container mx-auto">
         <div className="w-full p-4 bg-white rounded-xl shadow-xl border border-gray-300">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-5">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-800">
             Kompetisi Respon
           </h1>
           <div className="mb-4">
             <label
               htmlFor="type"
-              className="block mb-2 text-sm font-semibold text-gray-700"
+              className="mb-2 text-sm font-semibold text-gray-700 block"
             >
               Jenis:
             </label>
@@ -62,7 +63,7 @@ function ResponseCompetition() {
               id="type"
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
-              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+              className="block w-full p-2 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
             >
               <option value="Fist to Answer">Tinjau untuk menjawab</option>
               <option value="Enter an Answer">Masukkan jawaban</option>
@@ -72,7 +73,7 @@ function ResponseCompetition() {
           <div className="mb-4">
             <label
               htmlFor="think-time"
-              className="block mb-2 text-sm font-semibold text-gray-700"
+              className="mb-2 text-sm font-semibold text-gray-700 block"
             >
               Pikirkan waktu (detik):
             </label>
@@ -81,13 +82,13 @@ function ResponseCompetition() {
               id="think-time"
               value={thinkTime}
               onChange={(e) => setThinkTime(Number(e.target.value))}
-              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+              className="block w-full p-2 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
             />
           </div>
           <div className="mb-4">
             <label
               htmlFor="answer-time"
-              className="block mb-2 text-sm font-semibold text-gray-700"
+              className="mb-2 text-sm font-semibold text-gray-700 block"
             >
               Waktu jawab (detik):
             </label>
@@ -96,7 +97,7 @@ function ResponseCompetition() {
               id="answer-time"
               value={answerTime}
               onChange={(e) => setAnswerTime(Number(e.target.value))}
-              className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+              className="block w-full p-2 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
             />
           </div>
           <div className="mb-4">
@@ -105,7 +106,7 @@ function ResponseCompetition() {
           </div>
           <div className="mb-4">
             {timeLeft !== null && (
-              <p className="text-gray-700 font-medium">
+              <p className="font-medium text-gray-700">
                 {phase === "think"
                   ? `Think Time Left: ${timeLeft} seconds`
                   : phase === "answer"
@@ -115,13 +116,13 @@ function ResponseCompetition() {
             )}
           </div>
           <button
-            className="w-full bg-green-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 mb-2"
+            className="w-full py-2 font-semibold text-white bg-green-500 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 mb-2"
             onClick={startCompetition}
           >
             Mulai Kompetisi
           </button>
           <button
-            className="w-full bg-red-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full py-2 font-semibold text-white bg-red-500 rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
             onClick={resetForm}
           >
             Atur ulang
@@ -132,4 +133,4 @@ function ResponseCompetition() {
   );
 }
 
-export default ResponseCompetition;
+export default Questions;
