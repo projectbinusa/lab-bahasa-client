@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../../component/Navbar1";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -8,8 +8,69 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { API_DUMMY } from "../../../utils/api";
 
 function ManageName() {
+  const [userData, setUserData] = useState([]);
+  const token = localStorage.getItem("token");
+  const class_id = localStorage.getItem("id");
+
+  const getAllJabatan = async (classId) => {
+    try {
+      const response = await axios.get(
+        `${API_DUMMY}/api/instructur/class/${classId}/management_name_list`
+      );
+  
+      setUserData(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  
+  
+
+  const deleteData = async (id) => {
+    Swal.fire({
+      title: "Anda Ingin Menghapus Data ?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Delete",
+      cancelButtonText: "Cancel",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`http://localhost:2024/api/jabatan/delete/` + id, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          Swal.fire({
+            icon: "success",
+            title: "Dihapus!",
+            showConfirmButton: false,
+          });
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        } catch (error) {
+          console.error(error);
+          Swal.fire({
+            icon: "error",
+            title: "Gagal Menghapus Data",
+          });
+        }
+      }
+    });
+  };
+  useEffect(() => {
+    getAllJabatan(5);
+  }, []);
   return (
     <>
       <div className="flex flex-col h-screen">
@@ -70,39 +131,21 @@ function ManageName() {
                   </tr>
                 </thead>
                 <tbody className="text-center">
-                  {/* {cutiData.map((cuti, index) => (
-                    <tr
-                      key={index}
-                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                    >
-                      <th
-                        scope="row"
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        {index + 1}
-                      </th>
-                      <td className="px-6 py-4">{cuti.username}</td>
-                      <td className="px-6 py-4">
-                        {formatDate(cuti.created_at)}
-                      </td>
-                      <td className="px-6 py-4">{cuti.durasi}</td>
-                      <td className="px-6 py-4">{cuti.status}</td>
-                    </tr>
-                  ))} */}
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                   {userData.map((manage, index) => (
+                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={index}>
                     <th
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                      1
+                       {index + 1}
                     </th>
 
                     <td className="px-6 py-4">997764</td>
-                    <td className="px-6 py-4">Alex</td>
-                    <td className="px-6 py-4">Laki-Laki</td>
-                    <td className="px-6 py-4">Komputer</td>
-                    <td className="px-6 py-4">01</td>
-                    <td className="px-6 py-4">********</td>
+                    <td className="px-6 py-4">{manage.name}</td>
+                    <td className="px-6 py-4">{manage.gender}</td>
+                    <td className="px-6 py-4">{manage.departement}</td>
+                    <td className="px-6 py-4">{manage.class_id}</td>
+                    <td className="px-6 py-4">{manage.password_prompt}</td>
                     <td className="px-6 py-4 flex items-center gap-5 justify-center">
                       <Link
                         to="/update-name"
@@ -118,6 +161,7 @@ function ManageName() {
                       </button>
                     </td>
                   </tr>
+                   ))}
                 </tbody>
               </table>
             </div>
