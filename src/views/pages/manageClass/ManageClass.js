@@ -22,6 +22,7 @@ function ManageClass() {
   const [limit, setLimit] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [show, setShow] = useState(false);
 
   const getAllData = async () => {
     try {
@@ -78,10 +79,21 @@ function ManageClass() {
 
   const handleActivateClass = async (id) => {
     try {
-      setClassId(id);
-      await putClassActive(id);
-      await putClassIdUser(id);
-      localStorage.setItem("class_id", id); 
+      if (localStorage.getItem("class_id") == 0) {
+        setClassId(id);
+        await putClassActive(id);
+        await putClassIdUser(id);
+        localStorage.setItem("class_id", id);
+      } else {
+        setShow(false);
+        Swal.fire({
+          title: "Gagal memilih kelas",
+          text: "Anda sudah memilih 1 kelas, tidak boleh lebih.",
+          icon: "warning",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
     } catch (error) {
       console.log(error);
     }
@@ -196,6 +208,9 @@ function ManageClass() {
                       Gambar
                     </th>
                     <th scope="col" className="px-6 py-3">
+                      Nama Server
+                    </th>
+                    <th scope="col" className="px-6 py-3">
                       Nama Kelas
                     </th>
                     <th scope="col" className="px-6 py-3">
@@ -222,6 +237,7 @@ function ManageClass() {
                       <td className="px-6 py-4">
                         <img src={data.file} alt="" />
                       </td>
+                      <td className="px-6 py-4">{data.user_name}</td>
                       <td className="px-6 py-4">{data.name}</td>
                       <td className="px-6 py-4">{data.description}</td>
                       <td className="px-6 py-4">
@@ -259,7 +275,8 @@ function ManageClass() {
                 </tbody>
               </table>{" "}
             </div>
-            <Pagination className="mt-5"
+            <Pagination
+              className="mt-5"
               layout="table"
               currentPage={currentPage}
               totalPages={totalPages}

@@ -26,6 +26,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { jwtDecode } from 'jwt-decode';
 import { useEffect } from "react";
 import PrivateRoute from "./utils/PrivateRoutes";
+import ChatPribadi from "./views/pages/Chat/ChatPribadi";
 
 const checkTokenExpiration = () => {
   const token = localStorage.getItem('token');
@@ -91,6 +92,7 @@ const App = () => {
             exact
           />
           <Route path="/login-siswa" component={LoginSiswa} exact />
+          <Route path="/face-to-face-chat" component={ChatPribadi} exact />
           <PrivateRoute path="/questions" component={Questions} exact />
           <PrivateRoute
             path="/signed-information"
