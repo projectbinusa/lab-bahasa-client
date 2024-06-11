@@ -9,6 +9,7 @@ import {
   faCircleInfo,
   faComments,
   faDisplay,
+  faKey,
   faListCheck,
   faListOl,
   faMedal,
@@ -269,6 +270,13 @@ function Navbar() {
                     >
                       <FontAwesomeIcon icon={faCircleInfo} className="mr-2" />
                       Informasi yang Ditandatangani
+                    </Link>
+                    <Link
+                      to="/login-report"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      <FontAwesomeIcon icon={faKey} className="mr-2" />
+                      Login Report
                     </Link>
                   </div>
                 )}
