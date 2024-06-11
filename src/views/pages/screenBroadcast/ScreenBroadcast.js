@@ -12,7 +12,6 @@ import {
 } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Navbar from "../../../component/Navbar1";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHandPaper as farHandPaper } from "@fortawesome/free-regular-svg-icons";
 
@@ -30,9 +29,6 @@ function ScreenBroadcast() {
   const [cameraPosition, setCameraPosition] = useState({ top: 0, left: 0 });
   const [isHandRaised, setIsHandRaised] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [modalHeight, setModalHeight] = useState("70vh");
-  const [modalWidth, setModalWidth] = useState("100vh");
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -178,7 +174,6 @@ function ScreenBroadcast() {
     if (newTop < 0) newTop = 0;
     if (newLeft + 170 > cameraContainerRect.width)
       if (newTop + 127 > cameraContainerRect.height)
-        // newLeft = camera.containerRef.width - 170;
         newTop = cameraContainerRef.height - 127;
 
     setCameraPosition({ top: newTop, left: newLeft });
@@ -223,216 +218,95 @@ function ScreenBroadcast() {
     startScreenSharing();
   };
 
-  const handleCloseModal = () => {
-    if (
-      !isCameraActive &&
-      !isAudioActive &&
-      !isScreenSharing &&
-      !isHandRaised
-    ) {
-      // Hilangkan pesan error sebelum menutup modal
-      toast.dismiss();
-      setShowModal(false);
-    } else {
-      toast.error(
-        "Mohon nonaktifkan kamera, mikrofon, berbagi layar, atau hentikan mengangkat tangan terlebih dahulu.",
-        { autoClose: false }
-      );
-    }
-  };
-
   return (
-    <div className="all">
-      {/* <button
-        onClick={() => setShowModal(true)}
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-40"
-      >
-        Open Modal
-      </button> */}
-      {/* {showModal && ( */}
-        {/* <div className="fixed z-10 inset-0 overflow-y-auto">
-          <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div>
+      <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+        <div className="mt-2">
+          <div className="camera-container" ref={cameraContainerRef}>
             <div
-              className="fixed inset-0 transition-opacity"
-              aria-hidden="true"
+              className="video-containers"
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
             >
-              <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            <span
-              className="hidden sm:inline-block sm:align-middle sm:h-screen"
-              aria-hidden="true"
-            >
-              &#8203;
-            </span> */}
-            {/* <div
-              className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="modal-headline"
-            > */}
-              <div className="">
-                <div className="">
-                  <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <div className="mt-2">
-                      <div
-                        className="camera-container"
-                        ref={cameraContainerRef}
-                      >
-                        <div
-                          className="video-containers"
-                          onDragOver={handleDragOver}
-                          onDrop={handleDrop}
-                        >
-                          <div className="screen-video-container">
-                            <video
-                              ref={refScreenVideo}
-                              autoPlay
-                              playsInline
-                            ></video>
-                          </div>
-                          <div
-                            className="camera-video-container"
-                            draggable
-                            onDragStart={handleDragStart}
-                            style={{
-                              top: `${cameraPosition.top}px`,
-                              left: `${cameraPosition.left}px`,
-                            }}
-                          >
-                            <video
-                              ref={refCameraVideo}
-                              autoPlay
-                              playsInline
-                            ></video>
-                          </div>
-                        </div>
-                        <div className="camera-controls">
-                          <button
-                            onClick={
-                              isCameraActive ? stopStreaming : startStreaming
-                            }
-                            className={`camera-control-button ${
-                              isCameraActive ? "stop-button" : "start-button"
-                            }`}
-                          >
-                            {isCameraActive ? <FaVideoSlash /> : <FaVideo />}
-                          </button>
-                          <button
-                            onClick={isAudioActive ? stopAudio : startAudio}
-                            className={`camera-control-button ${
-                              isAudioActive ? "stop-button" : "start-button"
-                            }`}
-                          >
-                            {isAudioActive ? (
-                              <FaMicrophoneSlash />
-                            ) : (
-                              <FaMicrophone />
-                            )}
-                          </button>
-                          {isScreenSharing ? (
-                            <div className="dropdown">
-                              <button
-                                onClick={toggleDropdown}
-                                className="camera-control-button screen-share-button"
-                              >
-                                <FaDesktop />
-                              </button>
-                              {showDropdown && (
-                                <div className="dropdown-menu dropdown-menu-up">
-                                  <button
-                                    onClick={() =>
-                                      handleDropdownOption("shareLain")
-                                    }
-                                    className="dropdown-item flex"
-                                  >
-                                    <FaShareSquare
-                                      style={{ marginRight: "10px" }}
-                                    />
-                                    Presentasi Hal Lain
-                                  </button>
-                                  <button
-                                    onClick={() =>
-                                      handleDropdownOption("stopShare")
-                                    }
-                                    className="dropdown-item flex"
-                                  >
-                                    <FaStopCircle
-                                      style={{ marginRight: "10px" }}
-                                    />
-                                    Berhenti Presentasi
-                                  </button>
-                                </div>
-                              )}
-                            </div>
-                          ) : (
-                            <button
-                              onClick={startScreenSharing}
-                              className="camera-control-button screen-share-button"
-                            >
-                              <FaDesktop />
-                            </button>
-                          )}
-                          <button
-                            onClick={toggleHandRaise}
-                            className={`camera-control-button ${
-                              isHandRaised ? "stop-button" : "start-button"
-                            }`}
-                          >
-                            {isHandRaised ? <FaHandPointer /> : <FaHandPaper />}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div className="screen-video-container">
+                <video ref={refScreenVideo} autoPlay playsInline></video>
               </div>
-              {/* <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                <div className="w-full sm:w-1/2 mr-2">
-                  <label
-                    htmlFor="modalHeight"
-                    className="block text-sm font-medium text-gray-700"
+              <div
+                className="camera-video-container"
+                draggable
+                onDragStart={handleDragStart}
+                style={{
+                  top: `${cameraPosition.top}px`,
+                  left: `${cameraPosition.left}px`,
+                }}
+              >
+                <video ref={refCameraVideo} autoPlay playsInline></video>
+              </div>
+            </div>
+            <div className="camera-controls">
+              <button
+                onClick={isCameraActive ? stopStreaming : startStreaming}
+                className={`camera-control-button ${
+                  isCameraActive ? "stop-button" : "start-button"
+                }`}
+              >
+                {isCameraActive ? <FaVideoSlash /> : <FaVideo />}
+              </button>
+              <button
+                onClick={isAudioActive ? stopAudio : startAudio}
+                className={`camera-control-button ${
+                  isAudioActive ? "stop-button" : "start-button"
+                }`}
+              >
+                {isAudioActive ? <FaMicrophoneSlash /> : <FaMicrophone />}
+              </button>
+              {isScreenSharing ? (
+                <div className="dropdown">
+                  <button
+                    onClick={toggleDropdown}
+                    className="camera-control-button screen-share-button"
                   >
-                    Height
-                  </label>
-                  <input
-                    id="modalHeight"
-                    autoComplete="off"
-                    type="text"
-                    value={modalHeight}
-                    onChange={(e) => setModalHeight(e.target.value)}
-                    className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                  />
+                    <FaDesktop />
+                  </button>
+                  {showDropdown && (
+                    <div className="dropdown-menu dropdown-menu-up">
+                      <button
+                        onClick={() => handleDropdownOption("shareLain")}
+                        className="dropdown-item flex"
+                      >
+                        <FaShareSquare style={{ marginRight: "10px" }} />
+                        Presentasi Hal Lain
+                      </button>
+                      <button
+                        onClick={() => handleDropdownOption("stopShare")}
+                        className="dropdown-item flex"
+                      >
+                        <FaStopCircle style={{ marginRight: "10px" }} />
+                        Berhenti Presentasi
+                      </button>
+                    </div>
+                  )}
                 </div>
-                <div className="w-full sm:w-1/2 ml-2">
-                  <label
-                    htmlFor="modalWidth"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Width
-                  </label>
-                  <input
-                    id="modalWidth"
-                    autoComplete="off"
-                    type="text"
-                    value={modalWidth}
-                    onChange={(e) => setModalWidth(e.target.value)}
-                    className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-                  />
-                </div>
-              </div> */}
-              {/* <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+              ) : (
                 <button
-                  onClick={handleCloseModal}
-                  type="button"
-                  className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-500 text-base font-medium text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:ml-3 sm:w-auto sm:text-sm"
+                  onClick={startScreenSharing}
+                  className="camera-control-button screen-share-button"
                 >
-                  Close
+                  <FaDesktop />
                 </button>
-              </div> */}
-            {/* </div> */}
-          {/* </div>
-        </div> */}
-      {/* // )} */}
+              )}
+              <button
+                onClick={toggleHandRaise}
+                className={`camera-control-button ${
+                  isHandRaised ? "stop-button" : "start-button"
+                }`}
+              >
+                {isHandRaised ? <FaHandPointer /> : <FaHandPaper />}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
       <ToastContainer />
       <style>
         {`
