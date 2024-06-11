@@ -1,7 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../../../component/Navbar1";
+import axios from "axios";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import Swal from "sweetalert2";
+import { API_DUMMY } from "../../../utils/api";
 
 function AddName() {
+  const [name, setName] = useState("");
+  const [gender, setGender] = useState("");
+  const [departement, setDepartement] = useState("");
+  const [password, setPassword] = useState("");
+  const [email, setemail] = useState("");
+  const history = useHistory();
+  const class_id = localStorage.getItem("class_id");
+
+  const authConfig = {
+    headers: {
+      "auth-event": `jwt ${localStorage.getItem("token")}`,
+    },
+  };
+
+  const saveChange = async (e) => {
+    e.preventDefault();
+    const data = {
+      name: name,
+      email: email,
+      departement: departement,
+      password: password,
+      gender: gender,
+    };
+
+    let url_hit = `${API_DUMMY}/api/instructur/class/${class_id}/management_name_list`;
+
+    try {
+      const response = await axios.post(url_hit, data, authConfig);
+      if (response.status === 200) {
+        history.push("/manage-name");
+        Swal.fire({
+          icon: "success",
+          title: "Berhasil Menambahkan Data.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col h-screen bg-gray-100">
@@ -11,18 +57,20 @@ function AddName() {
             <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-5">
               Tambah Daftar Nama
             </h1>
-            <form onSubmit={""}>
+            <form onSubmit={saveChange}>
               <div className="md:grid grid-cols-2 gap-4">
                 <div className="relative mb-4">
                   <label className="block mb-2 text-sm font-semibold text-gray-700">
-                    ID Siswa
+                    Email
                   </label>
                   <input
                     type="text"
                     id="className"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
-                    placeholder="Masukkan ID Siswa"
+                    placeholder="Masukkan Nama"
                     required
+                    value={email}
+                    onChange={(e) => setemail(e.target.value)}
                   />
                 </div>
                 <div className="relative mb-4">
@@ -35,6 +83,8 @@ function AddName() {
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
                     placeholder="Masukkan Nama"
                     required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </div>
                 <div className="relative mb-4">
@@ -47,6 +97,8 @@ function AddName() {
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
                     placeholder="Masukkan Gender"
                     required
+                    value={gender}
+                    onChange={(e) => setGender(e.target.value)}
                   />
                 </div>
                 <div className="relative mb-4">
@@ -59,20 +111,11 @@ function AddName() {
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
                     placeholder="Masukkan Jurusan"
                     required
+                    value={departement}
+                    onChange={(e) => setDepartement(e.target.value)}
                   />
                 </div>
-                <div className="relative mb-4">
-                  <label className="block mb-2 text-sm font-semibold text-gray-700">
-                    Kelas
-                  </label>
-                  <input
-                    type="text"
-                    id="className"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
-                    placeholder="Masukkan Kelas"
-                    required
-                  />
-                </div>
+
                 <div className="relative mb-4">
                   <label className="block mb-2 text-sm font-semibold text-gray-700">
                     Password
@@ -83,6 +126,8 @@ function AddName() {
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
                     placeholder="Masukkan Password"
                     required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
               </div>

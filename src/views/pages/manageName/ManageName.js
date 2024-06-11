@@ -14,62 +14,55 @@ import { API_DUMMY } from "../../../utils/api";
 
 function ManageName() {
   const [userData, setUserData] = useState([]);
-  const token = localStorage.getItem("token");
-  const class_id = localStorage.getItem("id");
+  const class_id = localStorage.getItem("class_id");
 
-  const getAllJabatan = async (classId) => {
+  const authConfig = {
+    headers: {
+      "auth-event": `jwt ${localStorage.getItem("token")}`,
+    },
+  };
+
+  const getAllData = async () => {
     try {
       const response = await axios.get(
-        `${API_DUMMY}/api/instructur/class/${classId}/management_name_list`
+        `${API_DUMMY}/api/instructur/class/${class_id}/management_name_list`,
+        authConfig
       );
-  
-      setUserData(response.data);
+      setUserData(response.data.data);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.log(error);
     }
   };
-  
-  
-
   const deleteData = async (id) => {
-    Swal.fire({
-      title: "Anda Ingin Menghapus Data ?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Delete",
-      cancelButtonText: "Cancel",
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await axios.delete(`http://localhost:2024/api/jabatan/delete/` + id, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
+    try {
+      await axios.delete(
+        `${API_DUMMY}/api/instructur/class/${id}/management_name_list`,
+        authConfig
+      );
+      Swal.fire({
+        title: "Apakah anda yakin",
+        text: "Data ini akan di hapus dan tidak akan bisa kembali!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya",
+      }).then((result) => {
+        if (result.isConfirmed) {
           Swal.fire({
+            title: "Deleted!",
+            text: "Data berhasil di hapus.",
             icon: "success",
-            title: "Dihapus!",
-            showConfirmButton: false,
-          });
-
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
-        } catch (error) {
-          console.error(error);
-          Swal.fire({
-            icon: "error",
-            title: "Gagal Menghapus Data",
           });
         }
-      }
-    });
+      });
+      getAllData();
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
-    getAllJabatan(5);
+    getAllData();
   }, []);
   return (
     <>
@@ -126,42 +119,52 @@ function ManageName() {
                       Password
                     </th>
                     <th scope="col" className="px-6 py-3">
+                      Password Prompt
+                    </th>
+                    <th scope="col" className="px-6 py-3">
                       Aksi
                     </th>
                   </tr>
                 </thead>
                 <tbody className="text-center">
-                   {userData.map((manage, index) => (
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={index}>
-                    <th
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  {userData.map((manage, index) => (
+                    <tr
+                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                      key={index}
                     >
-                       {index + 1}
-                    </th>
-
-                    <td className="px-6 py-4">997764</td>
-                    <td className="px-6 py-4">{manage.name}</td>
-                    <td className="px-6 py-4">{manage.gender}</td>
-                    <td className="px-6 py-4">{manage.departement}</td>
-                    <td className="px-6 py-4">{manage.class_id}</td>
-                    <td className="px-6 py-4">{manage.password_prompt}</td>
-                    <td className="px-6 py-4 flex items-center gap-5 justify-center">
-                      <Link
-                        to="/update-name"
-                        className="py-3 px-4 bg-blue-500 rounded-lg text-white "
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        <FontAwesomeIcon
-                          className="text-lg"
-                          icon={faPenToSquare}
-                        />
-                      </Link>
-                      <button className="py-3 px-4 bg-red-500 rounded-lg text-white ">
-                        <FontAwesomeIcon className="text-lg" icon={faTrash} />
-                      </button>
-                    </td>
-                  </tr>
-                   ))}
+                        {index + 1}
+                      </th>
+
+                      <td className="px-6 py-4">997764</td>
+                      <td className="px-6 py-4">{manage.name}</td>
+                      <td className="px-6 py-4">{manage.gender}</td>
+                      <td className="px-6 py-4">{manage.departement}</td>
+                      <td className="px-6 py-4">{manage.class_id}</td>
+                      <td className="px-6 py-4">{manage.password}</td>
+                      <td className="px-6 py-4">{manage.password_prompt}</td>
+                      <td className="px-6 py-4 flex items-center gap-5 justify-center">
+                        <Link
+                          to={"/update-name/" + manage.id}
+                          className="py-3 px-4 bg-blue-500 rounded-lg text-white "
+                        >
+                          <FontAwesomeIcon
+                            className="text-lg"
+                            icon={faPenToSquare}
+                          />
+                        </Link>
+                        <button
+                          className="py-3 px-4 bg-red-500 rounded-lg text-white"
+                          onClick={() => deleteData(manage.id)}
+                        >
+                          <FontAwesomeIcon className="text-lg" icon={faTrash} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
