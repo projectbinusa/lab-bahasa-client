@@ -2,6 +2,9 @@ import { useState } from "react";
 import Draggable from "react-draggable";
 import { ResizableBox } from "react-resizable";
 import ChatApp from "../../views/pages/Chat/ChatApp";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import "../../App.css";
 
 function ObrolanGrup({ onClose }) {
@@ -47,6 +50,14 @@ function ObrolanGrup({ onClose }) {
           <div className="flex flex-col h-full">
             <div className="flex justify-between mb-4 p-2">
               <h2 className="text-xl font-semibold">Obrolan Grup</h2>
+              <Link
+                  to="/add-group"
+                  className="rounded-xl shadow p-2 px-3 border bg-green-500 mb-5">
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    className="text-xl text-white"
+                  />
+                </Link>
               <div className="flex gap-2">
                 <button
                   onClick={handleFullscreen}
