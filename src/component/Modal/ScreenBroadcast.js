@@ -1,14 +1,15 @@
 import { useState } from "react";
 import Draggable from "react-draggable";
 import { ResizableBox } from "react-resizable";
-import ChatApp from "../../views/pages/Chat/ChatApp";
+import ScreenBroadcast1 from "../../views/pages/screenBroadcast/ScreenBroadcast";
 import "../../App.css";
 
-function ObrolanGrup({ onClose }) {
+function ScreenBroadcast({ onClose }) {
   const [isMinimized, setIsMinimized] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [prevWidth, setPrevWidth] = useState(400);
   const [prevHeight, setPrevHeight] = useState(300);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
 
   const handleMinimize = () => {
     setIsMinimized(!isMinimized);
@@ -28,20 +29,26 @@ function ObrolanGrup({ onClose }) {
   };
 
   return (
-    <Draggable handle=".handle" disabled={isFullscreen || isMinimized}>
+    <Draggable
+      handle=".handle"
+      disabled={isFullscreen || isMinimized}
+      position={isFullscreen ? { x: 0, y: 0 } : position}
+      onStop={(e, data) => setPosition({ x: data.x, y: data.y })}
+    >
       <div
         className={`fixed z-50 bg-white p-4 rounded-lg shadow-lg ${
-          isFullscreen ? "w-full h-full top-0 left-0" : "top-32 left-52 right-52"
+          isFullscreen ? "w-full h-full top-0 left-0" : "top-32 left-52"
         }`}
+        style={isFullscreen ? { width: "100%", height: "100%" } : {}}
       >
         <ResizableBox
-          width={isMinimized ? prevWidth : (isFullscreen ? "100%" : undefined)}
-          height={isMinimized ? prevHeight : (isFullscreen ? "100%" : undefined)}
+          width={isMinimized ? prevWidth : isFullscreen ? "20%" : undefined}
+          height={isMinimized ? prevHeight : isFullscreen ? "40%" : undefined}
           className={`${isMinimized ? "hidden" : ""}`}
           minConstraints={[300, 200]}
           maxConstraints={[
-            isFullscreen ? window.innerWidth : 800,
-            isFullscreen ? window.innerHeight : 600,
+            isFullscreen ? window.innerWidth : 500,
+            isFullscreen ? window.innerHeight : 800,
           ]}
         >
           <div className="flex flex-col h-full">
@@ -52,7 +59,11 @@ function ObrolanGrup({ onClose }) {
                   onClick={handleFullscreen}
                   className="bg-gray-100 h-fit w-7 rounded-md"
                 >
-                  <i className={`fa-solid ${isFullscreen ? "fa-compress" : "fa-expand"}`}></i>
+                  <i
+                    className={`fa-solid ${
+                      isFullscreen ? "fa-compress" : "fa-expand"
+                    }`}
+                  ></i>
                 </button>
                 <button
                   onClick={onClose}
@@ -63,7 +74,7 @@ function ObrolanGrup({ onClose }) {
               </div>
             </div>
             <div className="handle w-full cursor-move flex-grow overflow-auto">
-              <ChatApp />
+              <ScreenBroadcast1 />
             </div>
           </div>
         </ResizableBox>
@@ -72,4 +83,4 @@ function ObrolanGrup({ onClose }) {
   );
 }
 
-export default ObrolanGrup;
+export default ScreenBroadcast;

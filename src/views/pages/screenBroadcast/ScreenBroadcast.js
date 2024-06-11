@@ -243,15 +243,14 @@ function ScreenBroadcast() {
 
   return (
     <div className="all">
-      <Navbar />
-      <button
+      {/* <button
         onClick={() => setShowModal(true)}
         className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-40"
       >
         Open Modal
-      </button>
-      {showModal && (
-        <div className="fixed z-10 inset-0 overflow-y-auto">
+      </button> */}
+      {/* {showModal && ( */}
+        {/* <div className="fixed z-10 inset-0 overflow-y-auto">
           <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div
               className="fixed inset-0 transition-opacity"
@@ -264,27 +263,16 @@ function ScreenBroadcast() {
               aria-hidden="true"
             >
               &#8203;
-            </span>
-            <div
+            </span> */}
+            {/* <div
               className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
               role="dialog"
               aria-modal="true"
               aria-labelledby="modal-headline"
-              style={{
-                height: modalHeight,
-                width: modalWidth,
-                maxHeight: "80vh",
-              }}
-            >
-              <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <div className="sm:flex sm:items-start">
+            > */}
+              <div className="">
+                <div className="">
                   <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                    <h3
-                      className="text-lg leading-6 font-medium text-gray-900"
-                      id="modal-headline"
-                    >
-                      Video Broadcasting
-                    </h3>
                     <div className="mt-2">
                       <div
                         className="camera-container"
@@ -398,7 +386,7 @@ function ScreenBroadcast() {
                   </div>
                 </div>
               </div>
-              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+              {/* <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <div className="w-full sm:w-1/2 mr-2">
                   <label
                     htmlFor="modalHeight"
@@ -431,8 +419,8 @@ function ScreenBroadcast() {
                     className="mt-1 focus:ring-blue-500 focus:border-blue-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                   />
                 </div>
-              </div>
-              <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+              </div> */}
+              {/* <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
                 <button
                   onClick={handleCloseModal}
                   type="button"
@@ -440,58 +428,59 @@ function ScreenBroadcast() {
                 >
                   Close
                 </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+              </div> */}
+            {/* </div> */}
+          {/* </div>
+        </div> */}
+      {/* // )} */}
       <ToastContainer />
       <style>
         {`
             .camera-container {
-              width: 100%;
-              max-width: 600px;
+              width: auto;
+              height: 30%;
               margin: 0 auto;
               position: relative;
             }
-  
+
             .video-containers {
               display: flex;
               justify-content: space-between;
               gap: 5px;
-              height: 200px;
+              height: 400px;
               position: relative;
             }
-  
+
             .camera-video-container {
-              width: 200px;
-              height: 150px;
+              width: auto;
+              height: 100px;
               background-color: transparent;
-              border-radius: 10px;
+              border-bottom-radius: 10px;
               overflow: hidden;
+              top: 20px;
               position: absolute;
               cursor: move;
             }
-  
+
             .screen-video-container {
               flex: 1;
               background-color: black;
               border-radius: 10px;
               overflow: hidden;
             }
-  
+
             video {
               width: 100%;
               height: 100%;
             }
-  
+
             .camera-controls {
               display: flex;
               justify-content: center;
               gap: 10px;
               margin-top: 20px;
             }
-  
+
             .camera-control-button {
               padding: 10px 15px;
               border-radius: 5px;
@@ -503,24 +492,24 @@ function ScreenBroadcast() {
               font-size: 16px;
               color: white;
             }
-  
+
             .start-button {
               background-color: green;
             }
-  
+
             .stop-button {
               background-color: red;
             }
-  
+
             .screen-share-button {
               background-color: blue;
             }
-  
+
             .dropdown {
               position: relative;
               display: inline-block;
             }
-  
+
             .dropdown-menu {
               display: flex;
               position: absolute;
@@ -531,11 +520,11 @@ function ScreenBroadcast() {
               flex-direction: column;
               align-items: center;
             }
-  
+
             .dropdown-menu-up {
               bottom: 100%;
             }
-  
+
             .dropdown-item {
               color: black
               ;
@@ -545,7 +534,7 @@ function ScreenBroadcast() {
               cursor: pointer;
               text-align: left;
             }
-  
+
             .dropdown-item:hover {
               background-color: #f1f1f1;
             }
