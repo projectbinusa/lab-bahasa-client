@@ -1,19 +1,43 @@
 import React, { useState } from "react";
+import { API_DUMMY } from "../../../utils/api";
+
+const authConfig = {
+  headers: {
+    "auth-event": `jwt ${localStorage.getItem("token")}`,
+  },
+};
 
 function ChatApp() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [file, setFile] = useState(null);
+  const class_id = localStorage.getItem("class_id")
+  const group_id = localStorage.getItem("group_id")
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (input.trim() !== "" || file) {
-      const newMessage = {
-        text: input,
-        file: file,
-        sender: "User",
-        timestamp: new Date().toISOString(),
-      };
-      setMessages([...messages, newMessage]);
+      const formData = new FormData();
+      formData.append("content", input);
+      formData.append("gambar", file);
+      formData.append("is_group", 1);
+
+      try {
+        const response = await fetch(`${API_DUMMY}/api/chat/class/${class_id}/group/${34}`, {
+          method: "POST",
+          body: formData,
+          headers: authConfig.headers,
+        });
+        const result = await response.json();
+        setMessages([...messages, {
+          text: result.content,
+          file: result.gambar,
+          sender: result.sender_id,
+          timestamp: new Date().toISOString(),
+        }]);
+      } catch (error) {
+        console.error("Error sending message:", error);
+      }
+
       setInput("");
       setFile(null);
     }
@@ -36,26 +60,26 @@ function ChatApp() {
   };
 
   return (
-    <div class="h-96 flex flex-col">
-      <div class="bg-gray-200 flex-1 overflow-y-hidden">
+    <div className="h-96 flex flex-col">
+      <div className="bg-gray-200 flex-1 overflow-y-hidden">
         {messages.map((message, index) => (
-          <div class="px-4 py-2" key={index}>
-            <div class="items-center justify-end">
-              <div class="bg-green-500 text-white rounded-lg p-2 shadow mr-2 max-w-sm">
+          <div className="px-4 py-2" key={index}>
+            <div className="items-center justify-end">
+              <div className="bg-green-500 text-white rounded-lg p-2 shadow mr-2 max-w-sm">
                 <p>
                   {message.sender}[{formatDate(message.timestamp)}]
                 </p>
                 <p>{message.text}</p>
-                {message.file && message.file.type.startsWith("image/") && (
+                {message.file && (
                   <img
-                    src={URL.createObjectURL(message.file)}
-                    alt={message.file.name}
+                    src={message.file}
+                    alt="Image"
                     style={{ maxWidth: "200px", maxHeight: "200px" }}
                   />
                 )}
               </div>
               <img
-                class="w-8 h-8 rounded-full"
+                className="w-8 h-8 rounded-full"
                 src="https://picsum.photos/50/50"
                 alt="User Avatar"
               />
@@ -63,10 +87,10 @@ function ChatApp() {
           </div>
         ))}
       </div>
-      <div class="bg-gray-100 px-4 py-2">
-        <div class="flex items-center">
+      <div className="bg-gray-100 px-4 py-2">
+        <div className="flex items-center">
           <input
-            class="w-full border rounded-full py-2 px-4 mr-2"
+            className="w-full border rounded-full py-2 px-4 mr-2"
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
@@ -74,7 +98,7 @@ function ChatApp() {
           />
           <input type="file" onChange={handleFileChange} />
           <button
-            class="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-full"
+            className="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-full"
             onClick={sendMessage}
           >
             Kirim
