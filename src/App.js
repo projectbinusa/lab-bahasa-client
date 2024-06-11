@@ -78,7 +78,7 @@ const App = () => {
           <PrivateRoute path="/update-class/:id" component={UpdateClass} exact />
           <PrivateRoute path="/manage-name" component={ManageName} exact />
           <PrivateRoute path="/add-name" component={AddName} exact />
-          <PrivateRoute path="/update-name" component={UpdateName} exact />
+          <PrivateRoute path="/update-name/:id" component={UpdateName} exact />
           <PrivateRoute
             path="/screen-broadcast"
             component={ScreenBroadcast}
