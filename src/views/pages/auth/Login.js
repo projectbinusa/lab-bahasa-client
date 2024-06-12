@@ -31,7 +31,7 @@ function Login() {
         setShow(false);
         Swal.fire({
           icon: "success",
-          title: "Berhasil Login",
+          title: "Berhasil Loginn",
           showConfirmButton: false,
           timer: 1500,
         });
