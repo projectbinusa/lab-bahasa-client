@@ -24,26 +24,27 @@ import ResetPassword from "./views/pages/auth/ResetPassword";
 import AddGroup from "./views/pages/Chat/AddGroup";
 import Navbar1 from "./component/Navbar1";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 import { useEffect } from "react";
 import PrivateRoute from "./utils/PrivateRoutes";
 import ChatPribadi from "./views/pages/Chat/ChatPribadi";
 import ScoreAnswer from "./views/pages/response/ScoreAnswer";
+import AnswerQuestion from "./views/pages/student/Answer";
 
 const checkTokenExpiration = () => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   if (!token) return false;
 
   try {
     const decoded = jwtDecode(token);
     const currentTime = Date.now() / 1000;
     if (decoded.exp < currentTime) {
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
       return false;
     }
     return true;
   } catch (error) {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     return false;
   }
 };
@@ -54,13 +55,12 @@ const App = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       if (!checkTokenExpiration()) {
-        history.push('/');
+        history.push("/");
       }
     }, 60000);
 
     return () => clearInterval(interval);
   }, [history]);
-
 
   return (
     <BrowserRouter>
@@ -77,7 +77,11 @@ const App = () => {
           <PrivateRoute path="/manage-class" component={ManageClass} exact />
           <PrivateRoute path="/verify-code" component={VerifyCode} exact />
           <PrivateRoute path="/add-class" component={AddClass} exact />
-          <PrivateRoute path="/update-class/:id" component={UpdateClass} exact />
+          <PrivateRoute
+            path="/update-class/:id"
+            component={UpdateClass}
+            exact
+          />
           <PrivateRoute path="/manage-name" component={ManageName} exact />
           <PrivateRoute path="/add-name" component={AddName} exact />
           <PrivateRoute path="/update-name/:id" component={UpdateName} exact />
@@ -112,11 +116,8 @@ const App = () => {
             component={ResetPassword}
             exact
           />
-          <Route
-            path="/score-answer/:id"
-            component={ScoreAnswer}
-            exact
-          />
+          <Route path="/score-answer/:id" component={ScoreAnswer} exact />
+          <Route path="/student-answer" component={AnswerQuestion} exact />
         </Switch>
       </main>
     </BrowserRouter>

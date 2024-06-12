@@ -1,0 +1,140 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { API_DUMMY } from "../../../utils/api";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+
+const authConfig = {
+  headers: {
+    "auth-event": `jwt ${localStorage.getItem("token")}`,
+  },
+};
+
+function AnswerQuestion() {
+  const [question, setQuestion] = useState(null);
+  const [answer, setAnswer] = useState("");
+  const class_id = localStorage.getItem("class_id");
+  const history = useHistory();
+
+  const getQuestion = async () => {
+    try {
+      const response = await axios.get(
+        `${API_DUMMY}/api/user/class/${class_id}/answer`,
+        authConfig
+      );
+      if (response.data.data && response.data.data.length > 0) {
+        setQuestion(response.data.data[0]); // Assume we take the first question for now
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Tidak ada pertanyaan untuk kelas ini.",
+          showConfirmButton: true,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Terjadi Kesalahan",
+        text: error.response ? error.response.data.message : "Network Error",
+        showConfirmButton: true,
+      });
+    }
+  };
+
+  useEffect(() => {
+    getQuestion();
+  }, []);
+
+  const saveChange = async (e) => {
+    e.preventDefault();
+    if (!question) {
+      Swal.fire({
+        icon: "error",
+        title: "Tidak ada pertanyaan yang tersedia.",
+        showConfirmButton: true,
+      });
+      return;
+    }
+    const data = {
+      question_id: question.id,
+      answer: answer,
+    };
+    const url_hit = `${API_DUMMY}/api/user/class/${class_id}/answer`;
+    try {
+      const response = await axios.post(url_hit, data, authConfig);
+      if (response.status === 200) {
+        Swal.fire({
+          icon: "success",
+          title: "Berhasil Menambahkan Jawaban.",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          history.push("/student/answer");
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Gagal Menambahkan Data.",
+          text: response.data.message,
+          showConfirmButton: true,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "Terjadi Kesalahan",
+        text: error.response ? error.response.data.message : "Network Error",
+        showConfirmButton: true,
+      });
+    }
+  };
+
+  return (
+    <div className="flex mt-10">
+      <div className="content-page container mx-auto">
+        <div className="w-full p-4 bg-white rounded-xl shadow-xl border border-gray-300">
+          <h1 className="text-xl sm:text-2xl font-bold text-gray-800">
+            Jawab Pertanyaan
+          </h1>
+          {question && (
+            <form onSubmit={saveChange}>
+              <div className="mb-4">
+                <p className="text-sm font-semibold text-gray-700 mb-2">
+                  Pertanyaan:
+                </p>
+                <div className="mb-2">
+                  <p className="text-gray-700">{question.text}</p>
+                </div>
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="answer"
+                  className="mb-2 text-sm font-semibold text-gray-700 block"
+                >
+                  Jawaban Anda:
+                </label>
+                <textarea
+                  id="answer"
+                  value={answer}
+                  onChange={(e) => setAnswer(e.target.value)}
+                  placeholder="Ketik jawaban Anda"
+                  className="block w-full p-2 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full py-2 font-semibold text-white bg-green-500 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 mb-2"
+              >
+                Submit Jawaban
+              </button>
+            </form>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default AnswerQuestion;
