@@ -1,25 +1,94 @@
-import React from "react";
+import { useState } from "react";
 import Draggable from "react-draggable";
 import { ResizableBox } from "react-resizable";
+import "../../App.css";
 import Questions from "../../views/pages/response/Questions";
+import Swal from "sweetalert2";
+import axios from "axios";
 
+// const authConfig = {
+//   headers: {
+//     "auth-event": `jwt ${localStorage.getItem("token")}`,
+//   },
+// };
 function Pertanyaan({ onClose }) {
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [prevWidth, setPrevWidth] = useState(400);
+  const [prevHeight, setPrevHeight] = useState(300);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+
+
+
+  const handleMinimize = () => {
+    setIsMinimized(!isMinimized);
+    if (!isMinimized) {
+      setPrevWidth(window.innerWidth / 4);
+      setPrevHeight(window.innerHeight / 4);
+    }
+  };
+
+  const handleFullscreen = () => {
+    setIsFullscreen(!isFullscreen);
+    if (isMinimized) {
+      setIsMinimized(false);
+      setPrevWidth(window.innerWidth / 4);
+      setPrevHeight(window.innerHeight / 4);
+    }
+  };
+
   return (
-    <Draggable handle=".handle">
-      <ResizableBox className="absolute left-72 right-72 z-50 p-4 top-16 rounded-lg shadow-lg overflow-hidden bg-white">
-        <div className="flex justify-between mb-4">
-          <h2 className="text-lg font-semibold">Pertanyaan</h2>
-          <button
-            onClick={onClose}
-            className="bg-gray-100 h-fit w-6 rounded-md"
-          >
-            <i className="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-        <div className="handle bg-gray-200 rounded-t-lg cursor-move">
-          <Questions />
-        </div>
-      </ResizableBox>
+    <Draggable
+      handle=".handle"
+      disabled={isFullscreen || isMinimized}
+      position={isFullscreen ? { x: 0, y: 0 } : position}
+      onStop={(e, data) => setPosition({ x: data.x, y: data.y })}
+    >
+      <div
+        className={`fixed z-50 bg-white p-4 rounded-lg shadow-lg ${
+          isFullscreen ? "w-full h-full top-0 left-0" : "top-32 left-52"
+        }`}
+        style={isFullscreen ? { width: "100%", height: "100%" } : {}}
+      >
+        <ResizableBox
+          width={isMinimized ? prevWidth : isFullscreen ? "20%" : undefined}
+          height={isMinimized ? prevHeight : isFullscreen ? "40%" : undefined}
+          className={`${isMinimized ? "hidden" : ""}`}
+          minConstraints={[300, 200]}
+          maxConstraints={[
+            isFullscreen ? window.innerWidth : 500,
+            isFullscreen ? window.innerHeight : 800,
+          ]}
+        >
+          <div className="flex flex-col h-full">
+            <div className="flex justify-between mb-4 p-2">
+              <h2 className="text-xl font-semibold">Pertanyaan</h2>
+              <div className="flex gap-2">
+                <button
+                  onClick={handleFullscreen}
+                  className="bg-gray-100 h-fit w-7 rounded-md"
+                >
+                  <i
+                    className={`fa-solid ${
+                      isFullscreen ? "fa-compress" : "fa-expand"
+                    }`}
+                  ></i>
+                </button>
+                <button
+                  onClick={onClose}
+                  className="bg-gray-100 h-fit w-7 rounded-md"
+                >
+                  <i className="fa-solid fa-xmark"></i>
+                </button>
+              </div>
+            </div>
+            <div className="handle w-full cursor-move flex-grow overflow-auto">
+              <Questions />
+            </div>
+          </div>
+        </ResizableBox>
+      </div>
     </Draggable>
   );
 }
