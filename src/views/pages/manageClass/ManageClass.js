@@ -37,9 +37,6 @@ function ManageClass() {
     }
   };
 
-  const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-  };
 
   const handleLimitChange = (event) => {
     setLimit(parseInt(event.target.value));
@@ -94,7 +91,7 @@ function ManageClass() {
           timer: 1500,
         });
       }
-    } catch (error) {
+  } catch (error) {
       console.log(error);
     }
   };
