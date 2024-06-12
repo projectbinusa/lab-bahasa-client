@@ -28,6 +28,8 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { jwtDecode } from 'jwt-decode';
 import { useEffect } from "react";
 import PrivateRoute from "./utils/PrivateRoutes";
+import ChatPribadi from "./views/pages/Chat/ChatPribadi";
+import ScoreAnswer from "./views/pages/response/ScoreAnswer";
 
 const checkTokenExpiration = () => {
   const token = localStorage.getItem('token');
@@ -109,6 +111,11 @@ const App = () => {
           <Route
             path="/reset-password/:token"
             component={ResetPassword}
+            exact
+          />
+          <Route
+            path="/score-answer/:id"
+            component={ScoreAnswer}
             exact
           />
         </Switch>
