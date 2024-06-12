@@ -12,13 +12,6 @@ function ObrolanGrub({ onClose }) {
   const [prevHeight, setPrevHeight] = useState(300);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
-  const handleMinimize = () => {
-    setIsMinimized(!isMinimized);
-    if (!isMinimized) {
-      setPrevWidth(window.innerWidth / 4);
-      setPrevHeight(window.innerHeight / 4);
-    }
-  };
 
   const handleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
@@ -54,7 +47,7 @@ function ObrolanGrub({ onClose }) {
         >
           <div className="flex flex-col h-full">
             <div className="flex justify-between mb-4 p-2">
-              <h2 className="text-xl font-semibold">Obrolan Grup</h2>
+              <h2 className="text-xl font-semibold">Obrolan Grup (Group 1)</h2>
               <div className="flex gap-2">
                 <button
                   onClick={handleFullscreen}
