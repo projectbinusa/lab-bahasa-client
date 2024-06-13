@@ -11,6 +11,7 @@ function AddName() {
   const [departement, setDepartement] = useState("");
   const [password, setPassword] = useState("");
   const [email, setemail] = useState("");
+  const [password_prompt, setpassword_prompt] = useState("");
   const history = useHistory();
   const class_id = localStorage.getItem("class_id");
 
@@ -28,6 +29,7 @@ function AddName() {
       departement: departement,
       password: password,
       gender: gender,
+      password_prompt: password_prompt,
     };
 
     let url_hit = `${API_DUMMY}/api/instructur/class/${class_id}/management_name_list`;
@@ -128,6 +130,20 @@ function AddName() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+                <div className="relative mb-4">
+                  <label className="block mb-2 text-sm font-semibold text-gray-700">
+                  Password Prompt
+                  </label>
+                  <input
+                    type="text"
+                    id="className"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                    placeholder="Masukkan Password"
+                    required
+                    value={password_prompt}
+                    onChange={(e) => setpassword_prompt(e.target.value)}
                   />
                 </div>
               </div>

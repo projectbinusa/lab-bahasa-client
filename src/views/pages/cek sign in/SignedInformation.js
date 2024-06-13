@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../component/Navbar1";
-import {
-  faArrowRightFromBracket,
-  faCircleCheck,
-  faFloppyDisk,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import {
+//   faArrowRightFromBracket,
+//   faCircleCheck,
+//   faFloppyDisk,
+// } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { API_DUMMY } from "../../../utils/api";
 import axios from "axios";
 import { Pagination } from "flowbite-react";
@@ -31,7 +31,9 @@ function SignedInformation() {
         `${API_DUMMY}/api/instructur/class/${class_id}/management_name_list?limit=${limit}&page=${currentPage}`,
         authConfig
       );
-      const filteredData = response.data.data.filter(item => item.role === 'student');
+      const filteredData = response.data.data.filter(
+        (item) => item.role === "student"
+      );
       setAllData(filteredData);
       setTotalPages(response.data.pagination.total_page);
     } catch (error) {
@@ -44,7 +46,7 @@ function SignedInformation() {
   }, [limit, currentPage]);
 
   useEffect(() => {
-    const filteredData = allData.filter(item =>
+    const filteredData = allData.filter((item) =>
       item.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setData(filteredData);
@@ -65,16 +67,16 @@ function SignedInformation() {
   return (
     <div className="flex flex-col h-screen">
       <Navbar />
-      <div className="px-32">
-        <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-24">
-          <div className="flex justify-between">
+      <div className="px-4 lg:px-32">
+        <div className="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-24">
+          <div className="flex flex-col lg:flex-row lg:justify-between">
             <h6 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
               Informasi Masuk
             </h6>
             <div className="flex gap-3 mb-4">
-              <div className="max-w-lg mx-auto">
+              <div className="max-w-lg ml-auto">
                 <div className="flex mr-2">
-                  <div className="relative w-full">
+                  <div className="w-full">
                     <input
                       type="search"
                       id="search-dropdown"
@@ -96,19 +98,19 @@ function SignedInformation() {
                   </select>
                 </div>
               </div>
-              {/* <button className="rounded-xl shadow-xl py-3 px-4 bg-gray-100">
+              {/* <button className="rounded-xl shadow-xl py-2 px-4 bg-gray-100">
                 <FontAwesomeIcon
                   icon={faArrowRightFromBracket}
                   className="text-xl text-green-400"
                 />
               </button>
-              <button className="rounded-xl shadow-xl py-3 px-4 bg-gray-100">
+              <button className="rounded-xl shadow-xl py-2 px-4 bg-gray-100">
                 <FontAwesomeIcon
                   icon={faCircleCheck}
                   className="text-xl text-green-400"
                 />
               </button>
-              <button className="rounded-xl shadow-xl py-3 px-4 bg-gray-100">
+              <button className="rounded-xl shadow-xl py-2 px-4 bg-gray-100">
                 <FontAwesomeIcon
                   icon={faFloppyDisk}
                   className="text-xl text-green-400"
@@ -117,8 +119,9 @@ function SignedInformation() {
             </div>
           </div>
           <hr />
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          
+          <div className="overflow-x-auto shadow-md sm:rounded-lg mt-5">
+            <table className="w-full table-auto text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
                   <th scope="col" className="px-5 py-3">
@@ -150,7 +153,10 @@ function SignedInformation() {
               <tbody className="text-center">
                 {data.length === 0 ? (
                   <tr>
-                    <td colSpan="8" className="px-5 py-4 text-gray-900 dark:text-gray-300">
+                    <td
+                      colSpan="8"
+                      className="px-5 py-4 text-gray-900 dark:text-gray-300"
+                    >
                       Data Tidak Ada
                     </td>
                   </tr>
@@ -179,6 +185,7 @@ function SignedInformation() {
               </tbody>
             </table>
           </div>
+
           {totalPages > 1 && (
             <Pagination
               className="mt-5"

@@ -7,14 +7,20 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, useParams } from "react-router-dom/cjs/react-router-dom.min";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { API_DUMMY } from "../../../utils/api";
+import { Pagination } from "flowbite-react";
 
 function ManageName() {
   const [userData, setUserData] = useState([]);
   const class_id = localStorage.getItem("class_id");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [limit, setLimit] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const param = useParams();
 
   const authConfig = {
     headers: {
@@ -25,45 +31,59 @@ function ManageName() {
   const getAllData = async () => {
     try {
       const response = await axios.get(
-        `${API_DUMMY}/api/instructur/class/${class_id}/management_name_list`,
+        `${API_DUMMY}/api/instructur/class/${class_id}/management_name_list?limit=${limit}&name=${searchTerm}&page=${currentPage}`,
         authConfig
       );
       setUserData(response.data.data);
+      setTotalPages(response.data.pagination.total_page);
     } catch (error) {
       console.log(error);
     }
   };
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleLimitChange = (event) => {
+    setLimit(parseInt(event.target.value));
+  };
+
   const deleteData = async (id) => {
     try {
-      await axios.delete(
-        `${API_DUMMY}/api/instructur/class/${id}/management_name_list`,
-        authConfig
-      );
-      Swal.fire({
-        title: "Apakah anda yakin",
-        text: "Data ini akan di hapus dan tidak akan bisa kembali!",
+      const confirmResult = await Swal.fire({
+        title: "Apakah Anda yakin?",
+        text: "Data ini akan dihapus dan tidak akan bisa kembali!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Ya",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire({
-            title: "Deleted!",
-            text: "Data berhasil di hapus.",
-            icon: "success",
-          });
-        }
       });
-      getAllData();
+      if (confirmResult.isConfirmed) {
+        await axios.delete(
+          `${API_DUMMY}/api/instructur/class/${class_id}/management_name_list/${id}`,
+          authConfig
+        );
+        await Swal.fire({
+          title: "Deleted!",
+          text: "Data berhasil dihapus.",
+          icon: "success",
+        });
+        // Di sini Anda bisa memanggil fungsi atau melakukan apa pun yang diperlukan setelah penghapusan
+        getAllData();
+      }
     } catch (error) {
       console.log(error);
     }
   };
+
+  function onPageChange(page) {
+    setCurrentPage(page);
+  }
   useEffect(() => {
     getAllData();
-  }, []);
+  }, [searchTerm, limit, currentPage]);
   return (
     <>
       <div className="flex flex-col h-screen">
@@ -74,6 +94,32 @@ function ManageName() {
               <h6 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                 Kelola Daftar Nama
               </h6>
+              <div className="flex justify-end">
+                <div class="max-w-lg mx-auto">
+                  <div class="flex mr-2">
+                    <div class="relative w-full">
+                      <input
+                        type="search"
+                        id="search-dropdown"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        class="block p-2.5 w-full z-20 text-sm rounded-l-md text-gray-900 bg-gray-50 border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500 "
+                        placeholder="Search name..."
+                        required
+                      />
+                    </div>
+                    <select
+                      value={limit}
+                      onChange={handleLimitChange}
+                      class="flex-shrink-0 z-10 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
+                    >
+                      <option value="10">10</option>
+                      <option value="20">20</option>
+                      <option value="50">50</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
               <div className="flex gap-3 mb-5">
                 <button className="rounded-xl shadow-xl py-3 px-4 bg-gray-100">
                   <FontAwesomeIcon
@@ -168,6 +214,14 @@ function ManageName() {
                 </tbody>
               </table>
             </div>
+            <Pagination
+              className="mt-5"
+              layout="table"
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={onPageChange}
+              showIcons
+            />
           </div>
         </div>
       </div>
