@@ -1,88 +1,76 @@
 import React, { useEffect, useState } from "react";
-import { API_DUMMY } from "../../../utils/api";
 import axios from "axios";
 import img from "../../../component/Asset/group.png";
+import { API_DUMMY } from "../../../utils/api";
 
 const authConfig = {
   headers: {
     "auth-event": `jwt ${localStorage.getItem("token")}`,
-    "Content-Type": "application/json",
+    "Content-Type": "multipart/form-data",
   },
 };
 
 function ChatApp() {
-  const [messages, setMessages] = useState([]);
   const [chatGroup, setChatGroup] = useState([]);
-  const [input, setInput] = useState("");
-  const [file, setFile] = useState(null);
+  const [content, setContent] = useState("");
+  const [gambar, setGambar] = useState(null);
   const [list, setList] = useState([]);
-  const [selectedGroup, setSelectedGroup] = useState(null); // State untuk menyimpan grup yang dipilih
+  const [selectedGroup, setSelectedGroup] = useState(null);
   const class_id = localStorage.getItem("class_id");
-  const [showFullContent, setShowFullContent] = useState(false);
 
-
-  const sendMessage = async () => {
+  // Fungsi untuk mengirim pesan
+  const sendMessage = async (e) => {
+    e.preventDefault();
     if (!selectedGroup) {
       console.error("Group not selected.");
       return;
     }
 
-    if (input.trim() !== "" || file) {
-      const formData = new FormData();
-      formData.append("content", input);
-      if (file) {
-        formData.append("gambar", file);
-      }
-      formData.append("is_group", 1);
+    const formData = new FormData();
+    formData.append("is_group", 1);
+    if (gambar) {
+      formData.append("gambar", gambar);
+    }
+    if (content) {
+      formData.append("content", content);
+    }
 
-      try {
-        const response = await fetch(
-          `${API_DUMMY}/api/chat/class/${class_id}/group/${selectedGroup.id}`,
-          {
-            method: "POST",
-            body: formData,
-            headers: authConfig.headers,
-          }
-        );
-        if (response.ok) {
-          const result = await response.json();
-          setChatGroup((prevMessages) => [
-            ...prevMessages,
-            {
-              content: result.content,
-              gambar: result.gambar,
-              sender_id: result.sender_id,
-              created_date: new Date().toISOString(),
-            },
-          ]);
-        } else {
-          console.error("Error sending message:", response.statusText);
-        }
-      } catch (error) {
-        console.error("Error sending message:", error);
+    try {
+      const response = await axios.post(
+        `${API_DUMMY}/api/chat/class/${class_id}/group/${selectedGroup.id}`,
+        formData,
+        authConfig
+      );
+      if (response.status === 200) {
+        getAllDataChatGroup(selectedGroup.id);
+        setContent("");
+        setGambar(null);
       }
-
-      setInput("");
-      setFile(null);
+    } catch (error) {
+      console.error("Error sending message:", error);
     }
   };
 
+  // Fungsi untuk meng-handle perubahan file gambar
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
-    setFile(selectedFile);
+    setGambar(selectedFile);
   };
 
+  // Fungsi untuk memformat tanggal
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    const seconds = String(date.getSeconds()).padStart(2, "0");
-    return `${year}-${month}-${day} , ${hours}:${minutes}:${seconds}`;
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(date.getDate()).padStart(2, "0")} , ${String(
+      date.getHours()
+    ).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(
+      date.getSeconds()
+    ).padStart(2, "0")}`;
   };
 
+  // Memuat semua data grup
   const getAllData = async () => {
     try {
       const response = await axios.get(
@@ -95,24 +83,27 @@ function ChatApp() {
     }
   };
 
+  // Memuat semua pesan dari sebuah grup
   const getAllDataChatGroup = async (group_id) => {
     try {
       const response = await axios.get(
         `${API_DUMMY}/api/chat/class/${class_id}/group/${group_id}`,
         authConfig
       );
-      setChatGroup(response.data.data);
-      console.log(response.data.data);
+      // Balik urutan data dari terbaru ke terlama
+      const reversedMessages = response.data.data.slice().reverse();
+      setChatGroup(reversedMessages);
     } catch (error) {
       console.log(error);
     }
   };
 
+  // Memuat data saat komponen pertama kali dimuat
   useEffect(() => {
     getAllData();
-    // getAllDataChatGroup()
   }, []);
 
+  // Memuat pesan dari grup yang dipilih setiap kali grup berubah
   useEffect(() => {
     if (selectedGroup) {
       getAllDataChatGroup(selectedGroup.id);
@@ -131,8 +122,7 @@ function ChatApp() {
               <div
                 key={index}
                 className="bg-green-300 rounded-lg p-2 flex gap-4 cursor-pointer"
-                onClick={() => setSelectedGroup(data)} // Set grup yang dipilih ketika grup diklik
-              >
+                onClick={() => setSelectedGroup(data)}>
                 <div className="border-2 w-fit rounded-full border-green-500">
                   <img className="w-9" src={img} alt="" />
                 </div>
@@ -151,12 +141,12 @@ function ChatApp() {
             <div className="overflow-y-scroll overflow-scroll h-[90%]">
               {chatGroup.map((message, index) => (
                 <div
+                  key={index}
                   className={`px-4 py-2 ${
                     message.sender_id == localStorage.getItem("user_id")
                       ? "flex justify-start"
                       : "flex justify-end"
-                  }`}
-                  key={index}>
+                  }`}>
                   <div className="flex w-96 items-center">
                     <img
                       className="w-8 h-8 rounded-full"
@@ -167,10 +157,9 @@ function ChatApp() {
                       <div className="flex justify-between">
                         <p>{message.content}</p>
                         <button className="">
-                          <i class="fa-solid fa-ellipsis-vertical"></i>
+                          <i className="fa-solid fa-ellipsis-vertical"></i>
                         </button>
                       </div>
-                      <p>{formatDate(message.created_date)}</p>
                       {message.gambar && (
                         <img
                           className="mt-2"
@@ -179,6 +168,7 @@ function ChatApp() {
                           style={{ maxWidth: "200px", maxHeight: "200px" }}
                         />
                       )}
+                      <p>{formatDate(message.created_date)}</p>
                     </div>
                   </div>
                 </div>
@@ -186,26 +176,21 @@ function ChatApp() {
             </div>
           </div>
           <div className="bg-gray-100 px-4 py-2">
-            <div className="flex items-center">
+            <form onSubmit={sendMessage} className="flex items-center">
               <input
                 className="w-full border rounded-full py-2 px-4 mr-2"
                 type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
                 placeholder="Ketik pesan anda..."
               />
               <input type="file" onChange={handleFileChange} />
               <button
                 className="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-full"
-                onClick={sendMessage}>
+                type="submit">
                 Kirim
               </button>
-              {/* {!selectedGroup && (
-                <p className="text-red-500">
-                  Pilih grup sebelum mengirim pesan.
-                </p>
-              )} */}
-            </div>
+            </form>
           </div>
         </div>
       </div>
