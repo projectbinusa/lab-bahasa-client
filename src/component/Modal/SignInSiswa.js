@@ -15,6 +15,7 @@ const authConfig = {
 
 function SignInModal({ onClose }) {
   const [end_time, setEndTime] = useState("");
+  const [verifikasiPassword, setVerifikasiPassword] = useState(false);
   const class_id = localStorage.getItem("class_id");
   const history = useHistory();
 
@@ -22,8 +23,13 @@ function SignInModal({ onClose }) {
     e.preventDefault();
     const data = {
       end_time: end_time,
+      verifikasi_password: verifikasiPassword,
     };
     const url_hit = `${API_DUMMY}/api/instructur/class/${class_id}/login_limits`;
+
+    // Save verifikasi_password value to localStorage
+    localStorage.setItem("verifikasi_password", verifikasiPassword);
+
     try {
       const response = await axios.post(url_hit, data, authConfig);
       if (response.status === 200) {
@@ -77,7 +83,11 @@ function SignInModal({ onClose }) {
           <form onSubmit={saveChange}>
             <div className="mb-4">
               <label className="flex items-center space-x-3">
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  checked={verifikasiPassword}
+                  onChange={(e) => setVerifikasiPassword(e.target.checked)}
+                />
                 <span>Verifikasi Password</span>
               </label>
             </div>
