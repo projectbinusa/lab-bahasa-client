@@ -11,13 +11,12 @@ const authConfig = {
   },
 };
 
-
 function AddClass() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
   const [is_active, setis_active] = useState(0);
-  const history = useHistory()
+  const history = useHistory();
 
   const saveChange = async (e) => {
     e.preventDefault();
@@ -26,10 +25,9 @@ function AddClass() {
     formData.append("name", name);
     formData.append("description", description);
     formData.append("is_active", is_active);
-    let url_hit = `${API_DUMMY}/api/instructur/class`
+    let url_hit = `${API_DUMMY}/api/instructur/class`;
     try {
-      const response = await axios.post(url_hit, formData, authConfig
-      );
+      const response = await axios.post(url_hit, formData, authConfig);
       if (response.status == 200) {
         history.push("/manage-class");
         Swal.fire({
@@ -47,10 +45,9 @@ function AddClass() {
 
   return (
     <>
-      <div className="flex flex-col h-screen bg-gray-100">
-        <Navbar />
-        <div className="content-page container mx-auto p-8">
-          <div className="add-class mt-12 bg-white p-8 rounded-xl shadow-xl border border-gray-300">
+      <div className="flex bg-gray-100">
+        <div className="content-page container mx-auto">
+          <div className="add-class bg-white p-8 rounded-xl shadow-xl border border-gray-300">
             <h1 className="text-xl sm:text-2xl font-bold mb-3 text-gray-800">
               Tambah Kelas
             </h1>

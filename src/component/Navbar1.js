@@ -26,11 +26,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import Swal from "sweetalert2";
-import ObrolanGrup from "./Modal/ObrolanGrub";
-import TopikObrolan from "./Modal/TopikObrolan";
-import Pertanyaan from "./Modal/Pertanyaan";
-import Kompetisi from "./Modal/Kompetisi";
-import ScreenBroadcast from "./Modal/ScreenBroadcast";
 import FaceToFace from "./Modal/FaceToFace";
 import SignInModal from "./Modal/SignInSiswa";
 
@@ -39,14 +34,9 @@ function Navbar() {
   const [chatDropdownOpen, setChatDropdownOpen] = useState(false);
   const [respDropdownOpen, setRespDropdownOpen] = useState(false);
   const [manageDropdownOpen, setManageDropdownOpen] = useState(false);
-  const [showChatGroup, setShowChatGroup] = useState(false);
-  const [showChatGroup1, setShowChatGroup1] = useState(false);
-  const [showQuestions, setShowQuestions] = useState(false);
-  const [showResponse, setShowResponse] = useState(false);
   const [showFaceToFace, setShowFaceToFace] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const history = useHistory();
-  const [showScreenBroadCast, setShowScreenBroadCast] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
   const [userRole, setUserRole] = useState("");
 
@@ -72,22 +62,6 @@ function Navbar() {
       showConfirmButton: false,
       timer: 1500,
     });
-  };
-
-  const handleScreenBroadCastClick = () => {
-    setShowScreenBroadCast(true);
-  };
-
-  const handleCloseScreenBroadcast = () => {
-    setShowScreenBroadCast(false);
-  };
-
-  const handleObrolanGrupClick = () => {
-    setShowChatGroup(true);
-  };
-
-  const handleCloseObrolanGrup = () => {
-    setShowChatGroup(false);
   };
 
   const toggleDropdown = (dropdownName) => {
@@ -124,36 +98,12 @@ function Navbar() {
     }
   };
 
-  const handleObrolanGrupClick1 = () => {
-    setShowChatGroup1(true);
-  };
-
-  const handleCloseObrolanGrup1 = () => {
-    setShowChatGroup1(false);
-  };
-
   const handleFaceToFace = () => {
     setShowFaceToFace(true);
   };
 
   const handleCloseFaceToFace = () => {
     setShowFaceToFace(false);
-  };
-
-  const handleQuestions = () => {
-    setShowQuestions(true);
-  };
-
-  const handleCloseQuestions = () => {
-    setShowQuestions(false);
-  };
-
-  const handleResponse = () => {
-    setShowResponse(true);
-  };
-
-  const handleCloseResponse = () => {
-    setShowResponse(false);
   };
 
   const toggleSidebar = () => {
@@ -186,13 +136,10 @@ function Navbar() {
                   <FontAwesomeIcon icon={faChartLine} className="px-1" />
                   Halaman Utama
                 </Link>
-                <button
-                  onClick={handleScreenBroadCastClick}
-                  className="text-sm font-semibold"
-                >
+                <Link to="screen-broadcast" className="text-sm font-semibold">
                   <FontAwesomeIcon icon={faDisplay} className="px-1" />
                   Siaran Layar
-                </button>
+                </Link>
                 <Link to="/camera" className="text-sm font-semibold">
                   <FontAwesomeIcon icon={faCamera} className="px-1" />
                   Kamera
@@ -226,22 +173,20 @@ function Navbar() {
                           : "top-full right-0 mr-2"
                       } mt-2 lg:w-48 bg-white rounded-md shadow-lg py-2 z-50`}
                     >
-                      <button
-                        type="button"
-                        onClick={handleObrolanGrupClick}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 whitespace-nowrap hover:bg-gray-100"
+                      <Link
+                        to="/group-chat"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
                         <FontAwesomeIcon icon={faUsers} className="mr-2" />
                         Obrolan Grup
-                      </button>
-                      <button
-                        type="button"
-                        onClick={handleObrolanGrupClick1}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 whitespace-nowrap hover:bg-gray-100"
+                      </Link>
+                      <Link
+                        to="/topic-chat"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
                         <FontAwesomeIcon icon={faComments} className="mr-2" />{" "}
                         Topik Obrolan
-                      </button>
+                      </Link>
                       <button
                         type="button"
                         onClick={handleFaceToFace}
@@ -274,26 +219,25 @@ function Navbar() {
                           : "top-full right-0 mr-2"
                       } mt-2 lg:w-48 bg-white rounded-md shadow-lg py-2 z-50`}
                     >
-                      <button
+                      <Link
+                        to="/response-competition"
                         type="button"
-                        onClick={handleResponse}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 whitespace-nowrap hover:bg-gray-100"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
-                        <FontAwesomeIcon icon={faMedal} className="mr-1" />{" "}
+                        <FontAwesomeIcon icon={faMedal} className="mr-1" />
                         Kompetisi Respon
-                      </button>
-                      <button
-                        type="button"
-                        onClick={handleQuestions}
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 whitespace-nowrap hover:bg-gray-100"
+                      </Link>
+                      <Link
+                        to="/questions"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
                         <FontAwesomeIcon icon={faQuestion} className="mr-2" />{" "}
                         Pertanyaan
-                      </button>
+                      </Link>
                     </div>
                   )}
                 </div>
-                
+
                 <div className={`relative ${isSidebarOpen ? "ml-0" : ""}`}>
                   <button
                     onClick={() => toggleDropdown("manage")}
@@ -360,22 +304,22 @@ function Navbar() {
                   <FontAwesomeIcon icon={faChartLine} className="px-1" />
                   Halaman Utama
                 </Link>
-                <button
-                  onClick={handleScreenBroadCastClick}
-                  className="text-sm font-semibold"
-                >
+                <Link to="screen-broadcast" className="text-sm font-semibold">
                   <FontAwesomeIcon icon={faDisplay} className="px-1" />
                   Siaran Layar
-                </button>
+                </Link>
                 <Link to="/camera" className="text-sm font-semibold">
                   <FontAwesomeIcon icon={faCamera} className="px-1" />
                   Kamera
                 </Link>
-                <Link to="/interaction-student" className="text-sm font-semibold">
+                <Link
+                  to="/interaction-student"
+                  className="text-sm font-semibold"
+                >
                   <FontAwesomeIcon icon={faUsers} className="px-1" />
                   Intseraksi Siswa
                 </Link>
-                
+
                 <div className={`relative ${isSidebarOpen ? "ml-0" : ""}`}>
                   <button
                     onClick={() => toggleDropdown("chat")}
@@ -393,22 +337,20 @@ function Navbar() {
                           : "top-full right-0 mr-2"
                       } mt-2 lg:w-48 bg-white rounded-md shadow-lg py-2 z-50`}
                     >
-                      <button
-                        type="button"
-                        onClick={handleObrolanGrupClick}
-                        className="block px-4 py-2 text-sm text-gray-700 whitespace-nowrap hover:bg-gray-100"
+                      <Link
+                        to="/group-chat"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
                         <FontAwesomeIcon icon={faUsers} className="mr-2" />
                         Obrolan Grup
-                      </button>
-                      <button
-                        type="button"
-                        onClick={handleObrolanGrupClick1}
-                        className="block px-4 py-2 text-sm text-gray-700 whitespace-nowrap hover:bg-gray-100"
+                      </Link>
+                      <Link
+                        to="/topic-chat"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
                         <FontAwesomeIcon icon={faComments} className="mr-2" />{" "}
                         Topik Obrolan
-                      </button>
+                      </Link>
                       <button
                         type="button"
                         onClick={handleFaceToFace}
@@ -423,7 +365,6 @@ function Navbar() {
                     </div>
                   )}
                 </div>
-
               </div>
             </div>
           </>
@@ -462,14 +403,8 @@ function Navbar() {
           </div>
         </div>
       </nav>
-      {showChatGroup && <ObrolanGrup onClose={handleCloseObrolanGrup} />}
-      {showChatGroup1 && <TopikObrolan onClose={handleCloseObrolanGrup1} />}
-      {showQuestions && <Pertanyaan onClose={handleCloseQuestions} />}
-      {showResponse && <Kompetisi onClose={handleCloseResponse} />}
+
       {showFaceToFace && <FaceToFace onClose={handleCloseFaceToFace} />}
-      {showScreenBroadCast && (
-        <ScreenBroadcast onClose={handleCloseScreenBroadcast} />
-      )}
       {showSignIn && <SignInModal onClose={handleCloseSignIn} />}
     </>
   );
