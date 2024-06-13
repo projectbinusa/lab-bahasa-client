@@ -220,12 +220,11 @@ const Whiteboard = () => {
           display: "flex",
           flexDirection: "column",
           height: "100%",
-          marginTop: "60px",
           paddingBottom: "20px",
           overflowX: "hidden",
         }}
       >
-        <Typography variant="h4" gutterBottom sx={{ py: 1, px: 2 }}>
+        <Typography variant="h4" gutterBottom sx={{ pt: 1, px: 2 }}>
           Papan tulis interaktif
         </Typography>
         <Divider />

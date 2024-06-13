@@ -267,11 +267,10 @@ const InteraksiStudent = () => {
           display: "flex",
           flexDirection: "column",
           height: "100%",
-          marginTop: "60px",
           paddingBottom: "20px",
           overflowX: "hidden",
         }}>
-        <Typography variant="h4" gutterBottom sx={{ py: 1, px: 2, mt: 2 }}>
+        <Typography variant="h4" gutterBottom sx={{ py: 1, px: 2 }}>
           Papan Interaksi dengan Siswa
         </Typography>
         <Divider />
