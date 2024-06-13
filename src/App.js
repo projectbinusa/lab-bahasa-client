@@ -22,6 +22,7 @@ import InteraksiStudent from "./views/pages/InteractiveWhiteboard/InteraksiStude
 import VerifyCode from "./views/pages/auth/VerifyCode";
 import ResetPassword from "./views/pages/auth/ResetPassword";
 import AddGroup from "./views/pages/Chat/AddGroup";
+import AddTopicChat from "./views/pages/Chat/AddTopicChat";
 import Navbar1 from "./component/Navbar1";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { jwtDecode } from "jwt-decode";
@@ -86,6 +87,7 @@ const App = () => {
           <PrivateRoute path="/add-name" component={AddName} exact />
           <PrivateRoute path="/update-name/:id" component={UpdateName} exact />
           <PrivateRoute path="/add-group" component={AddGroup} exact />
+          <PrivateRoute path="/add-topic-chat" component={AddTopicChat} exact />
           <PrivateRoute
             path="/screen-broadcast"
             component={ScreenBroadcast}
