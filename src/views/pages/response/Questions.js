@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { API_DUMMY } from "../../../utils/api";
+import Navbar from "../../../component/Navbar1";
 
 const authConfig = {
   headers: {
@@ -88,7 +89,9 @@ function Questions() {
       setPhase("answer");
       startTimer(answerTime, "answer");
     }, thinkTime * 1000);
-    saveChange();
+    saveChange().then(() => {
+      window.location.reload("/question");
+    });
   };
 
   const resetForm = () => {
@@ -120,102 +123,87 @@ function Questions() {
   // };
 
   return (
-    <div className="flex bg-gray-100">
-      <div className="content-page container mx-auto">
-        <div className="w-auto p-4 bg-white rounded-xl shadow-xl border border-gray-300">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-800">
+    <div className="flex flex-col h-screen">
+      <Navbar />
+      <div className="content-page container mx-auto mt-10">
+        <div className="w-11/12 p-3 bg-white rounded-lg shadow-lg border border-gray-300 mx-auto">
+          <h1 className="text-lg sm:text-xl font-bold text-gray-800">
             Kompetisi Respon
           </h1>
-          <div className="mb-4 mt-4">
+          <div className="mb-3 mt-3">
             <label
               htmlFor="type"
-              className="mb-2 text-sm font-semibold text-gray-700 block">
+              className="mb-1 text-sm font-semibold text-gray-700 block"
+            >
               Jenis:
             </label>
             <select
               id="type"
               value={type}
               onChange={(e) => setType(e.target.value)}
-              className="block w-full p-2 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+              className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+            >
               <option value="">Pilih jenis</option>
               <option value="Fist to Answer">Tinjau untuk menjawab</option>
               <option value="Enter an Answer">Masukkan jawaban</option>
               <option value="Demo to Answer">Demo untuk menjawab</option>
             </select>
           </div>
-          <div className="mb-4">
+          <div className="mb-3">
             <label
               htmlFor="answer-time"
-              className="mb-2 text-sm font-semibold text-gray-700 block">
-              Pertanyaan :
+              className="mb-1 text-sm font-semibold text-gray-700 block"
+            >
+              Pertanyaan:
             </label>
             <input
               type="text"
               id="pertanyaan"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="block w-full p-2 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+              className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-3">
             <label
               htmlFor="think-time"
-              className="mb-2 text-sm font-semibold text-gray-700 block">
-              Waktu berfikir :
+              className="mb-1 text-sm font-semibold text-gray-700 block"
+            >
+              Waktu berfikir:
             </label>
             <input
               type="time"
               id="think-time"
               value={thinkTime}
               onChange={(e) => setThinkTime(e.target.value)}
-              className="block w-full p-2 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+              className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-3">
             <label
               htmlFor="answer-time"
-              className="mb-2 text-sm font-semibold text-gray-700 block">
-              Waktu jawab :
+              className="mb-1 text-sm font-semibold text-gray-700 block"
+            >
+              Waktu jawab:
             </label>
             <input
               type="time"
               id="answer-time"
               value={answerTime}
               onChange={(e) => setAnswerTime(e.target.value)}
-              className="block w-full p-2 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+              className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
             />
           </div>
-          <div className="mb-4 w-[70%]">
+          <div className="mb-3 w-[70%]">
             <p className="text-sm font-semibold text-gray-700">Instructions:</p>
             <p className="text-gray-700">{getInstructions()}</p>
           </div>
-          {/* <div className="mb-4">
-            {timeLeft !== null && (
-              <p className="font-medium text-gray-700">
-                {phase === "think"
-                  ? `Think Time Left: ${formatTime(timeLeft)}`
-                  : phase === "answer"
-                  ? `Answer Time Left: ${formatTime(timeLeft)}`
-                  : "Competition Over"}
-              </p>
-            )}
-          </div> */}
           <button
             className="w-full py-2 font-semibold text-white bg-green-500 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 mb-2"
-            onClick={startCompetition}>
+            onClick={startCompetition}
+          >
             Mulai Kompetisi
           </button>
-          {/* <button
-            className="w-full py-2 font-semibold text-white bg-red-500 rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-            onClick={resetForm}>
-            Atur ulang
-          </button> */}
-          {/* <button
-            className="w-full py-2 font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mt-4"
-            onClick={saveChange}
-          >
-            Simpan Perubahan
-          </button> */}
         </div>
       </div>
     </div>

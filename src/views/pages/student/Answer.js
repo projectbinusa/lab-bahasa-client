@@ -12,6 +12,7 @@ const authConfig = {
 
 function AnswerQuestion() {
   const [question, setQuestion] = useState(null);
+  const [question_id, setQuestionId] = useState(null);
   const [answer, setAnswer] = useState("");
   const class_id = localStorage.getItem("class_id");
   const history = useHistory();
@@ -19,11 +20,13 @@ function AnswerQuestion() {
   const getQuestion = async () => {
     try {
       const response = await axios.get(
-        `${API_DUMMY}/api/user/class/${class_id}/answer`,
+        `${API_DUMMY}/api/user/class/${class_id}/question`,
         authConfig
       );
       if (response.data.data && response.data.data.length > 0) {
-        setQuestion(response.data.data[0]); // Assume we take the first question for now
+        const questionData = response.data.data[0];
+        setQuestion(questionData);
+        setQuestionId(questionData.id);
       } else {
         Swal.fire({
           icon: "error",
@@ -36,14 +39,20 @@ function AnswerQuestion() {
       Swal.fire({
         icon: "error",
         title: "Terjadi Kesalahan",
-        text: error.response ? error.response.data.message : "Network Error",
+        text: error.response
+          ? error.response.data.message
+          : "Tidak bisa get data",
         showConfirmButton: true,
       });
     }
   };
 
   useEffect(() => {
-    getQuestion();
+    const interval = setInterval(() => {
+      getQuestion();
+    }, 1000); // Check for new questions every 2 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   const saveChange = async (e) => {
@@ -57,7 +66,7 @@ function AnswerQuestion() {
       return;
     }
     const data = {
-      question_id: question.id,
+      question_id: question_id,
       answer: answer,
     };
     const url_hit = `${API_DUMMY}/api/user/class/${class_id}/answer`;
@@ -70,7 +79,7 @@ function AnswerQuestion() {
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          history.push("/student/answer");
+          window.location.reload("/student-answer");
         });
       } else {
         Swal.fire({
@@ -105,7 +114,7 @@ function AnswerQuestion() {
                   Pertanyaan:
                 </p>
                 <div className="mb-2">
-                  <p className="text-gray-700">{question.text}</p>
+                  <p className="text-gray-700">{question.name}</p>
                 </div>
               </div>
               <div className="mb-4">
@@ -113,21 +122,22 @@ function AnswerQuestion() {
                   htmlFor="answer"
                   className="mb-2 text-sm font-semibold text-gray-700 block"
                 >
-                  Jawaban Anda:
+                  Jawaban:
                 </label>
-                <textarea
+                <input
+                  type="text"
                   id="answer"
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
-                  placeholder="Ketik jawaban Anda"
                   className="block w-full p-2 text-base text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                  placeholder="Masukkan jawaban Anda"
                 />
               </div>
               <button
                 type="submit"
                 className="w-full py-2 font-semibold text-white bg-green-500 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 mb-2"
               >
-                Submit Jawaban
+                Kirim Jawaban
               </button>
             </form>
           )}
