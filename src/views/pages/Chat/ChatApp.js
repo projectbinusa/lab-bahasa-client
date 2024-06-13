@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { API_DUMMY } from "../../../utils/api";
 import axios from "axios";
 import img from "../../../component/Asset/group.png";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const authConfig = {
   headers: {
@@ -123,9 +126,15 @@ function ChatApp() {
     <>
       <div className="flex justify-center gap-4">
         <div className="bg-white w-96">
-          <button className="bg-green-500 w-full h-10">
-            <p className="text-center text-white">Add Group</p>
-          </button>
+        <button className="bg-green-500 w-full h-12 rounded-t-lg">
+          <Link
+            to="/add-group"
+            className="flex items-center justify-center h-full text-white text-lg"
+          >
+            <FontAwesomeIcon icon={faPlus} className="mr-2" />
+            Add Group
+          </Link>
+        </button>
           <div className="p-2">
             {list.map((data, index) => (
               <div
