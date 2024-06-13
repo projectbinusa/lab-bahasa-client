@@ -76,7 +76,7 @@ function SignedInformation() {
             <div className="flex gap-3 mb-4">
               <div className="max-w-lg ml-auto">
                 <div className="flex mr-2">
-                  <div className="relative w-full">
+                  <div className="w-full">
                     <input
                       type="search"
                       id="search-dropdown"
@@ -120,7 +120,7 @@ function SignedInformation() {
           </div>
           <hr />
           
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
+          <div className="overflow-x-auto shadow-md sm:rounded-lg mt-5">
             <table className="w-full table-auto text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>

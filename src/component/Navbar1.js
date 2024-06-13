@@ -254,152 +254,6 @@ function Navbar() {
                   </button>
                 </div>
               )}
-              <Link to="/camera" className="text-sm font-semibold">
-                <FontAwesomeIcon icon={faCamera} className="px-1" />
-                Kamera
-              </Link>
-              <Link to="/whiteboard" className="text-sm font-semibold">
-                <FontAwesomeIcon icon={faChalkboard} className="px-1" />
-                Papan tulis interaktif
-              </Link>
-              <Link to="/interaction-student" className="text-sm font-semibold">
-                <FontAwesomeIcon icon={faChalkboardUser} className="px-1" />
-                Siswa Interaksi
-              </Link>
-              <div className="relative">
-                <button
-                  onClick={toggleChatDropdown}
-                  className="text-sm font-semibold flex items-center focus:outline-none">
-                  <FontAwesomeIcon icon={faComments} className="px-1" />
-                  Obrolan{" "}
-                  <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
-                </button>
-                {chatDropdownOpen && (
-                  <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">
-                    <button
-                      type="button"
-                      onClick={handleObrolanGrupClick}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      <FontAwesomeIcon icon={faUsers} className="mr-2" />{" "}
-                      Obrolan Grup
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleObrolanGrupClick1}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      <FontAwesomeIcon icon={faComments} className="mr-2" />{" "}
-                      Topik Obrolan
-                    </button>
-                    {/* <Link
-                      to="#"
-                      onClick={handleObrolanGrupClick1}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      <FontAwesomeIcon icon={faComments} className="mr-2" />{" "}
-                      Topik Obrolan
-                    </Link> */}
-                    <Link
-                      to="/face-to-face-chat"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      <FontAwesomeIcon icon={faUserFriends} className="mr-2" />{" "}
-                      Obrolan Tatap Muka
-                    </Link>
-                  </div>
-                )}
-              </div>
-              <div className="relative">
-                <button
-                  onClick={toggleRespDropdown}
-                  className="text-sm font-semibold flex items-center focus:outline-none">
-                  <FontAwesomeIcon icon={faMedapps} className="px-1" />
-                  Kompetisi Respon
-                  <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
-                </button>
-                {respDropdownOpen && (
-                  <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">
-                    <Link
-                      to="/response-competition"
-                      type="button"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      <FontAwesomeIcon icon={faMedal} className="mr-1" />
-                      Kompetisi Respon
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={handleQuestions}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      <FontAwesomeIcon icon={faQuestion} className="mr-2" />
-                      Pertanyaan
-                    </button>
-                  </div>
-                )}
-              </div>
-              <div className="relative">
-                <button
-                  onClick={toggleManageDropdown}
-                  className="text-sm font-semibold flex items-center focus:outline-none">
-                  <FontAwesomeIcon icon={faListCheck} className="px-1" />
-                  Kelola Kelas
-                  <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
-                </button>
-                {manageDropdownOpen && (
-                  <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">
-                    <Link
-                      to="/manage-class"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      <FontAwesomeIcon icon={faUsers} className="mr-2" /> Kelola
-                      Kelas
-                    </Link>
-                    <Link
-                      to="/manage-name"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      <FontAwesomeIcon icon={faListOl} className="mr-2" />
-                      Kelola Daftar Nama
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={handleSignIn}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      <FontAwesomeIcon icon={faUser} className="mr-2" />
-                      Masuk Siswa
-                    </button>
-                    <Link
-                      to="/signed-information"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      <FontAwesomeIcon icon={faCircleInfo} className="mr-2" />
-                      Informasi yang Ditandatangani
-                    </Link>
-                  </div>
-                )}
-              </div>
-              <div className="profile relative ml-6">
-                <button
-                  onClick={toggleDropdown}
-                  className="flex items-center focus:outline-none">
-                  <img
-                    className="w-10 h-10 rounded-full"
-                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                    alt="User profile"
-                  />
-                </button>
-                {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">
-                    <Link
-                      to="/profile"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      <FontAwesomeIcon icon={faUser} className="mr-2" /> Profil
-                      saya
-                    </Link>
-                    <Link
-                      to=""
-                      onClick={logout}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
-                      Keluar
-                    </Link>
-                  </div>
-                )}
-              </div>
             </div>
             <div className={`relative ${isSidebarOpen ? "ml-0" : ""}`}>
               <button
@@ -430,13 +284,13 @@ function Navbar() {
                     <FontAwesomeIcon icon={faListOl} className="mr-2" /> Kelola
                     Daftar Nama
                   </Link>
-                  <Link
-                    to="/login-siswa"
-                    className="block px-4 py-2 text-sm text-gray-700 whitespace-nowrap hover:bg-gray-100"
-                  >
-                    <FontAwesomeIcon icon={faUser} className="mr-2" /> Masuk
-                    Siswa
-                  </Link>
+                  <button
+                      type="button"
+                      onClick={handleSignIn}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      <FontAwesomeIcon icon={faUser} className="mr-2" />
+                      Masuk Siswa
+                    </button>
                   <Link
                     to="/signed-information"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
