@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { API_DUMMY } from "../../../utils/api";
 import axios from "axios";
 import img from "../../../component/Asset/group.png";
-import { Link } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const authConfig = {
   headers: {
@@ -131,16 +131,15 @@ function TopikChat() {
     <>
       <div className="flex justify-center gap-4">
         <div className="bg-white w-96">
-          <button className="bg-green-500 w-full h-10">
+        <button className="bg-green-500 w-full h-12 rounded-t-lg">
           <Link
-                  to="/add-topic-chat"
-                  className="rounded-xl shadow p-2 px-3 border bg-green-500 mb-5">
-                  <FontAwesomeIcon
-                    icon={faPlus}
-                    className="text-xl text-white"
-                  />Add Topic Chat
-                </Link>
-          </button>
+            to="/add-topic-chat"
+            className="flex items-center justify-center h-full text-white text-lg"
+          >
+            <FontAwesomeIcon icon={faPlus} className="mr-2" />
+            Add Topic Chat
+          </Link>
+        </button>
           <div className="p-2">
             {list.map((data, index) => (
               <div
