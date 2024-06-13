@@ -32,7 +32,9 @@ function Dashboard() {
   const getManageName = async () => {
     try {
       const response = await axios.get(
-        `${API_DUMMY}/api/instructur/class/${localStorage.getItem('class_id')}/management_name_list?limit=100`,
+        `${API_DUMMY}/api/instructur/class/${localStorage.getItem(
+          "class_id"
+        )}/management_name_list?limit=100`,
         authConfig
       );
       setMenageKelas(response.data.data);
@@ -81,26 +83,27 @@ function Dashboard() {
         <Navbar />
       </div>
       <div className="flex h-full">
-        <div className="content-page container p-2 ml-20 mr-20 mt-12">
-          <div class="md:flex block justify-center -m-4 text-center mt-12">
-            <div class="p-4 w-full">
-              <div class="border-2 bg-green-50 border-green-400 shadow-md white px-2 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+        <div className="content-page container p-2 mx-auto sm:mt-5 md:mx-10">
+          <div className="md:flex block justify-center text-center">
+            <div className="p-4 w-full sm:w-1/2 md:w-1/3">
+              <div className="border-2 bg-green-50 border-green-400 shadow-md white px-2 py-6 rounded-lg transform transition duration-500 hover:scale-110">
                 <svg
                   fill="none"
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  class="text-green-600 w-12 h-12 mb-3 inline-block"
-                  viewBox="0 0 24 24">
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="text-green-600 w-12 h-12 mb-3 inline-block"
+                  viewBox="0 0 24 24"
+                >
                   <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
                   <circle cx="9" cy="7" r="4"></circle>
                   <path d="M23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75"></path>
                 </svg>
-                <h2 class="title-font font-medium text-3xl text-gray-900">
+                <h2 className="title-font font-medium text-3xl text-gray-900">
                   {clien.length}
                 </h2>
-                <p class="leading-relaxed mt-3">
+                <p className="leading-relaxed mt-3">
                   {" "}
                   <span className="bg-green-600 text-white p-1 rounded-lg text-sm">
                     Total Client
@@ -108,24 +111,25 @@ function Dashboard() {
                 </p>
               </div>
             </div>
-            <div class="p-4 w-full">
-              <div class="border-2 bg-green-50 border-green-400 shadow-md white px-2 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+            <div className="p-4 w-full sm:w-1/2 md:w-1/3">
+              <div className="border-2 bg-green-50 border-green-400 shadow-md white px-2 py-6 rounded-lg transform transition duration-500 hover:scale-110">
                 <svg
                   fill="none"
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  class="text-green-600 w-12 h-12 mb-3 inline-block"
-                  viewBox="0 0 24 24">
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="text-green-600 w-12 h-12 mb-3 inline-block"
+                  viewBox="0 0 24 24"
+                >
                   <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
                   <circle cx="9" cy="7" r="4"></circle>
                   <path d="M23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75"></path>
                 </svg>
-                <h2 class="title-font font-medium text-3xl text-gray-900">
+                <h2 className="title-font font-medium text-3xl text-gray-900">
                   {kelas.length}
                 </h2>
-                <p class="leading-relaxed mt-3">
+                <p className="leading-relaxed mt-3">
                   {" "}
                   <span className="bg-green-600 text-white p-1 rounded-lg text-sm">
                     Total Kelas
@@ -133,24 +137,25 @@ function Dashboard() {
                 </p>
               </div>
             </div>
-            <div class="p-4 w-full">
-              <div class="border-2 bg-green-50 border-green-400 shadow-md white px-2 py-6 rounded-lg transform transition duration-500 hover:scale-110">
+            <div className="p-4 w-full sm:w-1/2 md:w-1/3">
+              <div className="border-2 bg-green-50 border-green-400 shadow-md white px-2 py-6 rounded-lg transform transition duration-500 hover:scale-110">
                 <svg
                   fill="none"
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  class="text-green-600 w-12 h-12 mb-3 inline-block"
-                  viewBox="0 0 24 24">
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  className="text-green-600 w-12 h-12 mb-3 inline-block"
+                  viewBox="0 0 24 24"
+                >
                   <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
                   <circle cx="9" cy="7" r="4"></circle>
                   <path d="M23 21v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75"></path>
                 </svg>
-                <h2 class="title-font font-medium text-3xl text-gray-900">
+                <h2 className="title-font font-medium text-3xl text-gray-900">
                   {kelas.filter((kelas) => kelas.is_active).length}
                 </h2>
-                <p class="leading-relaxed mt-3">
+                <p className="leading-relaxed mt-3">
                   {" "}
                   <span className="bg-green-600 text-white p-1 rounded-lg text-sm">
                     Total Kelas Active
@@ -183,16 +188,16 @@ function Dashboard() {
                       Nama Kelas
                     </th>
                     <th scope="col" className="px-6 py-3 text-left">
-                      Description
+                      Deskripsi
                     </th>
                     <th scope="col" className="px-6 py-3 text-left">
                       Kelas Aktif
                     </th>
                     <th scope="col" className="px-6 py-3 text-left">
-                      Server Name
+                      Nama Server
                     </th>
                     <th scope="col" className="px-6 py-3 text-left">
-                      Server Id
+                      Id Server
                     </th>
                   </tr>
                 </thead>
@@ -201,18 +206,24 @@ function Dashboard() {
                     return (
                       <tr
                         key={index}
-                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                      >
                         <th
                           scope="row"
-                          className="px-6 py-4 font-medium text-left text-gray-900 whitespace-nowrap dark:text-white">
+                          className="px-6 py-4 font-medium text-left text-gray-900 whitespace-nowrap dark:text-white"
+                        >
                           {index + 1}
                         </th>
                         <td className="px-6 py-4">
                           <img src="" alt="" />
                         </td>
-                        <td className="px-6 text-left py-4">{data.name}</td>
+                        <td className="px-6 text-left py-4">
+                          {data.name.charAt(0).toUpperCase() +
+                            data.name.slice(1)}
+                        </td>
                         <td className="px-6 py-4 text-left">
-                          {data.description}
+                          {data.description.charAt(0).toUpperCase() +
+                            data.description.slice(1)}
                         </td>
                         <td className="px-6 py-4 text-left">
                           {data.is_active ? "Aktif" : "Tidak Aktif"}
@@ -249,10 +260,10 @@ function Dashboard() {
                       No
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Kelas Id
+                      Id Kelas
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Client Id
+                      Id Client
                     </th>
                     <th scope="col" className="px-6 py-3">
                       Nama
@@ -267,30 +278,57 @@ function Dashboard() {
                       Terakhir login
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Password
+                      Kata Sandi
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    {/* <th scope="col" className="px-6 py-3">
                       Password prompt
-                    </th>
+                    </th> */}
                   </tr>
                 </thead>
                 <tbody className="text-center">
                   {menageKelas.map((data, index) => {
                     return (
-                      <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                      <tr
+                        key={index}
+                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                      >
                         <th
                           scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        >
                           {index + 1}
                         </th>
-                        <td className="px-6 py-4">{data.client_id}</td>
-                        <td className="px-6 py-4">{data.class_id}</td>
-                        <td className="px-6 py-4">{data.name}</td>
-                        <td className="px-6 py-4">{data.gender}</td>
-                        <td className="px-6 py-4">{data.departement}</td>
-                        <td className="px-6 py-4">{data.last_login}</td>
-                        <td className="px-6 py-4">{data.password}</td>
-                        <td className="px-6 py-4">{data.password_prompt}</td>
+                        <td className="px-6 py-4">
+                          {data.client_id ? data.client_id : "-"}
+                        </td>
+                        <td className="px-6 py-4">
+                          {data.class_id ? data.class_id : "-"}
+                        </td>
+                        <td className="px-6 py-4">
+                          {data.name
+                            ? data.name.charAt(0).toUpperCase() +
+                              data.name.slice(1)
+                            : "-"}
+                        </td>
+                        <td className="px-6 py-4">
+                          {data.gender
+                            ? data.gender.charAt(0).toUpperCase() +
+                              data.gender.slice(1)
+                            : "-"}
+                        </td>
+                        <td className="px-6 py-4">
+                          {data.departement
+                            ? data.departement.charAt(0).toUpperCase() +
+                              data.departement.slice(1)
+                            : "-"}
+                        </td>
+                        <td className="px-6 py-4">
+                          {data.last_login ? data.last_login : "-"}
+                        </td>
+                        <td className="px-6 py-4">
+                          {data.password ? data.password : "-"}
+                        </td>
+                        {/* <td className="px-6 py-4">{data.password_prompt}</td> */}
                       </tr>
                     );
                   })}

@@ -24,6 +24,7 @@ function SignedInformation() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [allData, setAllData] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   const getAllData = async () => {
     try {
@@ -46,10 +47,16 @@ function SignedInformation() {
   }, [limit, currentPage]);
 
   useEffect(() => {
-    const filteredData = allData.filter((item) =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setData(filteredData);
+    if (searchTerm) {
+      setIsSearching(true);
+      const filteredData = allData.filter((item) =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setData(filteredData);
+    } else {
+      setIsSearching(false);
+      setData(allData);
+    }
   }, [searchTerm, allData]);
 
   const handleSearch = (event) => {
@@ -65,15 +72,15 @@ function SignedInformation() {
   }
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col">
       <Navbar />
-      <div className="px-4 lg:px-32">
-        <div className="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-24">
-          <div className="flex flex-col lg:flex-row lg:justify-between">
+      <div className="px-4 sm:px-32">
+        <div className="w-full p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-10">
+          <div className="flex lg:flex-row lg:justify-between">
             <h6 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
               Informasi Masuk
             </h6>
-            <div className="flex gap-3 mb-4">
+            <div className="flex mb-4">
               <div className="max-w-lg ml-auto">
                 <div className="flex mr-2">
                   <div className="w-full">
@@ -84,13 +91,14 @@ function SignedInformation() {
                       onChange={handleSearch}
                       className="block p-2.5 w-full z-20 text-sm rounded-l-md text-gray-900 bg-gray-50 border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                       placeholder="Search name..."
+                      autoComplete="of"
                       required
                     />
                   </div>
                   <select
                     value={limit}
                     onChange={handleLimitChange}
-                    className="flex-shrink-0 z-10 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
+                    className="flex-shrink-0 z-1 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
                   >
                     <option value="10">10</option>
                     <option value="20">20</option>
@@ -119,7 +127,7 @@ function SignedInformation() {
             </div>
           </div>
           <hr />
-          
+
           <div className="overflow-x-auto shadow-md sm:rounded-lg mt-5">
             <table className="w-full table-auto text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -157,7 +165,9 @@ function SignedInformation() {
                       colSpan="8"
                       className="px-5 py-4 text-gray-900 dark:text-gray-300"
                     >
-                      Data Tidak Ada
+                      {isSearching
+                        ? "Pencarian Tidak Ditemukan"
+                        : "Data Tidak Ada"}
                     </td>
                   </tr>
                 ) : (
@@ -186,16 +196,16 @@ function SignedInformation() {
             </table>
           </div>
 
-          {totalPages > 1 && (
-            <Pagination
-              className="mt-5"
-              layout="table"
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={onPageChange}
-              showIcons
-            />
-          )}
+          {/* {totalPages > 1 && ( */}
+          <Pagination
+            className="mt-5 text-center"
+            layout="table"
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={onPageChange}
+            showIcons
+          />
+          {/* )} */}
         </div>
       </div>
     </div>
