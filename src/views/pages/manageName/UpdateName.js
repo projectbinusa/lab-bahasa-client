@@ -78,9 +78,9 @@ function UpdateName() {
       <div className="flex flex-col h-screen bg-gray-100">
         <Navbar />
         <div className="content-page container mx-auto p-4 mt-5">
-          <div className="add-name mt-12 bg-white p-8 rounded-xl shadow-xl border border-gray-300">
+          <div className="add-name bg-white p-8 rounded-xl shadow-xl border border-gray-300">
             <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-5">
-              Tambah Daftar Nama
+              Edit Daftar Nama
             </h1>
             <form onSubmit={update}>
               <div className="md:grid grid-cols-2 gap-4">
