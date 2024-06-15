@@ -202,18 +202,19 @@ function Dashboard() {
                   </tr>
                 </thead>
                 <tbody className="text-center">
-                  {kelas.map((data, index) => {
-                    return (
+                  {kelas.length === 0 ? (
+                    <tr>
+                      <td colSpan="7" className="py-4">
+                        Data Tidak Ada
+                      </td>
+                    </tr>
+                  ) : (
+                    kelas.map((data, index) => (
                       <tr
-                        key={index}
-                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                        key={kelas.id}
+                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                       >
-                        <th
-                          scope="row"
-                          className="px-6 py-4 font-medium text-left text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          {index + 1}
-                        </th>
+                        <td className="px-6 py-4 text-left">{index + 1}</td>
                         <td className="px-6 py-4">
                           <img src="" alt="" />
                         </td>
@@ -235,8 +236,8 @@ function Dashboard() {
                           {data.user_id ? data.user_id : "-"}
                         </td>
                       </tr>
-                    );
-                  })}
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>
@@ -286,18 +287,19 @@ function Dashboard() {
                   </tr>
                 </thead>
                 <tbody className="text-center">
-                  {menageKelas.map((data, index) => {
-                    return (
+                  {menageKelas.length === 0 ? (
+                    <tr>
+                      <td colSpan="8" className="py-4">
+                        Data Tidak Ada
+                      </td>
+                    </tr>
+                  ) : (
+                    menageKelas.map((data, index) => (
                       <tr
-                        key={index}
-                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                        key={data.id}
+                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
                       >
-                        <th
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          {index + 1}
-                        </th>
+                        <td className="px-6 py-4 text-left">{index + 1}</td>
                         <td className="px-6 py-4">
                           {data.client_id ? data.client_id : "-"}
                         </td>
@@ -330,8 +332,8 @@ function Dashboard() {
                         </td>
                         {/* <td className="px-6 py-4">{data.password_prompt}</td> */}
                       </tr>
-                    );
-                  })}
+                    ))
+                  )}
                 </tbody>
               </table>
             </div>

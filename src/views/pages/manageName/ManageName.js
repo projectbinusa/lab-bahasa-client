@@ -12,6 +12,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { API_DUMMY } from "../../../utils/api";
 import { Pagination } from "flowbite-react";
+import AddNama from "../../../component/Modal/AddNama";
 
 function ManageName() {
   const [userData, setUserData] = useState([]);
@@ -21,6 +22,15 @@ function ManageName() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const param = useParams();
+  const [showAddNama, setShowAddNama] = useState(false);
+
+  const handleAddNama = () => {
+    setShowAddNama(true);
+  };
+
+  const handleCloseAddNama = () => {
+    setShowAddNama(false);
+  };
 
   const authConfig = {
     headers: {
@@ -34,6 +44,7 @@ function ManageName() {
         `${API_DUMMY}/api/instructur/class/${class_id}/management_name_list?limit=${limit}&name=${searchTerm}&page=${currentPage}`,
         authConfig
       );
+
       setUserData(response.data.data);
       setTotalPages(response.data.pagination.total_page);
     } catch (error) {
@@ -89,53 +100,48 @@ function ManageName() {
       <div className="flex flex-col h-screen">
         <Navbar />
         <div className="px-32">
-          <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-24">
-            <div className="flex justify-between">
-              <h6 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
+          <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-8">
+            <div className="flex justify-between items-center mb-4">
+              <h6 className="text-xl font-bold text-gray-900 dark:text-white">
                 Kelola Daftar Nama
               </h6>
-              <div className="flex justify-end">
-                <div class="max-w-lg mx-auto">
-                  <div class="flex mr-2">
-                    <div class="relative w-full">
-                      <input
-                        type="search"
-                        id="search-dropdown"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        class="block p-2.5 w-full z-20 text-sm rounded-l-md text-gray-900 bg-gray-50 border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500 "
-                        placeholder="Search name..."
-                        required
-                      />
-                    </div>
-                    <select
-                      value={limit}
-                      onChange={handleLimitChange}
-                      class="flex-shrink-0 z-10 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
-                    >
-                      <option value="10">10</option>
-                      <option value="20">20</option>
-                      <option value="50">50</option>
-                    </select>
-                  </div>
+              <div className="flex items-center gap-2">
+                <div className="relative w-64">
+                  <input
+                    type="search"
+                    id="search-dropdown"
+                    value={searchTerm}
+                    onChange={handleSearch}
+                    className="block p-2.5 w-full z-20 text-sm rounded-l-md text-gray-900 bg-gray-50 border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+                    placeholder="Search name..."
+                    required
+                  />
                 </div>
-              </div>
-              <div className="flex gap-3 mb-5">
+                <select
+                  value={limit}
+                  onChange={handleLimitChange}
+                  className="flex-shrink-0 z-10 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
+                >
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                </select>
                 <button className="rounded-xl shadow-xl py-3 px-4 bg-gray-100">
                   <FontAwesomeIcon
                     icon={faArrowUpFromBracket}
                     className="text-xl text-green-400"
                   />
                 </button>
-                <Link
-                  to="/add-name"
+                <button
+                  type="button"
+                  onClick={handleAddNama}
                   className="rounded-xl shadow-xl py-3 px-4 bg-gray-100"
                 >
                   <FontAwesomeIcon
                     icon={faPlus}
                     className="text-xl text-green-400"
                   />
-                </Link>
+                </button>
               </div>
             </div>
             <hr />
@@ -225,6 +231,7 @@ function ManageName() {
           </div>
         </div>
       </div>
+      {showAddNama && <AddNama onClose={handleCloseAddNama} />}
     </>
   );
 }
