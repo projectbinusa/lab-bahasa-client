@@ -71,10 +71,10 @@ function UpdateClass() {
     <>
       <div className="flex flex-col h-screen bg-gray-100">
         <Navbar />
-        <div className="content-page container mx-auto p-8">
-          <div className="add-class mt-12 bg-white p-8 rounded-xl shadow-xl border border-gray-300">
+        <div className="content-page container mx-auto p-8 mt-5">
+          <div className="add-class bg-white p-8 rounded-xl shadow-xl border border-gray-300">
             <h1 className="text-xl sm:text-2xl font-bold mb-3 text-gray-800">
-              Update Kelas
+              Edit Kelas
             </h1>
             <form onSubmit={update}>
               <div className="relative mb-5">
@@ -133,7 +133,8 @@ function UpdateClass() {
               <div className="flex justify-end mt-8">
                 <button
                   type="submit"
-                  className="px-6 py-3 rounded-lg text-white bg-green-400 hover:bg-green-600 text-base font-semibold">
+                  className="px-6 py-3 rounded-lg text-white bg-green-400 hover:bg-green-600 text-base font-semibold"
+                >
                   Simpan
                 </button>
               </div>

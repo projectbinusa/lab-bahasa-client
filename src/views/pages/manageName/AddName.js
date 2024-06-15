@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import Navbar from "../../../component/Navbar1";
 import axios from "axios";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import Swal from "sweetalert2";
 import { API_DUMMY } from "../../../utils/api";
 
-function AddName() {
+function AddName({ onClose }) {
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
   const [departement, setDepartement] = useState("");
@@ -44,6 +43,7 @@ function AddName() {
           showConfirmButton: false,
           timer: 1500,
         });
+        onClose();
       }
     } catch (error) {
       console.log(error);
@@ -52,10 +52,9 @@ function AddName() {
 
   return (
     <>
-      <div className="flex flex-col h-screen bg-gray-100">
-        <Navbar />
-        <div className="content-page container mx-auto p-4 mt-5">
-          <div className="add-name mt-12 bg-white p-8 rounded-xl shadow-xl border border-gray-300">
+      <div className="flex bg-gray-100">
+        <div className="content-page container mx-auto">
+          <div className="add-name bg-white p-8 rounded-xl shadow-xl border border-gray-300">
             <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-5">
               Tambah Daftar Nama
             </h1>
@@ -134,7 +133,7 @@ function AddName() {
                 </div>
                 <div className="relative mb-4">
                   <label className="block mb-2 text-sm font-semibold text-gray-700">
-                  Password Prompt
+                    Password Prompt
                   </label>
                   <input
                     type="text"

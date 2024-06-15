@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import AddClass from "../../views/pages/manageClass/AddClass";
 import Draggable from "react-draggable";
 import { ResizableBox } from "react-resizable";
+import AddName from "../../views/pages/manageName/AddName";
 
-function AddKelas({ onClose }) {
+function AddNama({ onClose }) {
   const [isMinimized, setIsMinimized] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [prevWidth, setPrevWidth] = useState(400);
@@ -32,18 +32,18 @@ function AddKelas({ onClose }) {
       <Draggable
         handle=".handle"
         disabled={isFullscreen || isMinimized}
-        position={isFullscreen ? { x: 0, y: 0 } : position}
+        position={isFullscreen ? { x: 0, y: 0 } : undefined}
         onStop={(e, data) => setPosition({ x: data.x, y: data.y })}
       >
         <div
-          className={`fixed z-50 bg-white p-4 rounded-lg shadow-lg ${
+          className={`relative bg-white p-4 rounded-lg shadow-lg ${
             isFullscreen ? "w-full h-full" : ""
           }`}
           style={isFullscreen ? { width: "100%", height: "100%" } : {}}
         >
           <ResizableBox
-            width={isMinimized ? prevWidth : isFullscreen ? "20%" : undefined}
-            height={isMinimized ? prevHeight : isFullscreen ? "40%" : undefined}
+            width={isMinimized ? prevWidth : undefined}
+            height={isMinimized ? prevHeight : undefined}
             className={`${isMinimized ? "hidden" : ""}`}
             minConstraints={[300, 200]}
             maxConstraints={[
@@ -53,7 +53,7 @@ function AddKelas({ onClose }) {
           >
             <div className="flex flex-col h-full">
               <div className="flex justify-between mb-4">
-                <h2 className="text-xl font-semibold">Tambah Kelas</h2>
+                <h2 className="text-xl font-semibold">Tambah Daftar Nama</h2>
                 <div className="flex gap-2">
                   <button
                     onClick={handleFullscreen}
@@ -74,7 +74,7 @@ function AddKelas({ onClose }) {
                 </div>
               </div>
               <div className="handle w-full cursor-move flex-grow overflow-auto">
-                <AddClass />
+                <AddName onClose={onClose} />
               </div>
             </div>
           </ResizableBox>
@@ -84,4 +84,4 @@ function AddKelas({ onClose }) {
   );
 }
 
-export default AddKelas;
+export default AddNama;
