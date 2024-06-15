@@ -9,6 +9,7 @@ import {
   faCircleInfo,
   faComments,
   faDisplay,
+  faKey,
   faListCheck,
   faListOl,
   faMedal,

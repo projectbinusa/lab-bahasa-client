@@ -282,7 +282,6 @@ const InteraksiStudent = () => {
                 height="77vh"
                 style={{ backgroundColor: "white" }}
                 {...getToolProps()}
-                strokeWidth
                 strokeWidth={width}
                 strokeColor={tool === "eraser" ? "#ffffff" : color}
                 allowOnlyPointerType="all"

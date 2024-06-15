@@ -22,7 +22,6 @@ import InteraksiStudent from "./views/pages/InteractiveWhiteboard/InteraksiStude
 import VerifyCode from "./views/pages/auth/VerifyCode";
 import ResetPassword from "./views/pages/auth/ResetPassword";
 import AddGroup from "./views/pages/Chat/AddGroup";
-import AddTopicChat from "./views/pages/Chat/AddTopicChat";
 import Navbar1 from "./component/Navbar1";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { jwtDecode } from "jwt-decode";
@@ -78,16 +77,11 @@ const App = () => {
           <PrivateRoute path="/manage-class" component={ManageClass} exact />
           <PrivateRoute path="/verify-code" component={VerifyCode} exact />
           <PrivateRoute path="/add-class" component={AddClass} exact />
-          <PrivateRoute
-            path="/update-class/:id"
-            component={UpdateClass}
-            exact
-          />
+          <PrivateRoute path="/update-class/:id" component={UpdateClass} exact />
           <PrivateRoute path="/manage-name" component={ManageName} exact />
           <PrivateRoute path="/add-name" component={AddName} exact />
           <PrivateRoute path="/update-name/:id" component={UpdateName} exact />
           <PrivateRoute path="/add-group" component={AddGroup} exact />
-          <PrivateRoute path="/add-topic-chat" component={AddTopicChat} exact />
           <PrivateRoute
             path="/screen-broadcast"
             component={ScreenBroadcast}
@@ -101,7 +95,6 @@ const App = () => {
             exact
           />
           <Route path="/login-siswa" component={LoginSiswa} exact />
-          <Route path="/face-to-face-chat" component={ChatPribadi} exact />
           <PrivateRoute path="/questions" component={Questions} exact />
           <PrivateRoute
             path="/signed-information"

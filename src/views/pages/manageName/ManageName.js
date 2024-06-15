@@ -171,9 +171,6 @@ function ManageName() {
                       Password
                     </th>
                     <th scope="col" className="px-6 py-3">
-                      Password Prompt
-                    </th>
-                    <th scope="col" className="px-6 py-3">
                       Aksi
                     </th>
                   </tr>
@@ -197,7 +194,6 @@ function ManageName() {
                       <td className="px-6 py-4">{manage.departement}</td>
                       <td className="px-6 py-4">{manage.class_id}</td>
                       <td className="px-6 py-4">{manage.password}</td>
-                      <td className="px-6 py-4">{manage.password_prompt}</td>
                       <td className="px-6 py-4 flex items-center gap-5 justify-center">
                         <Link
                           to={"/update-name/" + manage.id}
