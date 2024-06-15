@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../component/Navbar1";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faFileExport, faFileImport, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import axios from "axios";
@@ -131,6 +131,53 @@ function ManageClass() {
     }
   };
 
+  
+
+  const handleImport = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      await axios.post(`${API_DUMMY}/api/instructur/class/import`, formData, authConfig);
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil Mengimpor Data",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      getAllData();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Gagal Mengimpor Data",
+        text: error.response?.data?.message || "Terjadi kesalahan saat mengimpor data.",
+        showConfirmButton: true,
+      });
+      console.log(error);
+    }
+  };
+
+  const handleExport = async () => {
+    try {
+      const response = await axios.get(`${API_DUMMY}/api/instructur/class/export`, {
+        ...authConfig,
+        responseType: "blob",
+      });
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "kelas_user.xlsx");
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   function onPageChange(page) {
     setCurrentPage(page);
   }
@@ -196,10 +243,30 @@ function ManageClass() {
                 <button
                   type="button"
                   onClick={handleAddClass}
-                  className="rounded-xl shadow p-2 px-3 border bg-green-500 mb-5"
+                  className="rounded-xl shadow p-2 px-3 border bg-green-500 mb-5 mr-2"
                 >
                   <FontAwesomeIcon
                     icon={faPlus}
+                    className="text-xl text-white"
+                  />
+                </button>
+                <label className="rounded-xl shadow p-2 px-3 border bg-blue-500 mb-5 mr-2 cursor-pointer">
+                  <FontAwesomeIcon icon={faFileImport} 
+                   className="text-xl text-white" />
+                  <input
+                    type="file"
+                    accept=".csv"
+                    onChange={handleImport}
+                    className="hidden"
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={handleExport}
+                  className="rounded-xl shadow p-2 px-3 border bg-yellow-500 mb-5"
+                >
+                  <FontAwesomeIcon
+                    icon={faFileExport}
                     className="text-xl text-white"
                   />
                 </button>
