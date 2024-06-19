@@ -218,18 +218,18 @@ function Dashboard() {
                         <td className="px-6 py-4">
                           <img src="" alt="" />
                         </td>
-                        <td className="px-6 text-left py-4">
+                        <td className="px-6 text-left py-4 capitalize">
                           {data.name.charAt(0).toUpperCase() +
                             data.name.slice(1)}
                         </td>
-                        <td className="px-6 py-4 text-left">
+                        <td className="px-6 py-4 capitalize text-left">
                           {data.description.charAt(0).toUpperCase() +
                             data.description.slice(1)}
                         </td>
-                        <td className="px-6 py-4 text-left">
+                        <td className="px-6 py-4 capitalize text-left">
                           {data.is_active ? "Aktif" : "Tidak Aktif"}
                         </td>
-                        <td className="px-6 py-4 text-left">
+                        <td className="px-6 py-4 capitalize text-left">
                           {data.user_name ? data.user_name : "-"}
                         </td>
                         <td className="px-6 py-4 text-left">
@@ -306,25 +306,25 @@ function Dashboard() {
                         <td className="px-6 py-4">
                           {data.class_id ? data.class_id : "-"}
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 capitalize">
                           {data.name
                             ? data.name.charAt(0).toUpperCase() +
                               data.name.slice(1)
                             : "-"}
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 capitalize">
                           {data.gender
                             ? data.gender.charAt(0).toUpperCase() +
                               data.gender.slice(1)
                             : "-"}
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 capitalize">
                           {data.departement
                             ? data.departement.charAt(0).toUpperCase() +
                               data.departement.slice(1)
                             : "-"}
                         </td>
-                        <td className="px-6 py-4">
+                        <td className="px-6 py-4 capitalize">
                           {data.last_login ? data.last_login : "-"}
                         </td>
                         <td className="px-6 py-4">
