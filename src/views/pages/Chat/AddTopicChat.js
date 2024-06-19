@@ -28,7 +28,7 @@ function AddTopicChat() {
     try {
       const response = await axios.post(url_hit, jsonData, authConfig);
       if (response.status === 200) {
-        history.push("/manage-class");
+        history.push("/topic-chat");
         Swal.fire({
           icon: "success",
           title: "Berhasil Menambahkan Data.",
@@ -48,12 +48,12 @@ function AddTopicChat() {
         <div className="content-page container mx-auto p-8">
           <div className="add-class mt-12 bg-white p-8 rounded-xl shadow-xl border border-gray-300">
             <h1 className="text-xl sm:text-2xl font-bold mb-3 text-gray-800">
-              Tambah Topic Chat
+              Tambah Topik Chat
             </h1>
             <form onSubmit={saveChange}>
               <div className="relative mb-5">
                 <label className="block mb-2 text-sm font-semibold text-gray-700">
-                  Nama TopicChat
+                  Nama Topik Chat
                 </label>
                 <input
                   type="text"

@@ -3,6 +3,8 @@ import Navbar from "../../../component/Navbar1";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowUpFromBracket,
+  faFileExport,
+  faFileImport,
   faPlus,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
@@ -13,6 +15,7 @@ import Swal from "sweetalert2";
 import { API_DUMMY } from "../../../utils/api";
 import { Pagination } from "flowbite-react";
 import AddNama from "../../../component/Modal/AddNama";
+import { saveAs } from 'file-saver';
 
 function ManageName() {
   const [userData, setUserData] = useState([]);
@@ -89,12 +92,58 @@ function ManageName() {
     }
   };
 
+  const handleImport = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      try {
+        const response = await axios.post(
+          `${API_DUMMY}/api/instructur/class/${class_id}/import/management_name_list`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              "auth-event": `jwt ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        Swal.fire("Success", response.data.message, "success");
+        getAllData(); // Refresh data after import
+      } catch (error) {
+        Swal.fire("Error", error.response.data.error, "error");
+      }
+    }
+  };
+
+  const handleExport = async () => {
+    try {
+      const response = await axios.get(
+        `${API_DUMMY}/api/instructur/class/${class_id}/export/management_name_list`,
+        {
+          headers: {
+            "auth-event": `jwt ${localStorage.getItem("token")}`,
+          },
+          responseType: "blob", // Important for file download
+        }
+      );
+
+      const blob = new Blob([response.data], { type: "text/csv" });
+      saveAs(blob, "management_name_list.csv");
+    } catch (error) {
+      Swal.fire("Error", "Failed to export data", "error");
+    }
+  };
+
   function onPageChange(page) {
     setCurrentPage(page);
   }
+
   useEffect(() => {
     getAllData();
   }, [searchTerm, limit, currentPage]);
+
   return (
     <>
       <div className="flex flex-col h-screen">
@@ -126,12 +175,6 @@ function ManageName() {
                   <option value="20">20</option>
                   <option value="50">50</option>
                 </select>
-                <button className="rounded-xl shadow-xl py-3 px-4 bg-gray-100">
-                  <FontAwesomeIcon
-                    icon={faArrowUpFromBracket}
-                    className="text-xl text-green-400"
-                  />
-                </button>
                 <button
                   type="button"
                   onClick={handleAddNama}
@@ -139,6 +182,25 @@ function ManageName() {
                 >
                   <FontAwesomeIcon
                     icon={faPlus}
+                    className="text-xl text-green-400"
+                  />
+                </button>
+                <label className="rounded-xl shadow-xl py-3 px-4 bg-gray-100">
+                  <FontAwesomeIcon icon={faFileImport} className="text-xl text-green-400" />
+                  <input
+                    type="file"
+                    accept=".csv"
+                    onChange={handleImport}
+                    className="hidden"
+                  />
+                </label>
+                <button
+                  type="button"
+                  onClick={handleExport}
+                  className="rounded-xl shadow-xl py-3 px-4 bg-gray-100"
+                >
+                  <FontAwesomeIcon
+                    icon={faFileExport}
                     className="text-xl text-green-400"
                   />
                 </button>
