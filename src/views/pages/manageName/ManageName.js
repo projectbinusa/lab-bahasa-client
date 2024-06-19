@@ -251,15 +251,21 @@ function ManageName() {
                       </th>
 
                       <td className="px-6 py-4">997764</td>
-                      <td className="px-6 py-4">{manage.name}</td>
-                      <td className="px-6 py-4">{manage.gender}</td>
-                      <td className="px-6 py-4">{manage.departement}</td>
-                      <td className="px-6 py-4">{manage.class_id}</td>
-                      <td className="px-6 py-4">{manage.password}</td>
+                      <td className="px-6 py-4 capitalize">{manage.name}</td>
+                      <td className="px-6 py-4 capitalize">{manage.gender}</td>
+                      <td className="px-6 py-4 capitalize">
+                        {manage.departement}
+                      </td>
+                      <td className="px-6 py-4 capitalize">
+                        {manage.class_id}
+                      </td>
+                      <td className="px-6 py-4 capitalize">
+                        {manage.password}
+                      </td>
                       <td className="px-6 py-4 flex items-center gap-5 justify-center">
                         <Link
                           to={"/update-name/" + manage.id}
-                          className="py-3 px-4 bg-blue-500 rounded-lg text-white "
+                          className="py-2 px-3 bg-blue-500 rounded-lg text-white "
                         >
                           <FontAwesomeIcon
                             className="text-lg"
@@ -267,7 +273,7 @@ function ManageName() {
                           />
                         </Link>
                         <button
-                          className="py-3 px-4 bg-red-500 rounded-lg text-white"
+                          className="py-2 px-3 bg-red-500 rounded-lg text-white"
                           onClick={() => deleteData(manage.id)}
                         >
                           <FontAwesomeIcon className="text-lg" icon={faTrash} />

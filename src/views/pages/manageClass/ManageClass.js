@@ -315,9 +315,11 @@ function ManageClass() {
                       <td className="px-6 py-4">
                         <img src={data.file} alt="" />
                       </td>
-                      <td className="px-6 py-4">{data.user_name}</td>
-                      <td className="px-6 py-4">{data.name}</td>
-                      <td className="px-6 py-4">{data.description}</td>
+                      <td className="px-6 py-4 capitalize">{data.user_name}</td>
+                      <td className="px-6 py-4 capitalize">{data.name}</td>
+                      <td className="px-6 py-4 capitalize">
+                        {data.description}
+                      </td>
                       <td className="px-6 py-4">
                         {data.is_active ? "Aktif" : "Tidak Aktif"}
                       </td>

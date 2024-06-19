@@ -86,7 +86,7 @@ function ResponseCompetition() {
 
   return (
     <>
-    <p>Test</p>
+      <p>Test</p>
       <div className="flex flex-col h-screen">
         <Navbar />
         <div className="px-32">
@@ -112,7 +112,8 @@ function ResponseCompetition() {
                     <select
                       value={limit}
                       onChange={handleLimitChange}
-                      class="flex-shrink-0 z-10 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600">
+                      class="flex-shrink-0 z-10 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
+                    >
                       <option value="10">10</option>
                       <option value="20">20</option>
                       <option value="50">50</option>
@@ -179,18 +180,20 @@ function ResponseCompetition() {
                   {list.map((data, index) => (
                     <tr
                       key={index}
-                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                    >
                       <th
                         scope="row"
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      >
                         {index + 1}
                       </th>
                       <td className="px-6 py-4">
                         <img src={data.file} alt="" />
                       </td>
                       <td className="px-6 py-4">{data.question_id}</td>
-                      <td className="px-6 py-4">{data.answer}</td>
-                      <td className="px-6 py-4">{data.user_name}</td>
+                      <td className="px-6 py-4 capitalize">{data.answer}</td>
+                      <td className="px-6 py-4 capitalize">{data.user_name}</td>
                       <td className="px-6 py-4">{data.answer_time_user}</td>
                       <td className="px-6 py-4">{data.score}</td>
                       <td className="px-6 py-4 flex items-center gap-5 justify-center">
@@ -199,12 +202,14 @@ function ResponseCompetition() {
                         </button> */}
                         <Link
                           to={"/score-answer/" + data.id}
-                          className="py-3 px-4 bg-green-500 rounded-lg text-white">
+                          className="py-3 px-4 bg-green-500 rounded-lg text-white"
+                        >
                           <i class="fa-solid fa-star"></i>
                         </Link>
                         <button
                           className="py-3 px-4 bg-red-500 rounded-lg text-white"
-                          onClick={() => deleteData(data.id)}>
+                          onClick={() => deleteData(data.id)}
+                        >
                           <FontAwesomeIcon className="text-lg" icon={faTrash} />
                         </button>
                       </td>
