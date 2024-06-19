@@ -26,7 +26,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import Swal from "sweetalert2";
-import FaceToFace from "./Modal/FaceToFace";
 import SignInModal from "./Modal/SignInSiswa";
 
 function Navbar() {
@@ -34,7 +33,6 @@ function Navbar() {
   const [chatDropdownOpen, setChatDropdownOpen] = useState(false);
   const [respDropdownOpen, setRespDropdownOpen] = useState(false);
   const [manageDropdownOpen, setManageDropdownOpen] = useState(false);
-  const [showFaceToFace, setShowFaceToFace] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const history = useHistory();
   const [showSignIn, setShowSignIn] = useState(false);
@@ -96,14 +94,6 @@ function Navbar() {
         setManageDropdownOpen(false);
         setIsDropdownOpen(false);
     }
-  };
-
-  const handleFaceToFace = () => {
-    setShowFaceToFace(true);
-  };
-
-  const handleCloseFaceToFace = () => {
-    setShowFaceToFace(false);
   };
 
   const toggleSidebar = () => {
@@ -187,9 +177,8 @@ function Navbar() {
                         <FontAwesomeIcon icon={faComments} className="mr-2" />{" "}
                         Topik Obrolan
                       </Link>
-                      <button
-                        type="button"
-                        onClick={handleFaceToFace}
+                      <Link
+                        to="/face-to-face-chat"
                         className="block w-full text-left px-4 py-2 text-sm text-gray-700 whitespace-nowrap hover:bg-gray-100"
                       >
                         <FontAwesomeIcon
@@ -197,7 +186,7 @@ function Navbar() {
                           className="mr-2"
                         />{" "}
                         Obrolan Tatap Muka
-                      </button>
+                      </Link>
                     </div>
                   )}
                 </div>
@@ -351,17 +340,16 @@ function Navbar() {
                         <FontAwesomeIcon icon={faComments} className="mr-2" />{" "}
                         Topik Obrolan
                       </Link>
-                      <button
-                        type="button"
-                        onClick={handleFaceToFace}
-                        className="block px-4 py-2 text-sm text-gray-700 whitespace-nowrap hover:bg-gray-100"
+                      <Link
+                        to="/face-to-face-chat"
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 whitespace-nowrap hover:bg-gray-100"
                       >
                         <FontAwesomeIcon
                           icon={faUserFriends}
                           className="mr-2"
                         />{" "}
                         Obrolan Tatap Muka
-                      </button>
+                      </Link>
                     </div>
                   )}
                 </div>
@@ -404,7 +392,6 @@ function Navbar() {
         </div>
       </nav>
 
-      {showFaceToFace && <FaceToFace onClose={handleCloseFaceToFace} />}
       {showSignIn && <SignInModal onClose={handleCloseSignIn} />}
     </>
   );
