@@ -77,7 +77,11 @@ const App = () => {
           <PrivateRoute path="/manage-class" component={ManageClass} exact />
           <PrivateRoute path="/verify-code" component={VerifyCode} exact />
           <PrivateRoute path="/add-class" component={AddClass} exact />
-          <PrivateRoute path="/update-class/:id" component={UpdateClass} exact />
+          <PrivateRoute
+            path="/update-class/:id"
+            component={UpdateClass}
+            exact
+          />
           <PrivateRoute path="/manage-name" component={ManageName} exact />
           <PrivateRoute path="/add-name" component={AddName} exact />
           <PrivateRoute path="/update-name/:id" component={UpdateName} exact />
@@ -113,6 +117,7 @@ const App = () => {
           />
           <Route path="/score-answer/:id" component={ScoreAnswer} exact />
           <Route path="/student-answer" component={AnswerQuestion} exact />
+          <Route path="/face-to-face-chat" component={ChatPribadi} exact />
         </Switch>
       </main>
     </BrowserRouter>
