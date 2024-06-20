@@ -119,6 +119,7 @@ const App = () => {
           <Route path="/score-answer/:id" component={ScoreAnswer} exact />
           <Route path="/student-answer/:id" component={AnswerQuestion} />
           <Route path="/question-answer" component={QuestionsAnswer} exact />
+          <Route path="/face-to-face-chat" component={ChatPribadi} exact />
         </Switch>
       </main>
     </BrowserRouter>
