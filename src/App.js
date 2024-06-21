@@ -72,7 +72,7 @@ const App = () => {
           <Route path="/" component={Login} exact />
           <Route path="/register" component={Register} exact />
           <Route path="/forgotpass" component={ForgotPass} exact />
-          <PrivateRoute path="/dashboard" component={Dashboard} exact />
+          <PrivateRoute path="/dashboard/:id" component={Dashboard} exact />
           <PrivateRoute path="/camera" component={Camera} exact />
           <PrivateRoute path="/whiteboard" component={Whiteboard} exact />
           <PrivateRoute path="/manage-class" component={ManageClass} exact />
