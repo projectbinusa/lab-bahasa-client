@@ -2,7 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { API_DUMMY } from "../../../utils/api";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import {
+  useHistory,
+  useParams,
+} from "react-router-dom/cjs/react-router-dom.min";
 
 const authConfig = {
   headers: {
@@ -15,16 +18,17 @@ function AnswerQuestion() {
   const [question_id, setQuestionId] = useState(null);
   const [answer, setAnswer] = useState("");
   const class_id = localStorage.getItem("class_id");
+  const param = useParams();
   const history = useHistory();
 
   const getQuestion = async () => {
     try {
       const response = await axios.get(
-        `${API_DUMMY}/api/user/class/${class_id}/question`,
+        `${API_DUMMY}/api/instructur/class/${class_id}/response_competition/${param.id}`,
         authConfig
       );
-      if (response.data.data && response.data.data.length > 0) {
-        const questionData = response.data.data[0];
+      if (response.data.data) {
+        const questionData = response.data.data;
         setQuestion(questionData);
         setQuestionId(questionData.id);
       } else {
@@ -41,7 +45,7 @@ function AnswerQuestion() {
         title: "Terjadi Kesalahan",
         text: error.response
           ? error.response.data.message
-          : "Tidak bisa get data",
+          : "Tidak bisa mendapatkan data",
         showConfirmButton: true,
       });
     }
@@ -50,7 +54,7 @@ function AnswerQuestion() {
   useEffect(() => {
     const interval = setInterval(() => {
       getQuestion();
-    }, 1000); // Check for new questions every 2 seconds
+    }, 500);
 
     return () => clearInterval(interval);
   }, []);
@@ -79,7 +83,7 @@ function AnswerQuestion() {
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          window.location.reload("/student-answer");
+          window.location.reload("/question-answer");
         });
       } else {
         Swal.fire({
@@ -114,7 +118,7 @@ function AnswerQuestion() {
                   Pertanyaan:
                 </p>
                 <div className="mb-2">
-                  <p className="text-gray-700">{question.name}</p>
+                  <p className="text-gray-700 capitalize">{question.name}</p>
                 </div>
               </div>
               <div className="mb-4">

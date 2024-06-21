@@ -30,6 +30,7 @@ import PrivateRoute from "./utils/PrivateRoutes";
 import ChatPribadi from "./views/pages/Chat/ChatPribadi";
 import ScoreAnswer from "./views/pages/response/ScoreAnswer";
 import AnswerQuestion from "./views/pages/student/Answer";
+import QuestionsAnswer from "./views/pages/student/QuestionsAnswer";
 
 const checkTokenExpiration = () => {
   const token = localStorage.getItem("token");
@@ -71,7 +72,7 @@ const App = () => {
           <Route path="/" component={Login} exact />
           <Route path="/register" component={Register} exact />
           <Route path="/forgotpass" component={ForgotPass} exact />
-          <PrivateRoute path="/dashboard" component={Dashboard} exact />
+          <PrivateRoute path="/dashboard/:id" component={Dashboard} exact />
           <PrivateRoute path="/camera" component={Camera} exact />
           <PrivateRoute path="/whiteboard" component={Whiteboard} exact />
           <PrivateRoute path="/manage-class" component={ManageClass} exact />
@@ -116,7 +117,8 @@ const App = () => {
             exact
           />
           <Route path="/score-answer/:id" component={ScoreAnswer} exact />
-          <Route path="/student-answer" component={AnswerQuestion} exact />
+          <Route path="/student-answer/:id" component={AnswerQuestion} />
+          <Route path="/question-answer" component={QuestionsAnswer} exact />
           <Route path="/face-to-face-chat" component={ChatPribadi} exact />
         </Switch>
       </main>

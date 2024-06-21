@@ -16,6 +16,7 @@ function Dashboard() {
   const [server, setServer] = useState([]);
   const [kelas, setKelas] = useState([]);
   const [menageKelas, setMenageKelas] = useState([]);
+  const param = useParams();
 
   const getAllKelas = async () => {
     try {
@@ -32,9 +33,7 @@ function Dashboard() {
   const getManageName = async () => {
     try {
       const response = await axios.get(
-        `${API_DUMMY}/api/instructur/class/${localStorage.getItem(
-          "class_id"
-        )}/management_name_list?limit=100`,
+        `${API_DUMMY}/api/instructur/class/${param.id}/management_name_list?limit=100`,
         authConfig
       );
       setMenageKelas(response.data.data);
@@ -58,9 +57,7 @@ function Dashboard() {
   const getAllClient = async () => {
     try {
       const response = await axios.get(
-        `${API_DUMMY}/api/instructur/class/${localStorage.getItem(
-          "class_id"
-        )}/management_name_list?limit=100`,
+        `${API_DUMMY}/api/instructur/class/${param.id}/management_name_list?limit=100`,
         authConfig
       );
       setClient(response.data.data);

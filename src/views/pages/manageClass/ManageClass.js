@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../component/Navbar1";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faFileExport, faFileImport, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheck,
+  faFileExport,
+  faFileImport,
+  faPlus,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import axios from "axios";
@@ -25,6 +31,8 @@ function ManageClass() {
   const [totalPages, setTotalPages] = useState(1);
   const [show, setShow] = useState(false);
   const [showAddClass, setShowAddClass] = useState(false);
+  const [showNavbar, setShowNavbar] = useState(false);
+  const history = useHistory();
 
   const handleAddClass = () => {
     setShowAddClass(true);
@@ -131,8 +139,6 @@ function ManageClass() {
     }
   };
 
-  
-
   const handleImport = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -141,7 +147,11 @@ function ManageClass() {
     formData.append("file", file);
 
     try {
-      await axios.post(`${API_DUMMY}/api/instructur/class/import`, formData, authConfig);
+      await axios.post(
+        `${API_DUMMY}/api/instructur/class/import`,
+        formData,
+        authConfig
+      );
       Swal.fire({
         icon: "success",
         title: "Berhasil Mengimpor Data",
@@ -153,7 +163,9 @@ function ManageClass() {
       Swal.fire({
         icon: "error",
         title: "Gagal Mengimpor Data",
-        text: error.response?.data?.message || "Terjadi kesalahan saat mengimpor data.",
+        text:
+          error.response?.data?.message ||
+          "Terjadi kesalahan saat mengimpor data.",
         showConfirmButton: true,
       });
       console.log(error);
@@ -162,10 +174,13 @@ function ManageClass() {
 
   const handleExport = async () => {
     try {
-      const response = await axios.get(`${API_DUMMY}/api/instructur/class/export`, {
-        ...authConfig,
-        responseType: "blob",
-      });
+      const response = await axios.get(
+        `${API_DUMMY}/api/instructur/class/export`,
+        {
+          ...authConfig,
+          responseType: "blob",
+        }
+      );
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
@@ -187,10 +202,20 @@ function ManageClass() {
     getAllData();
   }, [searchTerm, limit, currentPage]);
 
+  useEffect(() => {
+    const classId = localStorage.getItem("class_id");
+    setShowNavbar(classId !== "0");
+    getAllData();
+  }, [searchTerm, limit, currentPage]);
+
+  const handleNextPage = (id) => {
+    history.push(`/dashboard/${id}`);
+  };
+
   return (
     <>
       <div className="flex flex-col h-screen">
-        <Navbar />
+        {showNavbar && <Navbar />}
         <div className="px-32">
           <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-8 mb-10">
             <div className="flex justify-between">
@@ -251,8 +276,10 @@ function ManageClass() {
                   />
                 </button>
                 <label className="rounded-xl shadow p-2 px-3 border bg-blue-500 mb-5 mr-2 cursor-pointer">
-                  <FontAwesomeIcon icon={faFileImport} 
-                   className="text-xl text-white" />
+                  <FontAwesomeIcon
+                    icon={faFileImport}
+                    className="text-xl text-white"
+                  />
                   <input
                     type="file"
                     accept=".csv"
@@ -337,6 +364,18 @@ function ManageClass() {
                         >
                           <FontAwesomeIcon className="text-lg" icon={faCheck} />
                         </button>
+                        {data.id ===
+                          Number(localStorage.getItem("class_id")) && (
+                          <button
+                            className="py-3 px-4 rounded-lg text-white bg-green-500"
+                            onClick={() => handleNextPage(data.id)}
+                          >
+                            <FontAwesomeIcon
+                              className="text-lg"
+                              icon={faArrowRight}
+                            />
+                          </button>
+                        )}
                         <Link
                           to={"/update-class/" + data.id}
                           className="py-3 px-4 bg-blue-500 rounded-lg text-white"
