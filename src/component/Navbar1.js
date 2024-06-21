@@ -102,7 +102,7 @@ function Navbar() {
 
   return (
     <>
-      <nav className="md:sticky top-0 z-50 w-full bg-green-500 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 lg:flex lg:items-center lg:justify-between">
+      <nav className="md:sticky top-0 z-1 w-full bg-green-500 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 lg:flex lg:items-center lg:justify-between">
         <div className="px-3 py-3 lg:px-5 lg:pl-3 flex items-center justify-between">
           <div className="flex items-center justify-start rtl:justify-end">
             <button onClick={toggleSidebar} className="text-white lg:hidden">
@@ -161,7 +161,7 @@ function Navbar() {
                         isSidebarOpen
                           ? "left-full ml-2"
                           : "top-full right-0 mr-2"
-                      } mt-2 lg:w-48 bg-white rounded-md shadow-lg py-2 z-50`}
+                      } mt-2 lg:w-48 bg-white rounded-md shadow-lg py-2 z-1`}
                     >
                       <Link
                         to="/group-chat"
@@ -206,7 +206,7 @@ function Navbar() {
                         isSidebarOpen
                           ? "left-full ml-2"
                           : "top-full right-0 mr-2"
-                      } mt-2 lg:w-48 bg-white rounded-md shadow-lg py-2 z-50`}
+                      } mt-2 lg:w-48 bg-white rounded-md shadow-lg py-2 z-1`}
                     >
                       <Link
                         to="/response-competition"
@@ -242,7 +242,7 @@ function Navbar() {
                         isSidebarOpen
                           ? "left-full ml-2"
                           : "top-full right-0 mr-2"
-                      } mt-2 lg:w-48 bg-white rounded-md shadow-lg py-2 z-50`}
+                      } mt-2 lg:w-48 bg-white rounded-md shadow-lg py-2 z-1`}
                     >
                       <Link
                         to="/manage-class"

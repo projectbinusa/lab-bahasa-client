@@ -78,13 +78,13 @@ function Dashboard() {
   }, []);
 
   return (
-    <div className="flex flex-col bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-100">
       <div className="sticky top-0 z-50">
         <Navbar />
       </div>
-      <div className="flex h-full">
-        <div className="content-page container p-2 mx-auto sm:mt-5 md:mx-10">
-          <div className="md:flex block justify-center text-center">
+      <div className="flex-grow flex">
+        <div className="container p-2 mx-auto sm:mt-5 md:mx-10 flex flex-col items-center justify-center">
+          <div className="md:flex block justify-center text-center w-full">
             <div className="p-4 w-full sm:w-1/2 md:w-1/3">
               <div className="border-2 bg-green-50 border-green-400 shadow-md white px-2 py-6 rounded-lg transform transition duration-500 hover:scale-110">
                 <svg
@@ -104,7 +104,6 @@ function Dashboard() {
                   {clien.length}
                 </h2>
                 <p className="leading-relaxed mt-3">
-                  {" "}
                   <span className="bg-green-600 text-white p-1 rounded-lg text-sm">
                     Total Client
                   </span>
@@ -130,7 +129,6 @@ function Dashboard() {
                   {kelas.length}
                 </h2>
                 <p className="leading-relaxed mt-3">
-                  {" "}
                   <span className="bg-green-600 text-white p-1 rounded-lg text-sm">
                     Total Kelas
                   </span>
@@ -156,7 +154,6 @@ function Dashboard() {
                   {kelas.filter((kelas) => kelas.is_active).length}
                 </h2>
                 <p className="leading-relaxed mt-3">
-                  {" "}
                   <span className="bg-green-600 text-white p-1 rounded-lg text-sm">
                     Total Kelas Active
                   </span>
@@ -164,178 +161,196 @@ function Dashboard() {
               </div>
             </div>
           </div>
-          <br />
-          <br />
-          {/* Tabel Absensi */}
-          <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-            <div className="flex justify-between">
-              <h6 className="mb-2 text-xl font-bold text-black dark:text-white ">
-                Kelola Kelas
-              </h6>
-            </div>
-            <hr />
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5 ">
-              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-center text-xs text-white uppercase bg-green-500 dark:bg-gray-700 dark:text-gray-400">
-                  <tr>
-                    <th scope="col" className="px-6 py-3 text-left">
-                      No
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left">
-                      Gambar
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left">
-                      Nama Kelas
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left">
-                      Deskripsi
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left">
-                      Kelas Aktif
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left">
-                      Nama Server
-                    </th>
-                    <th scope="col" className="px-6 py-3 text-left">
-                      Id Server
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="text-center">
-                  {kelas.length === 0 ? (
-                    <tr>
-                      <td colSpan="7" className="py-4">
-                        Data Tidak Ada
-                      </td>
-                    </tr>
-                  ) : (
-                    kelas.map((data, index) => (
-                      <tr
-                        key={kelas.id}
-                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                      >
-                        <td className="px-6 py-4 text-left">{index + 1}</td>
-                        <td className="px-6 py-4">
-                          <img src="" alt="" />
-                        </td>
-                        <td className="px-6 text-left py-4 capitalize">
-                          {data.name.charAt(0).toUpperCase() +
-                            data.name.slice(1)}
-                        </td>
-                        <td className="px-6 py-4 capitalize text-left">
-                          {data.description.charAt(0).toUpperCase() +
-                            data.description.slice(1)}
-                        </td>
-                        <td className="px-6 py-4 capitalize text-left">
-                          {data.is_active ? "Aktif" : "Tidak Aktif"}
-                        </td>
-                        <td className="px-6 py-4 capitalize text-left">
-                          {data.user_name ? data.user_name : "-"}
-                        </td>
-                        <td className="px-6 py-4 text-left">
-                          {data.user_id ? data.user_id : "-"}
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
 
           <br />
+          <br />
 
-          {/* Tabel Cuti */}
-          <div className="w-full mb-12 p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-            <div className="flex justify-between">
-              <h6 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
-                Kelola Daftar Nama
-              </h6>
-            </div>
-            <hr />
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
-              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-center text-xs text-white uppercase bg-green-500 dark:bg-gray-700 dark:text-gray-400">
-                  <tr>
-                    <th scope="col" className="px-6 py-3">
-                      No
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Id Kelas
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Id Client
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Nama
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Gender
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Jurusan
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Terakhir login
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Kata Sandi
-                    </th>
-                    {/* <th scope="col" className="px-6 py-3">
-                      Password prompt
-                    </th> */}
-                  </tr>
-                </thead>
-                <tbody className="text-center">
-                  {menageKelas.length === 0 ? (
-                    <tr>
-                      <td colSpan="8" className="py-4">
-                        Data Tidak Ada
-                      </td>
-                    </tr>
-                  ) : (
-                    menageKelas.map((data, index) => (
-                      <tr
-                        key={data.id}
-                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                      >
-                        <td className="px-6 py-4 text-left">{index + 1}</td>
-                        <td className="px-6 py-4">
-                          {data.client_id ? data.client_id : "-"}
-                        </td>
-                        <td className="px-6 py-4">
-                          {data.class_id ? data.class_id : "-"}
-                        </td>
-                        <td className="px-6 py-4 capitalize">
-                          {data.name
-                            ? data.name.charAt(0).toUpperCase() +
-                              data.name.slice(1)
-                            : "-"}
-                        </td>
-                        <td className="px-6 py-4 capitalize">
-                          {data.gender
-                            ? data.gender.charAt(0).toUpperCase() +
-                              data.gender.slice(1)
-                            : "-"}
-                        </td>
-                        <td className="px-6 py-4 capitalize">
-                          {data.departement
-                            ? data.departement.charAt(0).toUpperCase() +
-                              data.departement.slice(1)
-                            : "-"}
-                        </td>
-                        <td className="px-6 py-4 capitalize">
-                          {data.last_login ? data.last_login : "-"}
-                        </td>
-                        <td className="px-6 py-4">
-                          {data.password ? data.password : "-"}
-                        </td>
-                        {/* <td className="px-6 py-4">{data.password_prompt}</td> */}
+          <div className="md:flex block justify-center w-full mb-5">
+            {/* Tabel Absensi */}
+            <div className="p-2 md:w-1/2">
+              <div className="p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+                <div className="flex justify-between">
+                  <h6 className="mb-2 text-xl font-bold text-black dark:text-white">
+                    Kelola Kelas
+                  </h6>
+                </div>
+                <hr />
+                <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
+                  <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead className="text-center text-xs text-white uppercase bg-green-500 dark:bg-gray-700 dark:text-gray-400">
+                      <tr>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left whitespace-nowrap"
+                        >
+                          No
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left whitespace-nowrap"
+                        >
+                          Gambar
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left whitespace-nowrap"
+                        >
+                          Nama Kelas
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left whitespace-nowrap"
+                        >
+                          Deskripsi
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left whitespace-nowrap"
+                        >
+                          Kelas Aktif
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left whitespace-nowrap"
+                        >
+                          Nama Server
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 text-left whitespace-nowrap"
+                        >
+                          Id Server
+                        </th>
                       </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
+                    </thead>
+                    <tbody className="text-center">
+                      {kelas.length === 0 ? (
+                        <tr>
+                          <td colSpan="7" className="py-4">
+                            Data Tidak Ada
+                          </td>
+                        </tr>
+                      ) : (
+                        kelas.map((data, index) => (
+                          <tr
+                            key={data.id}
+                            className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                          >
+                            <td className="px-6 py-4 text-left whitespace-nowrap">
+                              {index + 1}
+                            </td>
+                            <td className="px-6 py-4">
+                              <img src="" alt="" />
+                            </td>
+                            <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
+                              {data.name}
+                            </td>
+                            <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
+                              {data.description}
+                            </td>
+                            <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
+                              {data.is_active ? "Aktif" : "Tidak Aktif"}
+                            </td>
+                            <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
+                              {data.user_name ? data.user_name : "-"}
+                            </td>
+                            <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
+                              {data.user_id ? data.user_id : "-"}
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <br />
+
+            {/* Tabel Cuti */}
+            <div className="p-2 md:w-1/2">
+              <div className="p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+                <div className="flex justify-between">
+                  <h6 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
+                    Kelola Daftar Nama
+                  </h6>
+                </div>
+                <hr />
+                <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
+                  <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead className="text-center text-xs text-white uppercase bg-green-500 dark:bg-gray-700 dark:text-gray-400">
+                      <tr>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          No
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          Id Kelas
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          Id Client
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          Nama
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          Gender
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          Jurusan
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          Terakhir login
+                        </th>
+                        <th scope="col" className="px-6 py-3 whitespace-nowrap">
+                          Kata Sandi
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="text-center">
+                      {menageKelas.length === 0 ? (
+                        <tr>
+                          <td colSpan="8" className="py-4">
+                            Data Tidak Ada
+                          </td>
+                        </tr>
+                      ) : (
+                        menageKelas.map((data, index) => (
+                          <tr
+                            key={data.id}
+                            className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                          >
+                            <td className="px-6 py-4 text-left whitespace-nowrap">
+                              {index + 1}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              {data.client_id ? data.client_id : "-"}
+                            </td>
+                            <td className="px-6 py-4">
+                              {data.class_id ? data.class_id : "-"}
+                            </td>
+                            <td className="px-6 py-4 capitalize whitespace-nowrap">
+                              {data.name ? data.name : "-"}
+                            </td>
+                            <td className="px-6 py-4 capitalize whitespace-nowrap">
+                              {data.gender ? data.gender : "-"}
+                            </td>
+                            <td className="px-6 py-4 capitalize whitespace-nowrap">
+                              {data.departement ? data.departement : "-"}
+                            </td>
+                            <td className="px-6 py-4 capitalize whitespace-nowrap">
+                              {data.last_login ? data.last_login : "-"}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              {data.password ? data.password : "-"}
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
