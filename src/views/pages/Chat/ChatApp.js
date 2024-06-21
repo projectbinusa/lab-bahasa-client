@@ -16,7 +16,10 @@ function ChatApp() {
   const [gambar, setGambar] = useState(null);
   const [list, setList] = useState([]);
   const [selectedGroup, setSelectedGroup] = useState(null);
+  const [dropdownIndex, setDropdownIndex] = useState(null);
+  const [editMessageId, setEditMessageId] = useState(null);
   const class_id = localStorage.getItem("class_id");
+  const user_id = localStorage.getItem("user_id");
 
   // Fungsi untuk mengirim pesan
   const sendMessage = async (e) => {
@@ -34,6 +37,7 @@ function ChatApp() {
     if (content) {
       formData.append("content", content);
     }
+    formData.append("receiver_id", user_id);
 
     try {
       const response = await axios.post(
@@ -110,6 +114,68 @@ function ChatApp() {
     }
   }, [selectedGroup]);
 
+  // Fungsi untuk meng-handle dropdown toggle
+  const toggleDropdown = (index) => {
+    setDropdownIndex(dropdownIndex === index ? null : index);
+  };
+
+  // Fungsi untuk meng-handle penghapusan pesan
+  const deleteMessage = async (messageId) => {
+    try {
+      await axios.delete(
+        `${API_DUMMY}/api/chat/chat/${messageId}/class/${class_id}/group/${selectedGroup.id}`,
+        authConfig
+      );
+      if (selectedGroup) {
+        getAllDataChatGroup(selectedGroup.id);
+      }
+    } catch (error) {
+      console.error("Error deleting message:", error);
+    }
+  };
+
+  // Fungsi untuk meng-handle edit pesan
+  const editMessage = (messageId, messageContent) => {
+    setEditMessageId(messageId);
+    setContent(messageContent);
+  };
+
+ 
+  const updateMessage = async (e) => {
+    e.preventDefault();
+    if (!editMessageId) {
+      console.error("Message ID not selected.");
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append("is_group", 1);
+    if (gambar) {
+      formData.append("gambar", gambar);
+    }
+    if (content) {
+      formData.append("content", content);
+    }
+    formData.append("receiver_id", user_id);
+  
+    try {
+      const response = await axios.put(
+        `${API_DUMMY}/api/chat/chat/${editMessageId}/class/${class_id}/group/${selectedGroup.id}`,
+        formData,
+        authConfig
+      );
+      if (response.status === 200) {
+        getAllDataChatGroup(selectedGroup.id);
+        setContent("");
+        setGambar(null);
+        setEditMessageId(null);
+      }
+    } catch (error) {
+      console.error("Error updating message:", error);
+    }
+  };
+  
+
   return (
     <>
       <div className="flex justify-center gap-4">
@@ -122,7 +188,8 @@ function ChatApp() {
               <div
                 key={index}
                 className="bg-green-300 rounded-lg p-2 flex gap-4 cursor-pointer"
-                onClick={() => setSelectedGroup(data)}>
+                onClick={() => setSelectedGroup(data)}
+              >
                 <div className="border-2 w-fit rounded-full border-green-500">
                   <img className="w-9" src={img} alt="" />
                 </div>
@@ -146,7 +213,8 @@ function ChatApp() {
                     message.sender_id == localStorage.getItem("user_id")
                       ? "flex justify-start"
                       : "flex justify-end"
-                  }`}>
+                  }`}
+                >
                   <div className="flex w-96 items-center">
                     <img
                       className="w-8 h-8 rounded-full"
@@ -154,11 +222,32 @@ function ChatApp() {
                       alt="User Avatar"
                     />
                     <div className="bg-green-500 text-white rounded-lg p-2 w-[90%] shadow ml-2">
-                      <div className="flex justify-between">
+                      <div className="flex justify-between relative">
                         <p>{message.content}</p>
-                        <button className="">
+                        <button
+                          className=""
+                          onClick={() => toggleDropdown(index)}
+                        >
                           <i className="fa-solid fa-ellipsis-vertical"></i>
                         </button>
+                        {dropdownIndex === index && (
+                          <div className="absolute right-0 mt-8 w-24 bg-white text-black border rounded shadow-lg">
+                            <button
+                              className="block px-4 py-2 text-left w-full hover:bg-gray-200"
+                              onClick={() =>
+                                editMessage(message.id, message.content)
+                              }
+                            >
+                              Edit
+                            </button>
+                            <button
+                              className="block px-4 py-2 text-left w-full text-black hover:bg-gray-200"
+                              onClick={() => deleteMessage(message.id)}
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        )}
                       </div>
                       {message.gambar && (
                         <img
@@ -176,7 +265,10 @@ function ChatApp() {
             </div>
           </div>
           <div className="bg-gray-100 px-4 py-2">
-            <form onSubmit={sendMessage} className="flex items-center">
+            <form
+              onSubmit={editMessageId ? updateMessage : sendMessage}
+              className="flex items-center"
+            >
               <input
                 className="w-full border rounded-full py-2 px-4 mr-2"
                 type="text"
@@ -184,11 +276,12 @@ function ChatApp() {
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Ketik pesan anda..."
               />
-              <input type="file" onChange={handleFileChange} />
+                            <input type="file" onChange={handleFileChange} />
               <button
                 className="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-full"
-                type="submit">
-                Kirim
+                type="submit"
+              >
+                {editMessageId ? "Edit" : "Kirim"}
               </button>
             </form>
           </div>
@@ -199,3 +292,6 @@ function ChatApp() {
 }
 
 export default ChatApp;
+
+
+
