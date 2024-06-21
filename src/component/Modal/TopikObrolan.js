@@ -2,7 +2,7 @@ import { useState } from "react";
 import Draggable from "react-draggable";
 import { ResizableBox } from "react-resizable";
 import "../../App.css";
-import TopikChat from "../../views/pages/Chat/TopikChat";
+import AddTopikChat from "../../views/pages/Chat/AddTopicChat";
 
 function TopicChat({ onClose }) {
   const [isMinimized, setIsMinimized] = useState(false);
@@ -74,7 +74,7 @@ function TopicChat({ onClose }) {
               </div>
             </div>
             <div className="handle w-full cursor-move flex-grow overflow-auto">
-              <TopikChat />
+              <AddTopikChat />
             </div>
           </div>
         </ResizableBox>
