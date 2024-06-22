@@ -116,15 +116,17 @@ function UpdateName() {
                   <label className="block mb-2 text-sm font-semibold text-gray-700">
                     Gender
                   </label>
-                  <input
-                    type="text"
-                    id="className"
+                  <select
+                    id="gender"
                     className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
-                    placeholder="Masukkan Gender"
-                    required
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
-                  />
+                    required
+                  >
+                    <option value="">Pilih Gender</option>
+                    <option value="Laki-laki">Laki-laki</option>
+                    <option value="Perempuan">Perempuan</option>
+                  </select>
                 </div>
                 <div className="relative mb-4">
                   <label className="block mb-2 text-sm font-semibold text-gray-700">
