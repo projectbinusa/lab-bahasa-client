@@ -16,6 +16,7 @@ import { API_DUMMY } from "../../../utils/api";
 import Swal from "sweetalert2";
 import { Pagination } from "flowbite-react";
 import AddKelas from "../../../component/Modal/AddKelas";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 const authConfig = {
   headers: {
