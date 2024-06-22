@@ -4,7 +4,7 @@ import Navbar from "../../../component/Navbar1";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { API_DUMMY } from "../../../utils/api";
-import { useParams } from "react-router-dom/cjs/react-router-dom";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 const authConfig = {
   headers: {

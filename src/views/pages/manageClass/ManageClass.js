@@ -33,8 +33,6 @@ function ManageClass() {
   const [totalPages, setTotalPages] = useState(1);
   const [show, setShow] = useState(false);
   const [showAddClass, setShowAddClass] = useState(false);
-  const [showNavbar, setShowNavbar] = useState(false);
-  const history = useHistory();
 
   const handleAddClass = () => {
     setShowAddClass(true);
@@ -204,20 +202,10 @@ function ManageClass() {
     getAllData();
   }, [searchTerm, limit, currentPage]);
 
-  useEffect(() => {
-    const classId = localStorage.getItem("class_id");
-    setShowNavbar(classId !== "0");
-    getAllData();
-  }, [searchTerm, limit, currentPage]);
-
-  const handleNextPage = (id) => {
-    history.push(`/dashboard/${id}`);
-  };
-
   return (
     <>
       <div className="flex flex-col h-screen">
-        {showNavbar && <Navbar />}
+        <Navbar />
         <div className="px-32">
           <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-8 mb-10">
             <div className="flex justify-between">
@@ -366,18 +354,6 @@ function ManageClass() {
                         >
                           <FontAwesomeIcon className="text-lg" icon={faCheck} />
                         </button>
-                        {data.id ===
-                          Number(localStorage.getItem("class_id")) && (
-                          <button
-                            className="py-3 px-4 rounded-lg text-white bg-green-500"
-                            onClick={() => handleNextPage(data.id)}
-                          >
-                            <FontAwesomeIcon
-                              className="text-lg"
-                              icon={faArrowRight}
-                            />
-                          </button>
-                        )}
                         <Link
                           to={"/update-class/" + data.id}
                           className="py-3 px-4 bg-blue-500 rounded-lg text-white"
