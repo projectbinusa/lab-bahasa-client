@@ -15,7 +15,7 @@ import Swal from "sweetalert2";
 import { API_DUMMY } from "../../../utils/api";
 import { Pagination } from "flowbite-react";
 import AddNama from "../../../component/Modal/AddNama";
-import { saveAs } from 'file-saver';
+import { saveAs } from "file-saver";
 
 function ManageName() {
   const [userData, setUserData] = useState([]);
@@ -146,143 +146,154 @@ function ManageName() {
 
   return (
     <>
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col min-h-screen">
         <Navbar />
-        <div className="px-32">
+        <div className="px-4 sm:px-8 md:px-16 lg:px-32">
           <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-8">
-            <div className="flex justify-between items-center mb-4">
-              <h6 className="text-xl font-bold text-gray-900 dark:text-white">
+            <div className="flex flex-col md:flex-row justify-between mb-4">
+              <h6 className="text-xl text-left font-bold text-gray-900 dark:text-white">
                 Kelola Daftar Nama
               </h6>
-              <div className="flex items-center gap-2">
-                <div className="relative w-64">
+              <div className="flex flex-col md:flex-row items-center gap-2 mt-4 md:mt-0 w-full md:w-auto">
+                <div className="flex items-center w-full md:w-auto">
                   <input
                     type="search"
                     id="search-dropdown"
                     value={searchTerm}
                     onChange={handleSearch}
-                    className="block p-2.5 w-full z-20 text-sm rounded-l-md text-gray-900 bg-gray-50 border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+                    className="block p-2.5 w-full md:w-full z-1 text-sm rounded-l-md text-gray-900 bg-gray-50 border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                     placeholder="Search name..."
                     required
                   />
+                  <select
+                    value={limit}
+                    onChange={handleLimitChange}
+                    className="flex-shrink-0 z-1 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
+                  >
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                  </select>
                 </div>
-                <select
-                  value={limit}
-                  onChange={handleLimitChange}
-                  className="flex-shrink-0 z-10 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
-                >
-                  <option value="10">10</option>
-                  <option value="20">20</option>
-                  <option value="50">50</option>
-                </select>
-                <button
-                  type="button"
-                  onClick={handleAddNama}
-                  className="rounded-xl shadow-xl py-3 px-4 bg-gray-100"
-                >
-                  <FontAwesomeIcon
-                    icon={faPlus}
-                    className="text-xl text-green-400"
-                  />
-                </button>
-                <label className="rounded-xl shadow-xl py-3 px-4 bg-gray-100">
-                  <FontAwesomeIcon icon={faFileImport} className="text-xl text-green-400" />
-                  <input
-                    type="file"
-                    accept=".csv"
-                    onChange={handleImport}
-                    className="hidden"
-                  />
-                </label>
-                <button
-                  type="button"
-                  onClick={handleExport}
-                  className="rounded-xl shadow-xl py-3 px-4 bg-gray-100"
-                >
-                  <FontAwesomeIcon
-                    icon={faFileExport}
-                    className="text-xl text-green-400"
-                  />
-                </button>
+                <div className="flex items-center gap-2 w-full md:w-auto justify-center my-2 md:my-0 md:justify-start">
+                  <button
+                    type="button"
+                    onClick={handleAddNama}
+                    className="rounded-xl shadow p-2 px-3 border bg-green-500"
+                  >
+                    <FontAwesomeIcon
+                      icon={faPlus}
+                      className="text-xl text-white"
+                    />
+                  </button>
+                  <label className="rounded-xl shadow p-2 px-3 border bg-blue-500 cursor-pointer">
+                    <FontAwesomeIcon
+                      icon={faFileImport}
+                      className="text-xl text-white"
+                    />
+                    <input
+                      type="file"
+                      accept=".csv"
+                      onChange={handleImport}
+                      className="hidden"
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    onClick={handleExport}
+                    className="rounded-xl shadow p-2 px-3 border bg-yellow-500"
+                  >
+                    <FontAwesomeIcon
+                      icon={faFileExport}
+                      className="text-xl text-white"
+                    />
+                  </button>
+                </div>
               </div>
             </div>
             <hr />
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
-              <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                  <tr>
-                    <th scope="col" className="px-6 py-3">
-                      No
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      ID Siswa
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Nama
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Gender
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Jurusan
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Kelas
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Password
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Aksi
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="text-center">
-                  {userData.map((manage, index) => (
-                    <tr
-                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                      key={index}
-                    >
-                      <th
-                        scope="row"
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                      >
-                        {index + 1}
+            <div className="overflow-x-auto shadow-md sm:rounded-lg mt-5">
+              <div className="custom-scrollbar">
+                <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                  <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                      <th scope="col" className="whitespace-nowrap px-6 py-3">
+                        No
                       </th>
-
-                      <td className="px-6 py-4">997764</td>
-                      <td className="px-6 py-4 capitalize">{manage.name}</td>
-                      <td className="px-6 py-4 capitalize">{manage.gender}</td>
-                      <td className="px-6 py-4 capitalize">
-                        {manage.departement}
-                      </td>
-                      <td className="px-6 py-4 capitalize">
-                        {manage.class_id}
-                      </td>
-                      <td className="px-6 py-4 capitalize">
-                        {manage.password}
-                      </td>
-                      <td className="px-6 py-4 flex items-center gap-5 justify-center">
-                        <Link
-                          to={"/update-name/" + manage.id}
-                          className="py-2 px-3 bg-blue-500 rounded-lg text-white "
-                        >
-                          <FontAwesomeIcon
-                            className="text-lg"
-                            icon={faPenToSquare}
-                          />
-                        </Link>
-                        <button
-                          className="py-2 px-3 bg-red-500 rounded-lg text-white"
-                          onClick={() => deleteData(manage.id)}
-                        >
-                          <FontAwesomeIcon className="text-lg" icon={faTrash} />
-                        </button>
-                      </td>
+                      <th scope="col" className="whitespace-nowrap px-6 py-3">
+                        ID Siswa
+                      </th>
+                      <th scope="col" className="whitespace-nowrap px-6 py-3">
+                        Nama
+                      </th>
+                      <th scope="col" className="whitespace-nowrap px-6 py-3">
+                        Gender
+                      </th>
+                      <th scope="col" className="whitespace-nowrap px-6 py-3">
+                        Jurusan
+                      </th>
+                      <th scope="col" className="whitespace-nowrap px-6 py-3">
+                        Kelas
+                      </th>
+                      <th scope="col" className="whitespace-nowrap px-6 py-3">
+                        Password
+                      </th>
+                      <th scope="col" className="whitespace-nowrap px-6 py-3">
+                        Aksi
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="text-center">
+                    {userData.map((manage, index) => (
+                      <tr
+                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                        key={index}
+                      >
+                        <th
+                          scope="row"
+                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        >
+                          {index + 1}
+                        </th>
+                        <td className="px-6 py-4">997764</td>
+                        <td className="px-6 py-4 whitespace-nowrap capitalize">{manage.name}</td>
+                        <td className="px-6 py-4 whitespace-nowrap capitalize">
+                          {manage.gender}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap capitalize">
+                          {manage.departement}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap capitalize">
+                          {manage.class_id}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap capitalize">
+                          {manage.password}
+                        </td>
+                        <td className="px-6 py-4 flex items-center gap-5 justify-center">
+                          <Link
+                            to={"/update-name/" + manage.id}
+                            className="py-2 px-3 bg-blue-500 rounded-lg text-white"
+                          >
+                            <FontAwesomeIcon
+                              className="text-lg"
+                              icon={faPenToSquare}
+                            />
+                          </Link>
+                          <button
+                            className="py-2 px-3 bg-red-500 rounded-lg text-white"
+                            onClick={() => deleteData(manage.id)}
+                          >
+                            <FontAwesomeIcon
+                              className="text-lg"
+                              icon={faTrash}
+                            />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
             <Pagination
               className="mt-5"
@@ -295,6 +306,22 @@ function ManageName() {
           </div>
         </div>
       </div>
+      <style>
+        {`
+        .custom-scrollbar {
+          overflow-y: auto;
+          scrollbar-width: thin;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 6px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          border-radius: 3px;
+        }
+        `}
+      </style>
       {showAddNama && <AddNama onClose={handleCloseAddNama} />}
     </>
   );
