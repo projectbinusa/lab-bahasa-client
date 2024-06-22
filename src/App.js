@@ -31,6 +31,7 @@ import ChatPribadi from "./views/pages/Chat/ChatPribadi";
 import ScoreAnswer from "./views/pages/response/ScoreAnswer";
 import AnswerQuestion from "./views/pages/student/Answer";
 import QuestionsAnswer from "./views/pages/student/QuestionsAnswer";
+import TabelClass from "./views/pages/auth/TabelClass";
 
 const checkTokenExpiration = () => {
   const token = localStorage.getItem("token");
@@ -120,6 +121,7 @@ const App = () => {
           <Route path="/student-answer/:id" component={AnswerQuestion} />
           <Route path="/question-answer" component={QuestionsAnswer} exact />
           <Route path="/face-to-face-chat" component={ChatPribadi} exact />
+          <Route path="/tabel-class" component={TabelClass} exact />
         </Switch>
       </main>
     </BrowserRouter>
