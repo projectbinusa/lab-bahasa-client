@@ -25,13 +25,12 @@ function ResponseCompetition() {
   const [limit, setLimit] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const class_id = localStorage.getItem("class_id");
 
   const getAllData = async () => {
     try {
       const response = await axios.get(
-        `${API_DUMMY}/api/instructur/class/${localStorage.getItem(
-          "class_id"
-        )}/answer?limit=${limit}&name=${searchTerm}&page=${currentPage}`,
+        `${API_DUMMY}/api/instructur/class/${class_id}/answer?limit=${limit}&answer=${searchTerm}&page=${currentPage}`,
         authConfig
       );
       setList(response.data.data);
@@ -86,7 +85,6 @@ function ResponseCompetition() {
 
   return (
     <>
-      <p>Test</p>
       <div className="flex flex-col h-screen">
         <Navbar />
         <div className="px-32">
