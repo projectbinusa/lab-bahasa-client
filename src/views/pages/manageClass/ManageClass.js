@@ -10,13 +10,12 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
-import { Link, useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import axios from "axios";
 import { API_DUMMY } from "../../../utils/api";
 import Swal from "sweetalert2";
 import { Pagination } from "flowbite-react";
 import AddKelas from "../../../component/Modal/AddKelas";
-import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 const authConfig = {
   headers: {
@@ -229,8 +228,7 @@ function ManageClass() {
                     <select
                       value={limit}
                       onChange={handleLimitChange}
-                      class="flex-shrink-0 z-10 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
-                    >
+                      class="flex-shrink-0 z-10 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600">
                       <option value="10">10</option>
                       <option value="20">20</option>
                       <option value="50">50</option>
@@ -258,8 +256,7 @@ function ManageClass() {
                 <button
                   type="button"
                   onClick={handleAddClass}
-                  className="rounded-xl shadow p-2 px-3 border bg-green-500 mb-5 mr-2"
-                >
+                  className="rounded-xl shadow p-2 px-3 border bg-green-500 mb-5 mr-2">
                   <FontAwesomeIcon
                     icon={faPlus}
                     className="text-xl text-white"
@@ -280,8 +277,7 @@ function ManageClass() {
                 <button
                   type="button"
                   onClick={handleExport}
-                  className="rounded-xl shadow p-2 px-3 border bg-yellow-500 mb-5"
-                >
+                  className="rounded-xl shadow p-2 px-3 border bg-yellow-500 mb-5">
                   <FontAwesomeIcon
                     icon={faFileExport}
                     className="text-xl text-white"
@@ -321,12 +317,10 @@ function ManageClass() {
                   {list.map((data, index) => (
                     <tr
                       key={index}
-                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                    >
+                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                       <th
                         scope="row"
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                      >
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {index + 1}
                       </th>
                       <td className="px-6 py-4">
@@ -350,14 +344,12 @@ function ManageClass() {
                           onClick={() =>
                             !data.is_active && handleActivateClass(data.id)
                           }
-                          disabled={data.is_active}
-                        >
+                          disabled={data.is_active}>
                           <FontAwesomeIcon className="text-lg" icon={faCheck} />
                         </button>
                         <Link
                           to={"/update-class/" + data.id}
-                          className="py-3 px-4 bg-blue-500 rounded-lg text-white"
-                        >
+                          className="py-3 px-4 bg-blue-500 rounded-lg text-white">
                           <FontAwesomeIcon
                             className="text-lg"
                             icon={faPenToSquare}
@@ -365,8 +357,7 @@ function ManageClass() {
                         </Link>
                         <button
                           className="py-3 px-4 bg-red-500 rounded-lg text-white"
-                          onClick={() => deleteData(data.id)}
-                        >
+                          onClick={() => deleteData(data.id)}>
                           <FontAwesomeIcon className="text-lg" icon={faTrash} />
                         </button>
                       </td>

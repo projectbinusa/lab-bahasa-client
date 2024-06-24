@@ -3,7 +3,7 @@ import { ReactSketchCanvas } from 'react-sketch-canvas';
 import io from 'socket.io-client';
 import { Button, Grid, Typography } from '@mui/material';
 
-const socket = io('http://localhost:3001');
+const socket = io('http://localhost:3000');
 
 const StudentWhiteBoard = ({ classId, studentId }) => {
   const [paths, setPaths] = useState([]);

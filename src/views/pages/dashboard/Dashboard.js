@@ -11,7 +11,7 @@ const authConfig = {
     "auth-event": `jwt ${localStorage.getItem("token")}`,
   },
 };
-
+ 
 function Dashboard() {
   const [clien, setClient] = useState([]);
   const [server, setServer] = useState([]);
