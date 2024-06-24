@@ -28,7 +28,7 @@ function AddGroup() {
     try {
       const response = await axios.post(url_hit, jsonData, authConfig);
       if (response.status === 200) {
-        history.push("/manage-class");
+        history.push("/group-chat");
         Swal.fire({
           icon: "success",
           title: "Berhasil Menambahkan Data.",

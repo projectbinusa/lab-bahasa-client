@@ -1,0 +1,16 @@
+{
+  "name": "lab-bahasa-whiteboard-realtime-server",
+  "version": "1.0.0",
+  "description": "ini unutk backend lab bahasa white board",
+  "main": "socket.js",
+  "scripts": {
+    "start": "node socket.js",
+    "dev": "nodemon socket.js"
+  },
+  "author": "lab bahasa",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "socket.io": "^4.7.5"
+  }
+}

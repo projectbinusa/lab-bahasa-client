@@ -1,3 +1,4 @@
+
 import React, { useRef, useState, useEffect } from "react";
 import {
   FaVideo,
@@ -14,6 +15,12 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHandPaper as farHandPaper } from "@fortawesome/free-regular-svg-icons";
+
+const authConfig = {
+  headers: {
+    "auth-event": `jwt ${localStorage.getItem("token")}`,
+  },
+};
 
 function ScreenBroadcast() {
   const refCameraVideo = useRef(null);
