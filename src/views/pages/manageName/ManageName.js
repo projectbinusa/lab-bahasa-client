@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../../component/Navbar1";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faArrowUpFromBracket,
   faFileExport,
   faFileImport,
   faPlus,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
-import { Link, useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { API_DUMMY } from "../../../utils/api";
@@ -84,55 +83,67 @@ function ManageName() {
           text: "Data berhasil dihapus.",
           icon: "success",
         });
-        // Di sini Anda bisa memanggil fungsi atau melakukan apa pun yang diperlukan setelah penghapusan
         getAllData();
       }
     } catch (error) {
       console.log(error);
     }
   };
-
-  const handleImport = async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      try {
-        const response = await axios.post(
-          `${API_DUMMY}/api/instructur/class/${class_id}/import/management_name_list`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              "auth-event": `jwt ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-        Swal.fire("Success", response.data.message, "success");
-        getAllData(); // Refresh data after import
-      } catch (error) {
-        Swal.fire("Error", error.response.data.error, "error");
-      }
-    }
-  };
-
+  
   const handleExport = async () => {
     try {
       const response = await axios.get(
         `${API_DUMMY}/api/instructur/class/${class_id}/export/management_name_list`,
         {
-          headers: {
-            "auth-event": `jwt ${localStorage.getItem("token")}`,
-          },
-          responseType: "blob", // Important for file download
+          ...authConfig,
+          responseType: 'blob', // Important for downloading files
         }
       );
-
-      const blob = new Blob([response.data], { type: "text/csv" });
-      saveAs(blob, "management_name_list.csv");
+  
+      const blob = new Blob([response.data], { type: 'text/csv' });
+      saveAs(blob, 'management_name_list.csv'); // Using file-saver library to save file
     } catch (error) {
-      Swal.fire("Error", "Failed to export data", "error");
+      console.error('Error exporting data:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Export Failed',
+        text: 'Failed to export data. Please try again.',
+      });
+    }
+  };
+  
+
+  const handleImport = async (event) => {
+    const file = event.target.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+  
+    try {
+      const response = await axios.post(
+        `${API_DUMMY}/api/instructur/class/${class_id}/import/management_name_list`,
+        formData,
+        {
+          headers: {
+            ...authConfig.headers,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+  
+      Swal.fire({
+        icon: 'success',
+        title: 'Import Successful',
+        text: response.data.message,
+      });
+  
+      getAllData(); // Refresh data after import
+    } catch (error) {
+      console.error('Error importing file:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Import Failed',
+        text: 'Failed to import data. Please try again.',
+      });
     }
   };
 
