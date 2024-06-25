@@ -25,11 +25,35 @@ function Login() {
 
       if (response.status === 200) {
         const userData = response.data.data;
+
+        // Store user data in localStorage
         localStorage.setItem("id", userData.id);
         localStorage.setItem("token", userData.token);
         localStorage.setItem("class_id", userData.class_id);
         localStorage.setItem("role", userData.role);
         localStorage.setItem("name", userData.name);
+
+        // Retrieve role and class_id from localStorage
+        const role = localStorage.getItem("role");
+        const classId = localStorage.getItem("class_id");
+
+        // Validate if student and class_id is "0"
+        if (role === "student" && classId === "0") {
+          Swal.fire({
+            icon: "error",
+            title: "Anda belum memiliki class ID. Silakan hubungi admin.",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          // Clear localStorage for this failed login attempt
+          localStorage.removeItem("id");
+          localStorage.removeItem("token");
+          localStorage.removeItem("class_id");
+          localStorage.removeItem("role");
+          localStorage.removeItem("name");
+          return;
+        }
+
         setShow(false);
         Swal.fire({
           icon: "success",
@@ -38,27 +62,17 @@ function Login() {
           timer: 1500,
         });
 
-        // Logika redirect berdasarkan role user dan class_id
-        if (userData.role === "instructur") {
+        // Logika redirect berdasarkan role user
+        if (role === "instructur") {
           history.push("/tabel-class");
           setTimeout(() => {
             window.location.reload();
           }, 1500);
-        } else if (userData.role === "student") {
-          if (userData.class_id === "0") {
-            setShow(false);
-            Swal.fire({
-              icon: "error",
-              title: "Anda belum memiliki class ID. Silakan hubungi admin.",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          } else {
-            history.push("/tabel-class");
-            setTimeout(() => {
-              window.location.reload();
-            }, 1500);
-          }
+        } else if (role === "student") {
+          history.push("/tabel-class");
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
         }
       }
     } catch (error) {
