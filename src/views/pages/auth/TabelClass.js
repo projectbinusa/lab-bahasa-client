@@ -28,15 +28,21 @@ function TabelClass() {
     const userClassId = localStorage.getItem("class_id");
 
     try {
-      let url = `${API_DUMMY}/api/instructur/class?limit=${limit}&name=${searchTerm}&page=${currentPage}`;
-
+      let url;
       if (role === "student" && userClassId) {
-        url = `${API_DUMMY}/api/instructur/class?limit=${limit}&name=${searchTerm}&page=${currentPage}&class_id=${userClassId}`;
+        url = `${API_DUMMY}/api/instructur/class/${userClassId}`;
+      } else {
+        url = `${API_DUMMY}/api/instructur/class?limit=${limit}&name=${searchTerm}&page=${currentPage}`;
       }
 
       const response = await axios.get(url, authConfig);
-      setList(response.data.data);
-      setTotalPages(response.data.pagination.total_page);
+      if (role === "student" && userClassId) {
+        setList([response.data.data]);
+        setTotalPages(1); // Students only view their own class, so only one page
+      } else {
+        setList(response.data.data);
+        setTotalPages(response.data.pagination.total_page);
+      }
     } catch (error) {
       console.log(error);
     }
