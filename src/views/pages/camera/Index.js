@@ -50,18 +50,21 @@ function Index() {
     <>
       <div className="flex flex-col h-screen">
         <Navbar />
-        <div className="bg-gradient-to-b from-slate-100 to-green-300 h-screen">
-          <div className="md:flex block justify-around mt-12">
-            <div className="md:mt-24 mt-5 md:w-[40%]">
-              <h1 className="text-4xl text-left font-semibold mb-3">
-                Panggilan video untuk semua orang atau beberapa orang
-              </h1>
-              <p className="text-xl text-gray-500 text-left mb-5">
-                Terhubung, berkolaborasi dengan lab bahasa kamera
-              </p>
-              <form onSubmit={handleJoinRoom} className="flex gap-2">
+        <div className="bg-gradient-to-b md:px-10 from-slate-100 to-green-300 h-screen md:flex md:justify-around md:items-center justify-center mx-auto">
+          <div className="md:w-1/2 px-6 md:px-12 flex flex-col justify-center h-full">
+            <h1 className="md:text-4xl text-3xl text-center md:text-left font-semibold mb-3">
+              Panggilan video untuk semua orang atau beberapa orang
+            </h1>
+            <p className="md:text-xl text-lg text-left text-gray-500 mb-5">
+              Terhubung, berkolaborasi dengan lab bahasa kamera
+            </p>
+            <form
+              onSubmit={handleJoinRoom}
+              className="flex flex-col md:flex-row items-start md:items-center"
+            >
+              <div className="flex w-full md:w-auto">
                 <input
-                  className="border border-green-300 rounded"
+                 className="border border-green-300 rounded px-4 py-2 mr-1 w-full"
                   placeholder="Buat kode ruang kamera"
                   type="text"
                   value={value}
@@ -69,17 +72,18 @@ function Index() {
                 />
                 <button
                   type="submit"
-                  className="bg-green-500 p-3 text-white rounded">
+                  className="bg-green-500 px-4 py-2 text-white rounded"
+                >
                   Buat
                 </button>
-              </form>
-            </div>
-            <img
-              className="md:w-[40%] w-[90%] md:mt-5 mt-0"
-              src="https://cdni.iconscout.com/illustration/premium/thumb/video-call-4393629-3646089.png"
-              alt=""
-            />
+              </div>
+            </form>
           </div>
+          <img
+            className="md:w-[40%] w-[90%] hidden md:block md:mt-5 mt-0"
+            src="https://cdni.iconscout.com/illustration/premium/thumb/video-call-4393629-3646089.png"
+            alt=""
+          />
         </div>
       </div>
     </>
