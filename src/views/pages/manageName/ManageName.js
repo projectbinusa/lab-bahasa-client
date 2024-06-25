@@ -157,8 +157,8 @@ function ManageName() {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen">
-        <Navbar />
+      <div className="flex flex-col min-h-screen overflow-x-hidden">
+        <Navbar className="overflow-x-hidden" />
         <div className="px-4 sm:px-8 md:px-16 lg:px-32">
           <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-8">
             <div className="flex flex-col md:flex-row justify-between mb-4">
@@ -186,18 +186,18 @@ function ManageName() {
                     <option value="50">50</option>
                   </select>
                 </div>
-                <div className="flex items-center gap-2 w-full md:w-auto justify-center my-2 md:my-0 md:justify-start">
+                <div className="flex items-center gap-2 w-full md:w-auto justify-end my-2 md:my-0 md:justify-start">
                   <button
                     type="button"
                     onClick={handleAddNama}
-                    className="rounded-xl shadow p-2 px-3 border bg-green-500"
+                    className="rounded-xl shadow py-2.5 px-3 border bg-green-500"
                   >
                     <FontAwesomeIcon
                       icon={faPlus}
                       className="text-xl text-white"
                     />
                   </button>
-                  <label className="rounded-xl shadow p-2 px-3 border bg-blue-500 cursor-pointer">
+                  <label className="rounded-xl shadow py-2.5 px-3 my-1 border bg-blue-500 cursor-pointer">
                     <FontAwesomeIcon
                       icon={faFileImport}
                       className="text-xl text-white"
@@ -212,7 +212,7 @@ function ManageName() {
                   <button
                     type="button"
                     onClick={handleExport}
-                    className="rounded-xl shadow p-2 px-3 border bg-yellow-500"
+                    className="rounded-xl shadow py-2.5 px-3 my-3 border bg-yellow-500"
                   >
                     <FontAwesomeIcon
                       icon={faFileExport}

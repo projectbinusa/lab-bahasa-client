@@ -28,7 +28,7 @@ function AddTopicChat() {
     try {
       const response = await axios.post(url_hit, jsonData, authConfig);
       if (response.status === 200) {
-        history.push("/topic-chat");
+        window.location.reload()
         Swal.fire({
           icon: "success",
           title: "Berhasil Menambahkan Data.",
