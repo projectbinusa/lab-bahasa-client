@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import img from "../../../component/Asset/group.png";
 import { API_DUMMY } from "../../../utils/api";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faPlus } from "@fortawesome/free-solid-svg-icons";
 import AddTopicChat from "../../../component/Modal/TopikObrolan";
+import Swal from 'sweetalert2';
+import Navbar from "../../../component/Navbar1";
 
 const authConfig = {
   headers: {
@@ -20,6 +21,8 @@ function TopikChat() {
   const [gambar, setGambar] = useState(null);
   const [list, setList] = useState([]);
   const [selectedTopic, setSelectedTopicChat] = useState(null);
+  const [dropdownIndex, setDropdownIndex] = useState(null);
+  const [editMessageId, setEditMessageId] = useState(null);
   const class_id = localStorage.getItem("class_id");
   const user_id = localStorage.getItem("id");
   const [showTopikChat, setShowTopikChat] = useState(false);
@@ -76,9 +79,10 @@ function TopikChat() {
       "0"
     )}-${String(date.getDate()).padStart(2, "0")} , ${String(
       date.getHours()
-    ).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(
-      date.getSeconds()
-    ).padStart(2, "0")}`;
+    ).padStart(2, "0")}:${String(date.getMinutes()).padStart(
+      2,
+      "0"
+    )}:${String(date.getSeconds()).padStart(2, "0")}`;
   };
 
   const getAllData = async () => {
@@ -124,14 +128,96 @@ function TopikChat() {
     }
   }, [selectedTopic]);
 
+  const toggleDropdown = (index) => {
+    setDropdownIndex(dropdownIndex === index ? null : index);
+  };
+
+
+  const deleteMessage = async (messageId) => {
+    try {
+      const confirmDelete = await Swal.fire({
+        title: 'Anda yakin?',
+        text: 'Pesan akan dihapus secara permanen!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, hapus!',
+        cancelButtonText: 'Batal'
+      });
+
+      if (confirmDelete.isConfirmed) {
+        await axios.delete(
+          `${API_DUMMY}/api/chat/delete/${messageId}/class/${class_id}/topic_chat/${selectedTopic.id}`,
+          authConfig
+        );
+        getAllDatachatTopic(selectedTopic.id);
+        Swal.fire(
+          'Terhapus!',
+          'Pesan berhasil dihapus.',
+          'success'
+        );
+      }
+    } catch (error) {
+      console.error("Error deleting message:", error);
+      Swal.fire(
+        'Gagal!',
+        'Gagal menghapus pesan.',
+        'error'
+      );
+    }
+  };
+
+
+
+  const editMessage = (messageId, messageContent) => {
+    setEditMessageId(messageId);
+    setContent(messageContent);
+  };
+
+  const updateMessage = async (e) => {
+    e.preventDefault();
+    if (!editMessageId) {
+      console.error("Message ID not selected.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("is_group", 1);
+    if (gambar) {
+      formData.append("gambar", gambar);
+    }
+    if (content) {
+      formData.append("content", content);
+    }
+    formData.append("receiver_id", user_id); // Assuming receiver_id is needed here
+    formData.append("sender_id", user_id); // Ensure sender_id is added
+
+    try {
+      const response = await axios.put(
+        `${API_DUMMY}/api/chat/update/${editMessageId}/class/${class_id}/topic_chat/${selectedTopic.id}`,
+        formData,
+        authConfig
+      );
+      if (response.status === 200) {
+        getAllDatachatTopic(selectedTopic.id);
+        setContent("");
+        setGambar(null);
+        setEditMessageId(null);
+      }
+    } catch (error) {
+      console.error("Error updating message:", error);
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col h-screen">
+        <Navbar />
         <div className="flex flex-col md:flex-row justify-center gap-4 mt-3 mx-3">
           <div
-            className={`bg-white w-full md:rounded-r-lg md:border-r md:border-green-400 md:w-1/4 ${
-              selectedTopic ? "hidden md:block" : "block"
-            }`}
+            className={`bg-white w-full md:rounded-r-lg md:border-r md:border-green-400 md:w-1/4 ${selectedTopic ? "hidden md:block" : "block"
+              }`}
           >
             <div className="flex">
               {selectedTopic && (
@@ -144,9 +230,8 @@ function TopikChat() {
               )}
               <button
                 onClick={handleTopikChat}
-                className={`bg-green-500 flex-1 h-10 flex items-center justify-center text-white text-lg ${
-                  selectedTopic ? "rounded-tr-lg" : "rounded-t-lg"
-                }`}
+                className={`bg-green-500 flex-1 h-10 flex items-center justify-center text-white text-lg ${selectedTopic ? "rounded-tr-lg" : "rounded-t-lg"
+                  }`}
               >
                 <FontAwesomeIcon icon={faPlus} className="mr-2" />
                 Tambah Topik Chat
@@ -191,8 +276,8 @@ function TopikChat() {
                 </h1>
               </div>
 
-              <div className="md:h-[90vh] p-2 overflow-y-auto custom-scrollbar">
-              {selectedTopic ? (
+              <div className="md:h-[80vh] p-2 overflow-y-auto custom-scrollbar">
+                {selectedTopic ? (
                   chatTopic.filter(
                     (message) => message.topic_chat_id === selectedTopic.id
                   ).length === 0 ? (
@@ -207,11 +292,10 @@ function TopikChat() {
                       .map((message, index) => (
                         <div
                           key={index}
-                          className={`px-4 py-2 flex ${
-                            message.sender_id == user_id
-                              ? "justify-end"
-                              : "justify-start"
-                          }`}
+                          className={`px-4 py-2 flex ${message.sender_id == user_id
+                            ? "justify-end"
+                            : "justify-start"
+                            }`}
                         >
                           <div className="flex w-full md:w-96 items-center">
                             {message.sender_id != user_id && (
@@ -223,17 +307,29 @@ function TopikChat() {
                             )}
                             <div
                               key={index}
-                              className={`${
-                                message.sender_id == user_id
-                                  ? "bg-green-500 text-white mr-2"
-                                  : "bg-gray-400 text-white"
-                              } rounded-lg p-2 w-full md:w-[90%] shadow ml-2`}
+                              className={`${message.sender_id == user_id
+                                ? "bg-green-500 text-white mr-2"
+                                : "bg-gray-400 text-white"
+                                } rounded-lg p-2 w-full md:w-[90%] shadow ml-2 relative`}
                             >
                               <div className="flex justify-between">
                                 {message.sender_id == user_id && (
-                                  <button className="">
-                                    <i className="fa-solid fa-ellipsis-vertical mx-2"></i>
+                                  <button
+                                    className=""
+                                    onClick={() => toggleDropdown(index)}
+                                  >
+                                    <i className="fa-solid fa-ellipsis-vertical"></i>
                                   </button>
+                                )}
+                                {dropdownIndex === index && (
+                                  <div className="absolute right-0 mt-8 w-24 bg-white text-black border rounded shadow-lg z-10">
+                                    <button
+                                      className="block px-4 py-2 text-left w-full text-black hover:bg-gray-200"
+                                      onClick={() => deleteMessage(message.id)}
+                                    >
+                                      Delete
+                                    </button>
+                                  </div>
                                 )}
                                 <div>
                                   {formatMessageContent(message.content).map(
@@ -243,9 +339,30 @@ function TopikChat() {
                                   )}
                                 </div>
                                 {message.sender_id != user_id && (
-                                  <button className="">
-                                    <i className="fa-solid fa-ellipsis-vertical mx-2"></i>
+                                  <button
+                                    className=""
+                                    onClick={() => toggleDropdown(index)}
+                                  >
+                                    <i className="fa-solid fa-ellipsis-vertical"></i>
                                   </button>
+                                )}
+                                {dropdownIndex === index && (
+                                  <div className="absolute right-0 mt-8 w-24 bg-white text-black border rounded shadow-lg z-10">
+                                    <button
+                                      className="block px-4 py-2 text-left w-full hover:bg-gray-200"
+                                      onClick={() =>
+                                        editMessage(message.id, message.content)
+                                      }
+                                    >
+                                      Edit
+                                    </button>
+                                    <button
+                                      className="block px-4 py-2 text-left w-full text-black hover:bg-gray-200"
+                                      onClick={() => deleteMessage(message.id)}
+                                    >
+                                      Delete
+                                    </button>
+                                  </div>
                                 )}
                               </div>
                               {message.sender_id == user_id && (
@@ -287,23 +404,39 @@ function TopikChat() {
               </div>
             </div>
             {selectedTopic && (
-              <div className="bg-gray-100 px-4 py-2">
-                <form onSubmit={sendMessage} className="flex items-center">
+              <div className="bg-gray-100 px-4 py-2 fixed bottom-0 w-full md:w-3/4">
+                <form
+                  onSubmit={editMessageId !== null ? updateMessage : sendMessage}
+                  className="flex items-center"
+                >
                   <input
                     className="w-full border rounded-full py-2 px-4 mr-2"
                     type="text"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    placeholder="Ketik pesan anda..."
+                    placeholder="Ketik pesan anda... (max 200 karakter)"
+                    maxLength="200"
                   />
                   <input type="file" onChange={handleFileChange} />
+                  {editMessageId !== null && (
+                    <button
+                      className="bg-red-500 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-full"
+                      onClick={() => {
+                        setEditMessageId(null); // Batalkan mode pengeditan
+                        setContent(""); // Kosongkan konten
+                      }}
+                    >
+                      Batalkan
+                    </button>
+                  )}
                   <button
                     className="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-full"
                     type="submit"
                   >
-                    Kirim
+                    {editMessageId !== null ? "Edit" : "Kirim"}
                   </button>
                 </form>
+
               </div>
             )}
           </div>
