@@ -14,7 +14,8 @@ const authConfig = {
 };
 
 function ChatPribadi() {
-  const [messages, setMessages] = useState([]);
+  const [classId, setClassId] = useState("");
+  const [receiverId, setReceiverId] = useState("");
   const [input, setInput] = useState("");
   const [file, setFile] = useState(null);
   const [userColors, setUserColors] = useState({});
@@ -48,8 +49,7 @@ function ChatPribadi() {
       console.error("Error fetching messages:", error);
     }
   };
-
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (input.trim() !== "" || file) {
       const newMessage = {
         text: input,
