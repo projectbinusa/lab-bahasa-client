@@ -33,7 +33,7 @@ function UpdateClass() {
     try {
       const response = await axios.put(url_hit, formData, authConfig);
       if (response.status == 200) {
-        history.push("/manage-class");
+        history.push("/manage-class/" + localStorage.getItem("class_id"));
         Swal.fire({
           icon: "success",
           title: "Menbgetdi data kelas.",
@@ -133,8 +133,7 @@ function UpdateClass() {
               <div className="flex justify-end mt-8">
                 <button
                   type="submit"
-                  className="px-6 py-3 rounded-lg text-white bg-green-400 hover:bg-green-600 text-base font-semibold"
-                >
+                  className="px-6 py-3 rounded-lg text-white bg-green-400 hover:bg-green-600 text-base font-semibold">
                   Simpan
                 </button>
               </div>

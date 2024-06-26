@@ -5,6 +5,7 @@ import { API_DUMMY } from "../../../utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import Navbar from "../../../component/Navbar1";
 
 function QuestionsAnswer() {
   const [questions, setQuestions] = useState([]);
@@ -24,6 +25,7 @@ function QuestionsAnswer() {
       );
       if (response.data.data && response.data.data.length > 0) {
         setQuestions(response.data.data);
+        console.table(response.data.data);
       } else {
         Swal.fire({
           icon: "error",
@@ -54,6 +56,9 @@ function QuestionsAnswer() {
 
   return (
     <div className="flex flex-col h-screen">
+      <div className="sticky top-0 z-50">
+        <Navbar />
+      </div>
       <div className="px-32">
         <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-10">
           <div className="flex justify-between">
@@ -73,6 +78,12 @@ function QuestionsAnswer() {
                     Pertanyaan
                   </th>
                   <th scope="col" className="px-6 py-3">
+                    Waktu Berfikir
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Waktu Penjawab
+                  </th>
+                  <th scope="col" className="px-6 py-3">
                     Aksi
                   </th>
                 </tr>
@@ -81,20 +92,19 @@ function QuestionsAnswer() {
                 {questions.map((question, index) => (
                   <tr
                     key={question.id}
-                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                  >
+                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th
                       scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                       {index + 1}
                     </th>
                     <td className="px-6 py-4 capitalize">{question.name}</td>
+                    <td className="px-6 py-4 capitalize">{question.think_time}</td>
+                    <td className="px-6 py-4 capitalize">{question.answer_time}</td>
                     <td className="px-6 py-4 capitalize">
                       <Link
                         to={`/student-answer/${question.id}`}
-                        className="py-2 px-3 bg-blue-500 rounded-lg text-white "
-                      >
+                        className="py-2 px-3 bg-blue-500 rounded-lg text-white ">
                         Jawab
                       </Link>
                     </td>

@@ -41,7 +41,7 @@ const authConfig = {
   },
 };
 
-const socket = io(API_DUMMY);
+const socket = io("http://localhost:4000");
 
 const InteraksiStudent = () => {
   const [color, setColor] = useState("#000000");
@@ -232,7 +232,7 @@ const InteraksiStudent = () => {
   const getAllData = async () => {
     try {
       const response = await axios.get(
-        `${API_DUMMY}/api/instructur/class/${class_id}/management_name_list`,
+      `${API_DUMMY}/api/instructur/class/${class_id}/management_name_list?limit=100`,
         authConfig
       );
       setStudents(response.data.data);

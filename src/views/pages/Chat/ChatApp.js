@@ -334,8 +334,8 @@ function ChatApp() {
                                 : "bg-green-400"
                             } text-white rounded-lg p-2 w-[90%] shadow ml-2`}
                           >
-                            {message.sender_name ==
-                            localStorage.getItem("name") ? (
+                            {message.sender_id ==
+                            localStorage.getItem("id") ? (
                               <>
                                 <div className="flex justify-between">
                                   <p>{message.content}</p>
@@ -462,7 +462,7 @@ function ChatApp() {
           .bg-white.w-full.md\\:rounded-r-lg.md\\:border-r.md\\:border-green-400.w-full.md\\:w-1\\/4 {
             display: ${selectedGroup ? "none" : "block"};
           }
-          
+
           .flex-grow.w-full.md\\:rounded-l-lg.md\\:border-l.md\\:border-green-400.md\\:w-3\\/4.flex.flex-col {
             display: ${selectedGroup ? "flex" : "none"};
           }

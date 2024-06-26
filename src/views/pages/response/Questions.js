@@ -52,12 +52,13 @@ function Questions() {
           showConfirmButton: false,
           timer: 1500,
         });
-      }
+      } 
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Gagal Menambahkan Data.",
-        text: error.response?.data?.message || error.message,
+        showConfirmButton: false,
+        timer: 1500,
       });
     }
   };
@@ -105,7 +106,7 @@ function Questions() {
 
   const getInstructions = () => {
     switch (type) {
-      case "Fist to Answer":
+      case "First to Answer":
         return "Kompetisi di mana siswa diberikan pertanyaan dan mereka berlomba untuk menjadi orang pertama yang memberikan jawaban yang benar.";
       case "Enter an Answer":
         return "Siswa memasukkan jawaban mereka ke dalam sistem. Jawaban ini kemudian dapat dinilai oleh guru.";
@@ -133,16 +134,14 @@ function Questions() {
           <div className="mb-3 mt-3">
             <label
               htmlFor="type"
-              className="mb-1 text-sm font-semibold text-gray-700 block"
-            >
+              className="mb-1 text-sm font-semibold text-gray-700 block">
               Jenis:
             </label>
             <select
               id="type"
               value={type}
               onChange={(e) => setType(e.target.value)}
-              className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
-            >
+              className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
               <option value="">Pilih jenis</option>
               <option value="Fist to Answer">Tinjau untuk menjawab</option>
               <option value="Enter an Answer">Masukkan jawaban</option>
@@ -152,8 +151,7 @@ function Questions() {
           <div className="mb-3">
             <label
               htmlFor="answer-time"
-              className="mb-1 text-sm font-semibold text-gray-700 block"
-            >
+              className="mb-1 text-sm font-semibold text-gray-700 block">
               Pertanyaan:
             </label>
             <input
@@ -167,8 +165,7 @@ function Questions() {
           <div className="mb-3">
             <label
               htmlFor="think-time"
-              className="mb-1 text-sm font-semibold text-gray-700 block"
-            >
+              className="mb-1 text-sm font-semibold text-gray-700 block">
               Waktu berfikir:
             </label>
             <input
@@ -182,8 +179,7 @@ function Questions() {
           <div className="mb-3">
             <label
               htmlFor="answer-time"
-              className="mb-1 text-sm font-semibold text-gray-700 block"
-            >
+              className="mb-1 text-sm font-semibold text-gray-700 block">
               Waktu jawab:
             </label>
             <input
@@ -200,8 +196,7 @@ function Questions() {
           </div>
           <button
             className="w-full py-2 font-semibold text-white bg-green-500 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 mb-2"
-            onClick={startCompetition}
-          >
+            onClick={startCompetition}>
             Mulai Kompetisi
           </button>
         </div>
