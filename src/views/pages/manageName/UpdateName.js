@@ -39,7 +39,7 @@ function UpdateName() {
         authConfig
       );
       if (response.status === 200) {
-        history.push("/manage-name");
+        history.push("/manage-name/"+localStorage.getItem("class_id"));
         Swal.fire({
           icon: "success",
           title: "Data password_prompt berhasil diperbarui.",

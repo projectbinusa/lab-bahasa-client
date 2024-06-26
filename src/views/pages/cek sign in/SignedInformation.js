@@ -72,7 +72,7 @@ function SignedInformation() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col overflow-x-hidden min-h-screen">
       <Navbar />
       <div className="flex-grow px-4 sm:px-32">
         <div className="w-full p-4 re bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-10">

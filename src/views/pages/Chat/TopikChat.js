@@ -3,9 +3,9 @@ import axios from "axios";
 import img from "../../../component/Asset/group.png";
 import { API_DUMMY } from "../../../utils/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import AddTopicChat from "../../../component/Modal/TopikObrolan";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import Navbar from "../../../component/Navbar1";
 
 const authConfig = {
@@ -20,7 +20,7 @@ function TopikChat() {
   const [content, setContent] = useState("");
   const [gambar, setGambar] = useState(null);
   const [list, setList] = useState([]);
-  const [selectedTopic, setSelectedTopicChat] = useState(null);
+  const [selectedTopic, setSelectedTopic] = useState(null);
   const [dropdownIndex, setDropdownIndex] = useState(null);
   const [editMessageId, setEditMessageId] = useState(null);
   const [editMode, setEditMode] = useState(false);
@@ -28,6 +28,14 @@ function TopikChat() {
   const class_id = localStorage.getItem("class_id");
   const user_id = localStorage.getItem("id");
   const [showTopikChat, setShowTopikChat] = useState(false);
+
+  const setSelectedTopicChat = (data) => {
+    if (data && (!selectedTopic || selectedTopic.id !== data.id)) {
+      setSelectedTopic(data);
+    } else {
+      setSelectedTopic(null);
+    }
+  };
 
   const handleTopikChat = () => {
     setShowTopikChat(true);
@@ -79,10 +87,9 @@ function TopikChat() {
       "0"
     )}-${String(date.getDate()).padStart(2, "0")} , ${String(
       date.getHours()
-    ).padStart(2, "0")}:${String(date.getMinutes()).padStart(
-      2,
-      "0"
-    )}:${String(date.getSeconds()).padStart(2, "0")}`;
+    ).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(
+      date.getSeconds()
+    ).padStart(2, "0")}`;
   };
 
   const getAllData = async () => {
@@ -135,14 +142,14 @@ function TopikChat() {
   const deleteMessage = async (messageId) => {
     try {
       const confirmDelete = await Swal.fire({
-        title: 'Anda yakin?',
-        text: 'Pesan akan dihapus secara permanen!',
-        icon: 'warning',
+        title: "Anda yakin?",
+        text: "Pesan akan dihapus secara permanen!",
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, hapus!',
-        cancelButtonText: 'Batal'
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, hapus!",
+        cancelButtonText: "Batal",
       });
 
       if (confirmDelete.isConfirmed) {
@@ -151,19 +158,11 @@ function TopikChat() {
           authConfig
         );
         getAllDatachatTopic(selectedTopic.id);
-        Swal.fire(
-          'Terhapus!',
-          'Pesan berhasil dihapus.',
-          'success'
-        );
+        Swal.fire("Terhapus!", "Pesan berhasil dihapus.", "success");
       }
     } catch (error) {
       console.error("Error deleting message:", error);
-      Swal.fire(
-        'Gagal!',
-        'Gagal menghapus pesan.',
-        'error'
-      );
+      Swal.fire("Gagal!", "Gagal menghapus pesan.", "error");
     }
   };
 
@@ -195,8 +194,8 @@ function TopikChat() {
     if (content) {
       formData.append("content", content);
     }
-    formData.append("receiver_id", user_id); // Assuming receiver_id is needed here
-    formData.append("sender_id", user_id); // Ensure sender_id is added
+    formData.append("receiver_id", user_id);
+    formData.append("sender_id", user_id);
 
     try {
       const response = await axios.put(
@@ -218,42 +217,37 @@ function TopikChat() {
 
   return (
     <>
-      <div className="flex flex-col h-screen">
+      <div className="flex flex-col bg-gray-100 h-screen">
         <Navbar />
-        <div className="flex flex-col md:flex-row justify-center gap-4 mt-3 mx-3">
+        <div className="flex flex-grow flex-col md:flex-row md:justify-center gap-4 mt-3 mx-3">
           <div
-            className={`bg-white w-full md:rounded-r-lg md:border-r md:border-green-400 md:w-1/4 ${selectedTopic ? "hidden md:block" : "block"
-              }`}
+            className={`bg-white w-full md:rounded-r-lg md:border-r md:border-green-400 md:w-1/4 ${
+              selectedTopic ? "hidden md:block" : "block"
+            }`}
           >
             <div className="flex">
-              {selectedTopic && (
-                <button
-                  className="bg-green-200 h-10 text-red-500 rounded-tl-lg"
-                  onClick={() => setSelectedTopicChat(null)}
-                >
-                  <FontAwesomeIcon icon={faArrowLeft} className="mx-3" />
-                </button>
-              )}
               <button
                 onClick={handleTopikChat}
-                className={`bg-green-500 flex-1 h-10 flex items-center justify-center text-white text-lg ${selectedTopic ? "rounded-tr-lg" : "rounded-t-lg"
-                  }`}
+                className="bg-green-500 flex-1 h-10 flex items-center justify-center text-white text-lg rounded-t-lg"
               >
-                <FontAwesomeIcon icon={faPlus} className="mr-2" />
                 Tambah Topik Chat
               </button>
             </div>
 
-            <div className="md:h-[90vh] p-2 overflow-y-auto custom-scrollbar">
+            <div className="flex-grow md:p-2 overflow-y-auto custom-scrollbar">
               {list.length === 0 ? (
-                <div className="text-center md:py-64 text-gray-500 mt-4">
-                  Belum ada topik chat.
+                <div className="text-center md:py-60 md:bg-transparent bg-gray-100 text-gray-500 md:mt-4">
+                  <p className="md:my-0 py-6">Tidak ada topik chat.</p>
                 </div>
               ) : (
                 list.map((data, index) => (
                   <div
                     key={index}
-                    className="bg-green-300 rounded-lg p-2 flex gap-4 cursor-pointer mb-2"
+                    className={`bg-${
+                      selectedTopic && selectedTopic.id === data.id
+                        ? "green-500"
+                        : "green-300"
+                    } rounded-lg p-2 flex gap-4 md:mt-0 mt-2 cursor-pointer mb-2`}
                     onClick={() => setSelectedTopicChat(data)}
                   >
                     <div className="border-2 w-fit rounded-full border-green-500">
@@ -267,7 +261,9 @@ function TopikChat() {
           </div>
 
           <div
-            className={`md:h-[97vh] h-[65vh] w-full md:rounded-l-lg md:border-l md:border-green-400 md:w-3/4 flex flex-col`}
+            className={`flex-grow w-full md:rounded-l-lg md:border-l md:border-green-400 md:w-3/4 flex flex-col ${
+              selectedTopic ? "" : "hidden md:flex"
+            }`}
           >
             <div className="flex-1 bg-white overflow-y-hidden">
               <div className="border-2 rounded-t-lg border-green-500 bg-green-500 h-10 flex items-center">
@@ -282,26 +278,25 @@ function TopikChat() {
                 </h1>
               </div>
 
-              <div className="md:h-[80vh] p-2 overflow-y-auto custom-scrollbar">
+              <div className="flex-grow p-2 overflow-y-auto custom-scrollbar">
                 {selectedTopic ? (
                   chatTopic.filter(
                     (message) => message.topic_chat_id === selectedTopic.id
                   ).length === 0 ? (
-                    <div className="text-center text-gray-500 md:my-64 my-40">
+                    <div className="text-center text-gray-500 md:my-56 my-80">
                       Belum Ada Pesan
                     </div>
                   ) : (
                     chatTopic
-                      .filter(
-                        (message) => message.topic_chat_id === selectedTopic.id
-                      )
+                      .filter((message) => message.topic_chat_id === selectedTopic.id)
                       .map((message, index) => (
                         <div
                           key={index}
-                          className={`px-4 py-2 flex ${message.sender_id == user_id
-                            ? "justify-end"
-                            : "justify-start"
-                            }`}
+                          className={`px-4 py-2 flex ${
+                            message.sender_id == user_id
+                              ? "justify-end"
+                              : "justify-start"
+                          }`}
                         >
                           <div className="flex w-full md:w-96 items-center">
                             {message.sender_id != user_id && (
@@ -313,10 +308,11 @@ function TopikChat() {
                             )}
                             <div
                               key={index}
-                              className={`${message.sender_id == user_id
-                                ? "bg-green-500 text-white mr-2"
-                                : "bg-gray-400 text-white"
-                                } rounded-lg p-2 w-full md:w-[90%] shadow ml-2 relative`}
+                              className={`${
+                                message.sender_id == user_id
+                                  ? "bg-green-500 text-white mr-2"
+                                  : "bg-gray-400 text-white"
+                              } rounded-lg p-2 w-full md:w-[90%] shadow ml-2 relative`}
                             >
                               <div className="flex justify-between">
                                 {message.sender_id == user_id && (
@@ -372,12 +368,14 @@ function TopikChat() {
                                 )}
                               </div>
                               {message.sender_id == user_id && (
-                                <p className="text-right">
+                                <p className="text-xs mt-1 text-right">
                                   {formatDate(message.created_date)}
                                 </p>
                               )}
                               {message.sender_id != user_id && (
-                                <p>{formatDate(message.created_date)}</p>
+                                <p className="text-xs mt-1">
+                                  {formatDate(message.created_date)}
+                                </p>
                               )}
                               {message.gambar && (
                                 <img
@@ -403,7 +401,7 @@ function TopikChat() {
                       ))
                   )
                 ) : (
-                  <div className="text-center text-gray-500 md:my-64 my-40">
+                  <div className="text-center text-gray-500 md:my-64">
                     Silahkan pilih topik chat
                   </div>
                 )}
@@ -472,16 +470,12 @@ function TopikChat() {
         }
 
         @media (max-width: 768px) {
-          .bg-white.w-full.md\\:rounded-r-lg.md\\:border-r.md\\:border-green-400.md\\:w-1\\/4 {
+          .bg-white.w-full.md\\:rounded-r-lg.md\\:border-r.md\\:border-green-400.w-full.md\\:w-1\\/4 {
             display: ${selectedTopic ? "none" : "block"};
           }
           
-          .md\\:h-\\[97vh\\].h-\\[65vh\\].w-full.md\\:rounded-l-lg.md\\:border-l.md\\:border-green-400.md\\:w-3\\/4.flex.flex-col {
-            display: ${selectedTopic ? "block" : "none"};
-          }
-
-          .overflow-y-scroll.overflow-x-hidden.h-\\[90\\%\\].p-2.custom-scrollbar {
-            max-height: calc(100vh - 190px); /* Adjust the value based on your layout */
+          .flex-grow.w-full.md\\:rounded-l-lg.md\\:border-l.md\\:border-green-400.md\\:w-3\\/4.flex.flex-col {
+            display: ${selectedTopic ? "flex" : "none"};
           }
         }
         `}

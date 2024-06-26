@@ -36,7 +36,7 @@ function AddName({ onClose }) {
     try {
       const response = await axios.post(url_hit, data, authConfig);
       if (response.status === 200) {
-        history.push("/manage-name");
+        history.push("/manage-name/" + localStorage.getItem("class_id"));
         Swal.fire({
           icon: "success",
           title: "Berhasil Menambahkan Data.",

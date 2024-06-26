@@ -29,6 +29,14 @@ function ChatApp() {
   const messagesEndRef = useRef(null);
   const [replayMessage, setReplayMessage] = useState(null);
 
+  const setSelectedGrub = (data) => {
+    if (data && (!selectedGroup || selectedGroup.id !== data.id)) {
+      setSelectedGroup(data);
+    } else {
+      setSelectedGroup(null);
+    }
+  };
+
   const handleReplay = (message) => {
     if (replayMessage && replayMessage.id === message.id) {
       // Jika pesan sudah direplay, kosongkan replayMessage
@@ -228,150 +236,239 @@ function ChatApp() {
   return (
     <>
       <div className="flex flex-col bg-gray-100 h-screen">
-        <div className="sticky top-0 z-50">
-          <Navbar />
-        </div>
-        <div className="flex justify-center gap-4 p-5">
-          <div className="w-96 bg-white">
-            <button className={`bg-green-500 w-full h-10`}>
-              <Link
-                to="/add-group"
-                className={`text-center text-white ${
-                  list.length == 0 ? "block" : "hidden"
-                }`}>
-                Add Group
-              </Link>
-            </button>
-            <div className="p-2">
-              {list.map((data, index) => (
-                <div
-                  key={index}
-                  className="bg-green-300 rounded-lg p-2 mb-3 flex gap-4 cursor-pointer"
-                  onClick={() => setSelectedGroup(data)}>
-                  <div className="border-2 w-fit rounded-full border-green-500">
-                    <img className="w-9" src={img} alt="" />
-                  </div>
-                  <p className="text-center mt-1">{data.name}</p>
+        <Navbar />
+        <div className="flex flex-grow flex-col md:flex-row md:justify-center gap-4 mt-3 mx-3">
+          <div
+            className={`bg-white w-full md:rounded-r-lg md:border-r md:border-green-400 md:w-1/4 ${
+              selectedGroup ? "hidden md:block" : "block"
+            }`}
+          >
+            <div className="flex">
+              <button className="bg-green-500 flex-1 h-10 flex items-center justify-center text-white text-lg rounded-t-lg">
+                <Link
+                  to="/add-group"
+                  className={`${list.length == 0 ? "block" : "hidden"}`}
+                >
+                  Tambah Group
+                </Link>
+              </button>
+            </div>
+
+            <div className="flex-grow md:p-2 overflow-y-auto custom-scrollbar">
+              {list.length === 0 ? (
+                <div className="text-center md:py-60 md:bg-transparent bg-gray-100 text-gray-500 md:mt-4">
+                  <p className="md:my-0 py-6">Tidak ada chat Grub.</p>
                 </div>
-              ))}
+              ) : (
+                list.map((data, index) => (
+                  <div
+                    key={index}
+                    className={`bg-${
+                      selectedGroup && selectedGroup.id === data.id
+                        ? "green-500"
+                        : "green-300"
+                    } rounded-lg p-2 flex gap-4 md:mt-0 mt-2 cursor-pointer mb-2`}
+                    onClick={() => setSelectedGrub(data)}
+                  >
+                    <div className="border-2 w-fit rounded-full border-green-500">
+                      <img className="w-9" src={img} alt="" />
+                    </div>
+                    <p className="text-center mt-1">{data.name}</p>
+                  </div>
+                ))
+              )}
             </div>
           </div>
 
-          <div className="h-96 w-full flex flex-col">
+          <div
+            className={`flex-grow w-full md:rounded-l-lg md:border-l md:border-green-400 md:w-3/4 flex flex-col ${
+              selectedGroup ? "" : "hidden md:flex"
+            }`}
+          >
             <div className="flex-1 bg-white overflow-y-hidden">
-              <div className="border-2 border-green-500 bg-green-500 h-10">
+              <div className="border-2 rounded-t-lg border-green-500 bg-green-500 h-10 flex items-center">
+                <button
+                  className="text-white text-lg ml-4 font-semibold md:hidden"
+                  onClick={() => setSelectedGroup(null)}
+                >
+                  &lt;Kembali
+                </button>
                 <h1 className="text-white text-lg ml-4 font-semibold">
                   {selectedGroup ? selectedGroup.name : "Pilih group"}
                 </h1>
               </div>
-              <div className="overflow-y-scroll overflow-scroll h-[90%]">
-                {chatGroup.map((message, index) => (
-                  <div
-                    key={index}
-                    className={`px-4 py-2 ${
-                      message.sender_id == localStorage.getItem("id")
-                        ? "flex justify-end"
-                        : "flex justify-start"
-                    }`}
-                    style={{
-                      backgroundColor:
-                        replayMessage?.id === message.id
-                          ? "#f0f0f0"
-                          : "transparent",
-                    }}
-                    onClick={() => handleReplay(message)}>
-                    <div className="flex w-96 items-center">
-                      <img
-                        className="w-8 h-8 rounded-full"
-                        src="https://picsum.photos/50/50"
-                        alt="User Avatar"
-                      />
-                      <div
-                        className={`${
-                          message.sender_id == localStorage.getItem("id")
-                            ? "bg-green-500"
-                            : "bg-green-400"
-                        } text-white rounded-lg p-2 w-[90%] shadow ml-2`}>
-                        {message.sender_name == localStorage.getItem("name") ? (
-                          <>
-                            <div className="flex justify-between">
-                              <p>{message.content}</p>
-                              <button
-                                className=""
-                                onClick={() => toggleDropdown(index)}>
-                                <i className="fa-solid fa-ellipsis-vertical"></i>
-                              </button>
-                              {dropdownIndex === index && (
-                                <div className="absolute right-0 mt-8 w-24 bg-white text-black border rounded shadow-lg">
-                                  <button
-                                    className="block px-4 py-2 text-left w-full hover:bg-gray-200"
-                                    onClick={() =>
-                                      editMessage(message.id, message.content)
-                                    }>
-                                    Edit
-                                  </button>
-                                  <button
-                                    className="block px-4 py-2 text-left w-full text-black hover:bg-gray-200"
-                                    onClick={() => deleteMessage(message.id)}>
-                                    Delete
-                                  </button>
-                                </div>
-                              )}
-                            </div>
-                          </>
-                        ) : (
-                          <>
-                            <p
-                              className="mb-2 font-semibold"
-                              style={{
-                                color: userColors[message.sender_id],
-                              }}>
-                              {message.sender_name}
-                            </p>
-                            {/* <div className="flex justify-between"> */}
-                            <p>{message.content}</p>
-                            {/* </div> */}
-                          </>
-                        )}
-                        {message.gambar && (
-                          <img
-                            className="mt-2"
-                            src={message.gambar}
-                            alt="Image"
-                            style={{ maxWidth: "200px", maxHeight: "200px" }}
-                          />
-                        )}
-                        <p>{formatDate(message.created_date)}</p>
-                      </div>
+
+              <div className="flex-grow p-2 overflow-y-auto custom-scrollbar">
+                {selectedGroup ? (
+                  chatGroup.length === 0 ? (
+                    <div className="text-center text-gray-500 md:my-56 my-80">
+                      Belum Ada Pesan
                     </div>
+                  ) : (
+                    chatGroup.map((message, index) => (
+                      <div
+                        key={index}
+                        className={`px-4 py-2 ${
+                          message.sender_id == localStorage.getItem("id")
+                            ? "flex justify-end"
+                            : "flex justify-start"
+                        }`}
+                        style={{
+                          backgroundColor:
+                            replayMessage?.id === message.id
+                              ? "#f0f0f0"
+                              : "transparent",
+                        }}
+                        onClick={() => handleReplay(message)}
+                      >
+                        <div className="flex w-96 items-center">
+                          <img
+                            className="w-8 h-8 rounded-full"
+                            src="https://picsum.photos/50/50"
+                            alt="User Avatar"
+                          />
+                          <div
+                            className={`${
+                              message.sender_id == localStorage.getItem("id")
+                                ? "bg-green-500"
+                                : "bg-green-400"
+                            } text-white rounded-lg p-2 w-[90%] shadow ml-2`}
+                          >
+                            {message.sender_id ==
+                            localStorage.getItem("id") ? (
+                              <>
+                                <div className="flex justify-between">
+                                  <p>{message.content}</p>
+                                  <button
+                                    className=""
+                                    onClick={() => toggleDropdown(index)}
+                                  >
+                                    <i className="fa-solid fa-ellipsis-vertical"></i>
+                                  </button>
+                                  {dropdownIndex === index && (
+                                    <div className="absolute right-0 mt-8 w-24 bg-white text-black border rounded shadow-lg">
+                                      <button
+                                        className="block px-4 py-2 text-left w-full hover:bg-gray-200"
+                                        onClick={() =>
+                                          editMessage(
+                                            message.id,
+                                            message.content
+                                          )
+                                        }
+                                      >
+                                        Edit
+                                      </button>
+                                      <button
+                                        className="block px-4 py-2 text-left w-full text-black hover:bg-gray-200"
+                                        onClick={() =>
+                                          deleteMessage(message.id)
+                                        }
+                                      >
+                                        Delete
+                                      </button>
+                                    </div>
+                                  )}
+                                </div>
+                              </>
+                            ) : (
+                              <>
+                                <p
+                                  className="mb-2 font-semibold"
+                                  style={{
+                                    color: userColors[message.sender_id],
+                                  }}
+                                >
+                                  {message.sender_name}
+                                </p>
+                                <p>{message.content}</p>
+                              </>
+                            )}
+                            {message.gambar && (
+                              <img
+                                className="mt-2"
+                                src={message.gambar}
+                                alt="Image"
+                                style={{
+                                  maxWidth: "200px",
+                                  maxHeight: "200px",
+                                }}
+                              />
+                            )}
+                            <p>{formatDate(message.created_date)}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )
+                ) : (
+                  <div className="text-center text-gray-500 md:my-64">
+                    Silahkan pilih Grub
                   </div>
-                ))}
+                )}
               </div>
             </div>
-            <div className="bg-gray-100 px-4 py-2">
-              <form
-                onSubmit={editMessageId ? updateMessage : sendMessage}
-                className="flex items-center">
-                <input
-                  className="w-full border rounded-full py-2 px-4 mr-2"
-                  type="text"
-                  value={
-                    replayMessage ? `Re: ${replayMessage.content}` : content
-                  }
-                  onChange={(e) => setContent(e.target.value)}
-                  placeholder="Ketik pesan anda..."
-                />
-                <input type="file" onChange={handleFileChange} />
-                <button
-                  className="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-full"
-                  type="submit">
-                  {editMessageId ? "Edit" : "Kirim"}
-                </button>
-              </form>
-            </div>
+
+            {selectedGroup && (
+              <div className="bg-gray-100 px-4 py-2 fixed bottom-0 w-full md:w-3/4">
+                <form
+                  onSubmit={editMessageId ? updateMessage : sendMessage}
+                  className="flex items-center"
+                >
+                  <input
+                    className="w-full border rounded-full py-2 px-4 mr-2"
+                    type="text"
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    placeholder="Ketik pesan anda..."
+                  />
+                  <input type="file" onChange={handleFileChange} />
+                  <button
+                    className="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-full"
+                    type="submit"
+                  >
+                    {editMessageId ? "Edit" : "Kirim"}
+                  </button>
+                </form>
+              </div>
+            )}
           </div>
         </div>
       </div>
+      <style>
+        {`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 8px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #888;
+          border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+
+        .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: #888 #f1f1f1;
+        }
+
+        @media (max-width: 768px) {
+          .bg-white.w-full.md\\:rounded-r-lg.md\\:border-r.md\\:border-green-400.w-full.md\\:w-1\\/4 {
+            display: ${selectedGroup ? "none" : "block"};
+          }
+
+          .flex-grow.w-full.md\\:rounded-l-lg.md\\:border-l.md\\:border-green-400.md\\:w-3\\/4.flex.flex-col {
+            display: ${selectedGroup ? "flex" : "none"};
+          }
+        }
+        `}
+      </style>
     </>
   );
 }
