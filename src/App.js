@@ -37,6 +37,7 @@ import Room from "./views/pages/screenBroadcast/Room";
 import { RoomProvider } from "./views/pages/screenBroadcast/RoomProvider";
 import Index from "./views/pages/camera/Index";
 import StudentCamera from "./views/pages/camera/StudentCamera";
+import RealtimeWhiteBoard from "./views/pages/InteractiveWhiteboard/RealtimeWhiteBoard";
 
 const checkTokenExpiration = () => {
   const token = localStorage.getItem("token");
@@ -161,7 +162,7 @@ const App = () => {
               component={AnswerQuestion}
             />
             <PrivateRoute
-              path="/question-answer"
+              path="/question-answer/:classId"
               component={QuestionsAnswer}
               exact
             />
@@ -176,9 +177,17 @@ const App = () => {
               component={ChatPribadi}
               exact
             />
-            <PrivateRoute path="/code-room/:classId" component={CodeMeet} exact />
+            <PrivateRoute
+              path="/code-room/:classId"
+              component={CodeMeet}
+              exact
+            />
             <PrivateRoute path="/room/:roomID" component={Room} exact />
-            <PrivateRoute path="/code-room-camera/:classId" component={Index} exact />
+            <PrivateRoute
+              path="/code-room-camera/:classId"
+              component={Index}
+              exact
+            />
             <PrivateRoute
               path="/room-camera/:cameraId"
               component={Camera}
@@ -187,6 +196,11 @@ const App = () => {
             <PrivateRoute
               path="/student-camera/:cameraId"
               component={StudentCamera}
+              exact
+            />
+            <PrivateRoute
+              path="/realtime-whiteboard"
+              component={RealtimeWhiteBoard}
               exact
             />
           </Switch>

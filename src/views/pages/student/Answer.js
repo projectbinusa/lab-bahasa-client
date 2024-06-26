@@ -83,7 +83,7 @@ function AnswerQuestion() {
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          window.location.reload("/question-answer");
+          window.location.reload("/response-competition/"+localStorage.getItem("class_id"));
         });
       } else {
         Swal.fire({

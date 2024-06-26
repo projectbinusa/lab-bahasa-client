@@ -40,7 +40,7 @@ function SignInModal({ onClose }) {
           timer: 1500,
         }).then(() => {
           onClose();
-          history.push("/dashboard");
+          history.push("/dashboard/"+localStorage.getItem("class_id"));
         });
       } else {
         Swal.fire({

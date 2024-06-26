@@ -29,7 +29,7 @@ function AddClass() {
     try {
       const response = await axios.post(url_hit, formData, authConfig);
       if (response.status == 200) {
-        history.push("/manage-class");
+        history.push("/manage-class/"+localStorage.getItem("class_id"));
         Swal.fire({
           icon: "success",
           title: "Berhasil Menambahkan Data.",

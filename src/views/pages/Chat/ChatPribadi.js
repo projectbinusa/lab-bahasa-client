@@ -1,10 +1,14 @@
 import React, { useEffect, useState, useRef } from "react";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import Navbar from "../../../component/Navbar1";
 import axios from "axios";
 import img from "../../../component/Asset/group.png";
 import { API_DUMMY } from "../../../utils/api";
+import io from "socket.io-client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+
+const socket = io("http://localhost:4000");
 
 const authConfig = {
   headers: {
@@ -14,42 +18,38 @@ const authConfig = {
 };
 
 function ChatPribadi() {
-  const [classId, setClassId] = useState("");
-  const [receiverId, setReceiverId] = useState("");
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [file, setFile] = useState(null);
   const [userColors, setUserColors] = useState({});
   const [users, setUsers] = useState([]);
   const messagesEndRef = useRef(null);
   const [selectedUser, setSelectedUser] = useState(null);
-  const classId = localStorage.getItem("class_id");
 
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get(
-        `${API_DUMMY}/api/chat/class_id/${classId}`,
-        authConfig
-      );
-      setUsers(response.data.data);
-    } catch (error) {
-      console.log("Error:", error);
-    }
-  };
+  useEffect(() => {
+    // Get class_id from localStorage
+    const classId = localStorage.getItem("class_id");
 
-  const fetchMessages = async () => {
-    try {
-      if (selectedUser && classId) {
-        const response = await axios.get(
-          `${API_DUMMY}/api/chat/chat/${selectedUser.chat_id}/class/${classId}/receiver/${selectedUser.id}`,
-          authConfig
-        );
-        setMessages(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching messages:", error);
+    // Fetch user data from API using class_id
+    if (classId) {
+      axios
+        .get(`${API_DUMMY}/api/chat/class_id/${classId}`, authConfig)
+        .then((response) => {
+          setUsers(response.data); // Assuming response.data is an array of users
+        })
+        .catch((error) => {
+          console.error("Error fetching users:", error);
+        });
+    } else {
+      console.error("No class_id found in localStorage");
     }
-  };
-  const sendMessage = async () => {
+  }, []);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const sendMessage = () => {
     if (input.trim() !== "" || file) {
       const newMessage = {
         text: input,
@@ -57,20 +57,9 @@ function ChatPribadi() {
         sender: "User",
         timestamp: new Date().toISOString(),
       };
-      axios
-        .post(
-          `${API_DUMMY}/api/chat/chat/${selectedUser.chat_id}/class/${classId}/receiver/${selectedUser.id}`,
-          newMessage,
-          authConfig
-        )
-        .then(() => {
-          setMessages([...messages, newMessage]);
-          setInput("");
-          setFile(null);
-        })
-        .catch((error) => {
-          console.error("Error sending message:", error);
-        });
+      setMessages([...messages, newMessage]);
+      setInput("");
+      setFile(null);
     }
   };
 
@@ -84,11 +73,7 @@ function ChatPribadi() {
     return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
       2,
       "0"
-    )}-${String(date.getDate()).padStart(2, "0")} , ${String(
-      date.getHours()
-    ).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(
-      date.getSeconds()
-    ).padStart(2, "0")}`;
+    )}-${String(date.getDate()).padStart(2, "0")} , ${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}:${String(date.getSeconds()).padStart(2, "0")}`;
   };
 
   const getRandomDarkColor = () => {
@@ -101,14 +86,6 @@ function ChatPribadi() {
   };
 
   useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  useEffect(() => {
-    fetchMessages();
-  }, [selectedUser]);
-
-  useEffect(() => {
     const newColors = {};
     messages.forEach((message) => {
       if (!newColors[message.sender]) {
@@ -116,10 +93,6 @@ function ChatPribadi() {
       }
     });
     setUserColors(newColors);
-  }, [messages]);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   return (
@@ -146,11 +119,12 @@ function ChatPribadi() {
                   selectedUser ? "rounded-tr-lg" : "rounded-t-lg"
                 }`}
               >
-                Pilih Pengguna
+                pilih Pengguna
               </div>
             </div>
 
             <div className="flex-grow p-2 overflow-y-auto custom-scrollbar">
+              {/* List of users */}
               {users.length === 0 ? (
                 <div className="text-center md:py-60 text-gray-500 mt-4">
                   Tidak ada pengguna
@@ -186,7 +160,7 @@ function ChatPribadi() {
                   &lt;Kembali
                 </button>
                 <h1 className="text-white text-lg ml-4 font-semibold">
-                  {selectedUser ? selectedUser.name : "Pilih Chat"}
+                  {selectedUser ? selectedUser.name : "Silahkan pilih chat"}
                 </h1>
               </div>
 
@@ -200,7 +174,9 @@ function ChatPribadi() {
                     </div>
                   ) : (
                     messages
-                      .filter((message) => message.sender === selectedUser.name)
+                      .filter(
+                        (message) => message.sender === selectedUser.name
+                      )
                       .map((message, index) => (
                         <div
                           key={index}
@@ -317,11 +293,11 @@ function ChatPribadi() {
 
         @media (max-width: 768px) {
           .bg-white.md\\:rounded-r-lg.md\\:border-r.md\\:border-green-400.w-full.md\\:w-1\\/4 {
-            display: ${selectedUser ? "none" : "block"};
+            display: block;
           }
 
           .flex-grow.w-full.md\\:rounded-l-lg.md\\:border-l.md\\:border-green-400.md\\:w-3\\/4.flex.flex-col {
-            display: ${selectedUser ? "flex" : "none"};
+            display: flex;
           }
         }
         `}

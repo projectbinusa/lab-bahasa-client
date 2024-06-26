@@ -280,15 +280,21 @@ function Navbar() {
                 isSidebarOpen ? "block" : "hidden"
               } lg:block lg:flex-grow lg:items-center lg:justify-between lg:ml-80 w-full`}>
               <div className="link flex flex-col lg:flex-row items-start lg:items-center gap-3 text-white p-3 lg:p-0">
-                <Link to={"/dashboard/" + classId} className="text-sm font-semibold">
+                <Link
+                  to={"/dashboard/" + classId}
+                  className="text-sm font-semibold">
                   <FontAwesomeIcon icon={faChartLine} className="px-1" />
                   Halaman Utama
                 </Link>
-                <Link to={"/code-room/" + classId} className="text-sm font-semibold">
+                <Link
+                  to={"/code-room/" + classId}
+                  className="text-sm font-semibold">
                   <FontAwesomeIcon icon={faDisplay} className="px-1" />
                   Siaran Layar
                 </Link>
-                <Link to={"/code-room-camera/" + classId} className="text-sm font-semibold">
+                <Link
+                  to={"/code-room-camera/" + classId}
+                  className="text-sm font-semibold">
                   <FontAwesomeIcon icon={faCamera} className="px-1" />
                   Kamera
                 </Link>
@@ -297,8 +303,39 @@ function Navbar() {
                   className="text-sm font-semibold">
                   <FontAwesomeIcon icon={faUsers} className="px-1" />
                   Intseraksi Siswa
-                </Link>
-
+                </Link>{" "}
+                <div className={`relative ${isSidebarOpen ? "ml-0" : ""}`}>
+                  <button
+                    onClick={() => toggleDropdown("response")}
+                    className="text-sm font-semibold flex items-center focus:outline-none">
+                    <FontAwesomeIcon icon={faMedapps} className="px-1" />
+                    Kompetisi Respon{" "}
+                    <FontAwesomeIcon icon={faCaretDown} className="ml-1" />
+                  </button>
+                  {respDropdownOpen && (
+                    <div
+                      className={`absolute ${
+                        isSidebarOpen
+                          ? "left-full ml-2"
+                          : "top-full right-0 mr-2"
+                      } mt-2 lg:w-48 bg-white rounded-md shadow-lg py-2 z-1`}>
+                      <Link
+                        to={`/response-competition/${classId}`}
+                        type="button"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <FontAwesomeIcon icon={faMedal} className="mr-1" />
+                        Kompetisi Respon
+                      </Link>
+                      <Link
+                        to={"/question-answer/" + classId}
+                        type="button"
+                        className="lock px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        <FontAwesomeIcon icon={faUsers} className="px-1" />
+                        Question answer
+                      </Link>
+                    </div>
+                  )}
+                </div>
                 <div className={`relative ${isSidebarOpen ? "ml-0" : ""}`}>
                   <button
                     onClick={() => toggleDropdown("chat")}
