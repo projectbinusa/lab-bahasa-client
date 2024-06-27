@@ -91,7 +91,7 @@ function ResponseCompetition() {
           <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-8">
             <div className="flex flex-col md:flex-row justify-between mb-4">
               <h6 className="text-xl text-left font-bold text-gray-900 dark:text-white">
-                Kelola Kelas
+                Kompetisi Respon
               </h6>
               <div className="flex flex-col md:flex-row items-center gap-2 mt-4 md:mt-0 w-full md:w-auto">
                 <div className="flex items-center w-full md:w-auto">
@@ -107,7 +107,8 @@ function ResponseCompetition() {
                   <select
                     value={limit}
                     onChange={handleLimitChange}
-                    class="flex-shrink-0 z-1 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600">
+                    class="flex-shrink-0 z-1 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
+                  >
                     <option value="10">10</option>
                     <option value="20">20</option>
                     <option value="50">50</option>
@@ -120,13 +121,22 @@ function ResponseCompetition() {
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
-                    <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
+                    <th
+                      scope="col"
+                      className="whitespace-nowrap px-6 py-3 text-left"
+                    >
                       No
                     </th>
-                    <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
+                    <th
+                      scope="col"
+                      className="whitespace-nowrap px-6 py-3 text-left"
+                    >
                       Question Id
                     </th>
-                    <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
+                    <th
+                      scope="col"
+                      className="whitespace-nowrap px-6 py-3 text-left"
+                    >
                       Jawaban
                     </th>
                     {localStorage.getItem("role") === "instructur" ? (
@@ -138,10 +148,16 @@ function ResponseCompetition() {
                     ) : (
                       <></>
                     )}
-                    <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
+                    <th
+                      scope="col"
+                      className="whitespace-nowrap px-6 py-3 text-left"
+                    >
                       Waktu menjawab client
                     </th>
-                    <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
+                    <th
+                      scope="col"
+                      className="whitespace-nowrap px-6 py-3 text-left"
+                    >
                       Score
                     </th>
                     {localStorage.getItem("role") === "instructur" ? (
@@ -160,7 +176,8 @@ function ResponseCompetition() {
                     <tr>
                       <td
                         colSpan="7"
-                        className="px-6 py-4 text-gray-500 dark:text-gray-400">
+                        className="px-6 py-4 text-gray-500 dark:text-gray-400"
+                      >
                         Data Tidak Ada
                       </td>
                     </tr>
@@ -169,10 +186,12 @@ function ResponseCompetition() {
                       {list.map((data, index) => (
                         <tr
                           key={index}
-                          className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                          className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                        >
                           <th
                             scope="row"
-                            className="px-6 py-4 text-left font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                            className="px-6 py-4 text-left font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                          >
                             {index + 1}
                           </th>
                           {/* <td className="px-6 py-4 text-left">
@@ -207,7 +226,8 @@ function ResponseCompetition() {
                         </button> */}
                                 <Link
                                   to={"/score-answer/" + data.id}
-                                  className="py-3 px-4 bg-green-500 rounded-lg text-white">
+                                  className="py-3 px-4 bg-green-500 rounded-lg text-white"
+                                >
                                   <i class="fa-solid fa-star"></i>
                                 </Link>
                                 {/* <button

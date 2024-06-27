@@ -96,27 +96,26 @@ function ManageName() {
         `${API_DUMMY}/api/instructur/class/${class_id}/export/management_name_list`,
         {
           ...authConfig,
-          responseType: 'blob', // Important for downloading files
+          responseType: "blob", // Important for downloading files
         }
       );
 
-      const blob = new Blob([response.data], { type: 'text/xlsx' });
-      saveAs(blob, 'management_name_list.xlsx'); // Using file-saver library to save file
+      const blob = new Blob([response.data], { type: "text/xlsx" });
+      saveAs(blob, "management_name_list.xlsx"); // Using file-saver library to save file
     } catch (error) {
-      console.error('Error exporting data:', error);
+      console.error("Error exporting data:", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Export Failed',
-        text: 'Failed to export data. Please try again.',
+        icon: "error",
+        title: "Export Failed",
+        text: "Failed to export data. Please try again.",
       });
     }
   };
 
-
   const handleImport = async (event) => {
     const file = event.target.files[0];
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append("file", file);
 
     try {
       const response = await axios.post(
@@ -125,24 +124,24 @@ function ManageName() {
         {
           headers: {
             ...authConfig.headers,
-            'Content-Type': 'multipart/form-data',
+            "Content-Type": "multipart/form-data",
           },
         }
       );
 
       Swal.fire({
-        icon: 'success',
-        title: 'Import Successful',
+        icon: "success",
+        title: "Import Successful",
         text: response.data.message,
       });
 
       getAllData(); // Refresh data after import
     } catch (error) {
-      console.error('Error importing file:', error);
+      console.error("Error importing file:", error);
       Swal.fire({
-        icon: 'error',
-        title: 'Import Failed',
-        text: 'Failed to import data. Please try again.',
+        icon: "error",
+        title: "Import Failed",
+        text: "Failed to import data. Please try again.",
       });
     }
   };
@@ -228,28 +227,52 @@ function ManageName() {
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                   <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                      <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
+                      <th
+                        scope="col"
+                        className="whitespace-nowrap px-6 py-3 text-left"
+                      >
                         No
                       </th>
-                      <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
+                      <th
+                        scope="col"
+                        className="whitespace-nowrap px-6 py-3 text-left"
+                      >
                         ID Siswa
                       </th>
-                      <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
+                      <th
+                        scope="col"
+                        className="whitespace-nowrap px-6 py-3 text-left"
+                      >
                         Nama
                       </th>
-                      <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
+                      <th
+                        scope="col"
+                        className="whitespace-nowrap px-6 py-3 text-left"
+                      >
                         Gender
                       </th>
-                      <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
+                      <th
+                        scope="col"
+                        className="whitespace-nowrap px-6 py-3 text-left"
+                      >
                         Jurusan
                       </th>
-                      <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
+                      <th
+                        scope="col"
+                        className="whitespace-nowrap px-6 py-3 text-left"
+                      >
                         Kelas
                       </th>
-                      <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
+                      <th
+                        scope="col"
+                        className="whitespace-nowrap px-6 py-3 text-left"
+                      >
                         Password
                       </th>
-                      <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
+                      <th
+                        scope="col"
+                        className="whitespace-nowrap px-6 py-3 text-left"
+                      >
                         Aksi
                       </th>
                     </tr>
@@ -266,8 +289,12 @@ function ManageName() {
                         >
                           {index + 1}
                         </th>
-                        <td className="px-6 py-4 text-left">997764</td>
-                        <td className="px-6 py-4 text-left whitespace-nowrap capitalize">{manage.name}</td>
+                        <td className="px-6 py-4 text-left">
+                          {manage.client_id}
+                        </td>
+                        <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
+                          {manage.name}
+                        </td>
                         <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
                           {manage.gender}
                         </td>

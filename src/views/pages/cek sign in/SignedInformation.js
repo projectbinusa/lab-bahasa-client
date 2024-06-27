@@ -178,13 +178,27 @@ function SignedInformation() {
                       >
                         {index + 1}
                       </th>
-                      <td className="px-3 py-4 text-left">{item.client_id || "-"}</td>
-                      <td className="px-3 py-4 text-left">{item.name || "-"}</td>
-                      <td className="px-3 py-4 text-left">{item.gender || "-"}</td>
-                      <td className="px-3 py-4 text-left">{item.class_id || "-"}</td>
-                      <td className="px-3 py-4 text-left">{item.departement || "-"}</td>
-                      <td className="px-3 py-4 text-left">{item.created_date || "-"}</td>
-                      <td className="px-3 py-4 text-left">{item.comment || "-"}</td>
+                      <td className="px-3 py-4 text-left">
+                        {item.client_id || "-"}
+                      </td>
+                      <td className="px-3 py-4 text-left capitalize">
+                        {item.name || "-"}
+                      </td>
+                      <td className="px-3 py-4 text-left capitalize">
+                        {item.gender || "-"}
+                      </td>
+                      <td className="px-3 py-4 text-left capitalize">
+                        {item.class_id || "-"}
+                      </td>
+                      <td className="px-3 py-4 text-left capitalize">
+                        {item.departement || "-"}
+                      </td>
+                      <td className="px-3 py-4 text-left capitalize">
+                        {item.created_date || "-"}
+                      </td>
+                      <td className="px-3 py-4 text-left capitalize">
+                        {item.comment || "-"}
+                      </td>
                     </tr>
                   ))
                 )}
