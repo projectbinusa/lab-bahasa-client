@@ -77,10 +77,10 @@ const App = () => {
         <main>
           <Switch>
             {/* auth */}
-            <Route path="/" component={Login} exact />
+            <Route path="/login" component={Login} exact />
             <Route path="/register" component={Register} exact />
             <Route path="/forgotpass" component={ForgotPass} exact />
-            <PrivateRoute path="/dashboard/:id" component={Dashboard} exact />
+            <PrivateRoute path="/" component={Dashboard} exact />
             <PrivateRoute path="/camera/:classId" component={Camera} exact />
             <PrivateRoute
               path="/whiteboard/:classId"
@@ -92,7 +92,7 @@ const App = () => {
               component={ManageClass}
               exact
             />
-            <PrivateRoute path="/verify-code" component={VerifyCode} exact />
+            <Route path="/verify-code" component={VerifyCode} exact />
             <PrivateRoute path="/add-class" component={AddClass} exact />
             <PrivateRoute
               path="/update-class/:id"

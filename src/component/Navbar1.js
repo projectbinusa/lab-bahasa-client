@@ -145,9 +145,8 @@ function Navbar() {
                   Kamera
                 </Link>
                 <Link
-                  to={`/whiteboard/${classId}`}
-                  className="text-sm font-semibold"
-                >
+                  to={"/realtime-whiteboard"}
+                  className="text-sm font-semibold">
                   <FontAwesomeIcon icon={faChalkboard} className="px-1" />
                   Papan tulis interaktif
                 </Link>
@@ -301,6 +300,7 @@ function Navbar() {
               } lg:block lg:flex-grow lg:items-center lg:justify-between lg:ml-80 w-full`}
             >
               <div className="link flex flex-col lg:flex-row items-start lg:items-center gap-3 text-white p-3 lg:p-0">
+
                 <Link
                   to={"/dashboard/" + classId}
                   className="text-sm font-semibold"
@@ -321,6 +321,12 @@ function Navbar() {
                 >
                   <FontAwesomeIcon icon={faCamera} className="px-1" />
                   Kamera
+                </Link>
+                <Link
+                  to={"/realtime-whiteboard"}
+                  className="text-sm font-semibold">
+                  <FontAwesomeIcon icon={faChalkboard} className="px-1" />
+                  Papan Gambar
                 </Link>
                 <Link
                   to={"/interaction-student/" + classId}

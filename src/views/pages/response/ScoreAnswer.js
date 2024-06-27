@@ -4,7 +4,10 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import Navbar from "../../../component/Navbar1";
 import { API_DUMMY } from "../../../utils/api";
-import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
+import {
+  useHistory,
+  useParams,
+} from "react-router-dom/cjs/react-router-dom.min";
 
 const authConfig = {
   headers: {
@@ -15,7 +18,7 @@ const authConfig = {
 function ScoreAnswer() {
   const [score, setScore] = useState("");
   const param = useParams();
-  const history = useHistory()
+  const history = useHistory();
 
   const update = async (e) => {
     e.preventDefault();
@@ -32,11 +35,13 @@ function ScoreAnswer() {
       if (response.status == 200) {
         Swal.fire({
           icon: "success",
-          title: "Menbgetdi data kelas.",
+          title: "Berhasil Memberikan Client Score.",
           showConfirmButton: false,
           timer: 1500,
         });
-        history.push("/reesponse-competition")
+        history.push(
+          "/response-competition/" + localStorage.getItem("class_id")
+        );
       }
     } catch (error) {
       console.log(error);

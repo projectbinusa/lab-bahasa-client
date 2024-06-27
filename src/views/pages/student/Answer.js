@@ -40,14 +40,14 @@ function AnswerQuestion() {
       }
     } catch (error) {
       console.log(error);
-      Swal.fire({
-        icon: "error",
-        title: "Terjadi Kesalahan",
-        text: error.response
-          ? error.response.data.message
-          : "Tidak bisa mendapatkan data",
-        showConfirmButton: true,
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Terjadi Kesalahan",
+      //   text: error.response
+      //     ? error.response.data.message
+      //     : "Tidak bisa mendapatkan data",
+      //   showConfirmButton: true,
+      // });
     }
   };
 
