@@ -37,15 +37,15 @@ function ChatApp() {
     }
   };
 
-  const handleReplay = (message) => {
-    if (replayMessage && replayMessage.id === message.id) {
-      // Jika pesan sudah direplay, kosongkan replayMessage
-      setReplayMessage(null);
-    } else {
-      // Jika belum, set replayMessage dengan data pesan yang dipilih
-      setReplayMessage(message);
-    }
-  };
+  // const handleReplay = (message) => {
+  //   if (replayMessage && replayMessage.id === message.id) {
+  //     // Jika pesan sudah direplay, kosongkan replayMessage
+  //     setReplayMessage(null);
+  //   } else {
+  //     // Jika belum, set replayMessage dengan data pesan yang dipilih
+  //     setReplayMessage(message);
+  //   }
+  // };
 
   useEffect(() => {
     socket.on("receiveMessage", (message) => {
@@ -235,7 +235,7 @@ function ChatApp() {
 
   return (
     <>
-      <div className="flex flex-col bg-gray-100 h-screen">
+      <div className="flex flex-col bg-gray-100">
         <Navbar />
         <div className="flex flex-grow flex-col md:flex-row md:justify-center gap-4 mt-3 mx-3">
           <div
@@ -285,7 +285,7 @@ function ChatApp() {
               selectedGroup ? "" : "hidden md:flex"
             }`}
           >
-            <div className="flex-1 bg-white overflow-y-hidden">
+            <div className="flex-1 bg-white overflow-y-hidden h-96">
               <div className="border-2 rounded-t-lg border-green-500 bg-green-500 h-10 flex items-center">
                 <button
                   className="text-white text-lg ml-4 font-semibold md:hidden"
@@ -298,7 +298,7 @@ function ChatApp() {
                 </h1>
               </div>
 
-              <div className="flex-grow p-2 overflow-y-auto custom-scrollbar">
+              <div className="flex-grow p-2 overflow-y-auto custom-scrollbar h-[92%]">
                 {selectedGroup ? (
                   chatGroup.length === 0 ? (
                     <div className="text-center text-gray-500 md:my-56 my-80">
@@ -313,13 +313,6 @@ function ChatApp() {
                             ? "flex justify-end"
                             : "flex justify-start"
                         }`}
-                        style={{
-                          backgroundColor:
-                            replayMessage?.id === message.id
-                              ? "#f0f0f0"
-                              : "transparent",
-                        }}
-                        onClick={() => handleReplay(message)}
                       >
                         <div className="flex w-96 items-center">
                           <img
@@ -330,7 +323,7 @@ function ChatApp() {
                           <div
                             className={`${
                               message.sender_id == localStorage.getItem("id")
-                                ? "bg-green-500"
+                                ? "bg-green-500 text-white"
                                 : "bg-green-400"
                             } text-white rounded-lg p-2 w-[90%] shadow ml-2`}
                           >

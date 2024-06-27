@@ -74,7 +74,6 @@ io.on("connection", (socket) => {
     io.emit("receiveMessage", message);
   });
 
-
   socket.on("raiseHand", (data) => {
     io.emit("raiseHand", data);
   });
@@ -82,6 +81,50 @@ io.on("connection", (socket) => {
   socket.on("lowerHand", (data) => {
     io.emit("lowerHand", data);
   });
+
+  // Event untuk mengirim data gambar dari klien ke server
+  // socket.on('drawing', (data) => {
+  //   // Kirim data gambar ke semua klien yang terhubung, termasuk pengirim
+  //   io.emit('drawing', data);
+  // });
+
+  // // Event untuk bergabung ke papan gambar
+  // socket.on('joinWhiteboard', (room) => {
+  //   socket.join(room);
+  // });
+
+  socket.on("joinWhiteboard", (room) => {
+    socket.join(room); // Bergabung ke room papan gambar yang sesuai
+  });
+
+  // Contoh mengirim data gambar ke room tertentu (misal: papan gambar guru)
+  socket.on("drawing", (data) => {
+    io.to(`guru_${class_id}`).emit("drawing", data);
+  });
+  socket.on('shareLink', ({ link }) => {
+    // Kirim tautan kepada semua siswa yang terhubung
+    socket.broadcast.emit('receiveLink', { link });
+  });
+
+
+  // socket.on("joinWhiteboard", (whiteboardId) => {
+  //   socket.join(whiteboardId);
+  //   console.log(`Client joined whiteboard: ${whiteboardId}`);
+  // });
+
+  // // Listen for drawing events from the client
+  // socket.on("drawing", (data) => {
+  //   const { whiteboardId, paths } = data;
+  //   // Broadcast drawing data to everyone in the same whiteboard room
+  //   socket.to(whiteboardId).emit("drawing", { paths });
+  // });
+
+  // // Listen for student drawing events
+  // socket.on("studentDrawing", (data) => {
+  //   const { studentId, paths } = data;
+  //   // Broadcast student drawing data to everyone in the specific student's room
+  //   socket.to(studentId).emit("studentDrawing", { studentId, paths });
+  // });
 });
 
 server.listen(4000, () => {

@@ -89,7 +89,7 @@ function ManageName() {
       console.log(error);
     }
   };
-  
+
   const handleExport = async () => {
     try {
       const response = await axios.get(
@@ -99,9 +99,9 @@ function ManageName() {
           responseType: 'blob', // Important for downloading files
         }
       );
-  
-      const blob = new Blob([response.data], { type: 'text/csv' });
-      saveAs(blob, 'management_name_list.csv'); // Using file-saver library to save file
+
+      const blob = new Blob([response.data], { type: 'text/xlsx' });
+      saveAs(blob, 'management_name_list.xlsx'); // Using file-saver library to save file
     } catch (error) {
       console.error('Error exporting data:', error);
       Swal.fire({
@@ -111,13 +111,13 @@ function ManageName() {
       });
     }
   };
-  
+
 
   const handleImport = async (event) => {
     const file = event.target.files[0];
     const formData = new FormData();
     formData.append('file', file);
-  
+
     try {
       const response = await axios.post(
         `${API_DUMMY}/api/instructur/class/${class_id}/import/management_name_list`,
@@ -129,13 +129,13 @@ function ManageName() {
           },
         }
       );
-  
+
       Swal.fire({
         icon: 'success',
         title: 'Import Successful',
         text: response.data.message,
       });
-  
+
       getAllData(); // Refresh data after import
     } catch (error) {
       console.error('Error importing file:', error);
@@ -204,7 +204,7 @@ function ManageName() {
                     />
                     <input
                       type="file"
-                      accept=".csv"
+                      accept=".xlsx"
                       onChange={handleImport}
                       className="hidden"
                     />
@@ -228,28 +228,28 @@ function ManageName() {
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                   <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                      <th scope="col" className="whitespace-nowrap px-6 py-3">
+                      <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
                         No
                       </th>
-                      <th scope="col" className="whitespace-nowrap px-6 py-3">
+                      <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
                         ID Siswa
                       </th>
-                      <th scope="col" className="whitespace-nowrap px-6 py-3">
+                      <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
                         Nama
                       </th>
-                      <th scope="col" className="whitespace-nowrap px-6 py-3">
+                      <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
                         Gender
                       </th>
-                      <th scope="col" className="whitespace-nowrap px-6 py-3">
+                      <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
                         Jurusan
                       </th>
-                      <th scope="col" className="whitespace-nowrap px-6 py-3">
+                      <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
                         Kelas
                       </th>
-                      <th scope="col" className="whitespace-nowrap px-6 py-3">
+                      <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
                         Password
                       </th>
-                      <th scope="col" className="whitespace-nowrap px-6 py-3">
+                      <th scope="col" className="whitespace-nowrap px-6 py-3 text-left">
                         Aksi
                       </th>
                     </tr>
@@ -262,25 +262,25 @@ function ManageName() {
                       >
                         <th
                           scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                          className="px-6 py-4 text-left font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
                           {index + 1}
                         </th>
-                        <td className="px-6 py-4">997764</td>
-                        <td className="px-6 py-4 whitespace-nowrap capitalize">{manage.name}</td>
-                        <td className="px-6 py-4 whitespace-nowrap capitalize">
+                        <td className="px-6 py-4 text-left">997764</td>
+                        <td className="px-6 py-4 text-left whitespace-nowrap capitalize">{manage.name}</td>
+                        <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
                           {manage.gender}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap capitalize">
+                        <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
                           {manage.departement}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap capitalize">
+                        <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
                           {manage.class_id}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap capitalize">
+                        <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
                           {manage.password}
                         </td>
-                        <td className="px-6 py-4 flex items-center gap-5 justify-center">
+                        <td className="px-6 py-4 flex items-center gap-5">
                           <Link
                             to={"/update-name/" + manage.id}
                             className="py-2 px-3 bg-blue-500 rounded-lg text-white"
