@@ -122,9 +122,7 @@ function Navbar() {
                 isSidebarOpen ? "block" : "hidden"
               } lg:block lg:flex-grow lg:items-center lg:justify-between lg:mx-36 w-full`}>
               <div className="link flex flex-col lg:flex-row items-start lg:items-center gap-3 text-white py-1 px-1">
-                <Link
-                  to={`/dashboard/${classId}`}
-                  className="text-sm font-semibold">
+                <Link to={`/`} className="text-sm font-semibold">
                   <FontAwesomeIcon icon={faChartLine} className="px-1" />
                   Halaman Utama
                 </Link>
@@ -280,9 +278,7 @@ function Navbar() {
                 isSidebarOpen ? "block" : "hidden"
               } lg:block lg:flex-grow lg:items-center lg:justify-between lg:mx-36 w-full`}>
               <div className="link flex flex-col lg:flex-row items-start lg:items-center gap-3 text-white py-1 px-1">
-                <Link
-                  to={"/dashboard/" + classId}
-                  className="text-sm font-semibold">
+                <Link to={"/"} className="text-sm font-semibold">
                   <FontAwesomeIcon icon={faChartLine} className="px-1" />
                   Halaman Utama
                 </Link>
