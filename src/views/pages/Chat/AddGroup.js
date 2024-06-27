@@ -28,7 +28,7 @@ function AddGroup() {
     try {
       const response = await axios.post(url_hit, jsonData, authConfig);
       if (response.status === 200) {
-        history.push("/group-chat/"+localStorage.getItem("class_id"));
+        window.location.reload()
         Swal.fire({
           icon: "success",
           title: "Berhasil Menambahkan Data.",
@@ -43,12 +43,12 @@ function AddGroup() {
 
   return (
     <>
-      <div className="flex flex-col h-screen bg-gray-100">
-        <Navbar />
+      <div className="flex bg-gray-100">
+        {/* <Navbar /> */}
         <div className="content-page container mx-auto p-8">
           <div className="add-class mt-12 bg-white p-8 rounded-xl shadow-xl border border-gray-300">
             <h1 className="text-xl sm:text-2xl font-bold mb-3 text-gray-800">
-              Tambah Grup
+              Tambah Grub
             </h1>
             <form onSubmit={saveChange}>
               <div className="relative mb-5">

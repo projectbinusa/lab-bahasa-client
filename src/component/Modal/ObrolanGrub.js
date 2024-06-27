@@ -1,17 +1,23 @@
 import { useState } from "react";
 import Draggable from "react-draggable";
 import { ResizableBox } from "react-resizable";
-import ScreenBroadcast1 from "../../views/pages/screenBroadcast/ScreenBroadcast";
 import "../../App.css";
-import ChatApp from "../../views/pages/Chat/ChatApp";
+import AddGroup from "../../views/pages/Chat/AddGroup";
 
-function ObrolanGrub({ onClose }) {
+function Group({ onClose }) {
   const [isMinimized, setIsMinimized] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [prevWidth, setPrevWidth] = useState(400);
   const [prevHeight, setPrevHeight] = useState(300);
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
+  const handleMinimize = () => {
+    setIsMinimized(!isMinimized);
+    if (!isMinimized) {
+      setPrevWidth(window.innerWidth / 4);
+      setPrevHeight(window.innerHeight / 4);
+    }
+  };
 
   const handleFullscreen = () => {
     setIsFullscreen(!isFullscreen);
@@ -47,7 +53,7 @@ function ObrolanGrub({ onClose }) {
         >
           <div className="flex flex-col h-full">
             <div className="flex justify-between mb-4 p-2">
-              <h2 className="text-xl font-semibold">Obrolan Grup (Group 1)</h2>
+              <h2 className="text-xl font-semibold">Group</h2>
               <div className="flex gap-2">
                 <button
                   onClick={handleFullscreen}
@@ -68,7 +74,7 @@ function ObrolanGrub({ onClose }) {
               </div>
             </div>
             <div className="handle w-full cursor-move flex-grow overflow-auto">
-              <ChatApp />
+              <AddGroup />
             </div>
           </div>
         </ResizableBox>
@@ -77,4 +83,4 @@ function ObrolanGrub({ onClose }) {
   );
 }
 
-export default ObrolanGrub;
+export default Group;
