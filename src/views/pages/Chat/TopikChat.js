@@ -223,13 +223,11 @@ function TopikChat() {
           <div
             className={`bg-white w-full md:rounded-r-lg md:border-r md:border-green-400 md:w-1/4 ${
               selectedTopic ? "hidden md:block" : "block"
-            }`}
-          >
+            }`}>
             <div className="flex">
               <button
                 onClick={handleTopikChat}
-                className="bg-green-500 flex-1 h-10 flex items-center justify-center text-white text-lg rounded-t-lg"
-              >
+                className="bg-green-500 flex-1 h-10 flex items-center justify-center text-white text-lg rounded-t-lg">
                 Tambah Topik Chat
               </button>
             </div>
@@ -248,8 +246,7 @@ function TopikChat() {
                         ? "green-500"
                         : "green-300"
                     } rounded-lg p-2 flex gap-4 md:mt-0 mt-2 cursor-pointer mb-2`}
-                    onClick={() => setSelectedTopicChat(data)}
-                  >
+                    onClick={() => setSelectedTopicChat(data)}>
                     <div className="border-2 w-fit rounded-full border-green-500">
                       <img className="w-9" src={img} alt="" />
                     </div>
@@ -263,14 +260,12 @@ function TopikChat() {
           <div
             className={`flex-grow w-full md:rounded-l-lg md:border-l md:border-green-400 md:w-3/4 flex flex-col ${
               selectedTopic ? "" : "hidden md:flex"
-            }`}
-          >
+            }`}>
             <div className="flex-1 bg-white overflow-y-hidden">
               <div className="border-2 rounded-t-lg border-green-500 bg-green-500 h-10 flex items-center">
                 <button
                   className="text-white text-lg ml-4 font-semibold md:hidden"
-                  onClick={() => setSelectedTopicChat(null)}
-                >
+                  onClick={() => setSelectedTopicChat(null)}>
                   &lt;Kembali
                 </button>
                 <h1 className="text-white text-lg ml-4 font-semibold">
@@ -278,7 +273,7 @@ function TopikChat() {
                 </h1>
               </div>
 
-              <div className="flex-grow p-2 overflow-y-auto custom-scrollbar">
+              <div className="flex-grow p-2 custom-scrollbar">
                 {selectedTopic ? (
                   chatTopic.filter(
                     (message) => message.topic_chat_id === selectedTopic.id
@@ -288,7 +283,9 @@ function TopikChat() {
                     </div>
                   ) : (
                     chatTopic
-                      .filter((message) => message.topic_chat_id === selectedTopic.id)
+                      .filter(
+                        (message) => message.topic_chat_id === selectedTopic.id
+                      )
                       .map((message, index) => (
                         <div
                           key={index}
@@ -296,8 +293,7 @@ function TopikChat() {
                             message.sender_id == user_id
                               ? "justify-end"
                               : "justify-start"
-                          }`}
-                        >
+                          }`}>
                           <div className="flex w-full md:w-96 items-center">
                             {message.sender_id != user_id && (
                               <img
@@ -311,27 +307,39 @@ function TopikChat() {
                               className={`${
                                 message.sender_id == user_id
                                   ? "bg-green-500 text-white mr-2"
-                                  : "bg-gray-400 text-white"
-                              } rounded-lg p-2 w-full md:w-[90%] shadow ml-2 relative`}
-                            >
+                                  : "bg-green-400 text-white"
+                              } rounded-lg p-2 w-full md:w-[90%] shadow ml-2 `}>
                               <div className="flex justify-between">
                                 {message.sender_id == user_id && (
                                   <button
                                     className=""
-                                    onClick={() => toggleDropdown(index)}
-                                  >
+                                    onClick={() => toggleDropdown(index)}>
+
                                     <i className="fa-solid fa-ellipsis-vertical"></i>
+                                    {dropdownIndex === index && (
+                                      <div className="absolute top-full left-0 mt-2 w-24 bg-white text-black border rounded shadow-lg z-10">
+                                        <button
+                                          className="block px-4 py-2 text-left w-full text-black hover:bg-gray-200"
+                                          onClick={() =>
+                                            deleteMessage(message.id)
+                                          }
+                                        >
+                                          Delete
+                                        </button>
+                                        <button
+                                          className="block px-4 py-2 text-left w-full text-black hover:bg-gray-200"
+                                          onClick={() =>
+                                            editMessage(
+                                              message.id,
+                                              message.content
+                                            )
+                                          }
+                                        >
+                                          Edit
+                                        </button>
+                                      </div>
+                                    )}
                                   </button>
-                                )}
-                                {dropdownIndex === index && (
-                                  <div className="absolute right-0 mt-8 w-24 bg-white text-black border rounded shadow-lg z-10">
-                                    <button
-                                      className="block px-4 py-2 text-left w-full text-black hover:bg-gray-200"
-                                      onClick={() => deleteMessage(message.id)}
-                                    >
-                                      Delete
-                                    </button>
-                                  </div>
                                 )}
                                 <div>
                                   {formatMessageContent(message.content).map(
@@ -340,31 +348,36 @@ function TopikChat() {
                                     )
                                   )}
                                 </div>
-                                {message.sender_id != user_id && (
+                                {/* {message.sender_id != user_id && (
                                   <button
-                                    className=""
+                                    className="relative"
                                     onClick={() => toggleDropdown(index)}
                                   >
                                     <i className="fa-solid fa-ellipsis-vertical"></i>
+                                    {dropdownIndex === index && (
+                                      <div className="absolute top-full left-0 mt-2 w-24 bg-white text-black border rounded shadow-lg z-10">
+                                        <button
+                                          className="block px-4 py-2 text-left w-full hover:bg-gray-200"
+                                          onClick={() =>
+                                            editMessage(
+                                              message.id,
+                                              message.content
+                                            )
+                                          }
+                                        >
+                                          Edit
+                                        </button>
+                                        <button
+                                          className="block px-4 py-2 text-left w-full text-black hover:bg-gray-200"
+                                          onClick={() =>
+                                            deleteMessage(message.id)
+                                          }
+                                        >
+                                          Delete
+                                        </button>
+                                      </div>
+                                    )}
                                   </button>
-                                )}
-                                {dropdownIndex === index && (
-                                  <div className="absolute right-0 mt-8 w-24 bg-white text-black border rounded shadow-lg z-10">
-                                    <button
-                                      className="block px-4 py-2 text-left w-full hover:bg-gray-200"
-                                      onClick={() =>
-                                        editMessage(message.id, message.content)
-                                      }
-                                    >
-                                      Edit
-                                    </button>
-                                    <button
-                                      className="block px-4 py-2 text-left w-full text-black hover:bg-gray-200"
-                                      onClick={() => deleteMessage(message.id)}
-                                    >
-                                      Delete
-                                    </button>
-                                  </div>
                                 )}
                               </div>
                               {message.sender_id == user_id && (
@@ -378,15 +391,24 @@ function TopikChat() {
                                 </p>
                               )}
                               {message.gambar && (
-                                <img
+                                <div
                                   className="mt-2"
-                                  src={message.gambar}
-                                  alt="Image"
                                   style={{
                                     maxWidth: "200px",
                                     maxHeight: "200px",
+                                    overflow: "hidden",
                                   }}
-                                />
+                                >
+                                  <img
+                                    src={message.gambar}
+                                    alt="Image"
+                                    style={{
+                                      width: "100%",
+                                      height: "100%",
+                                      objectFit: "cover",
+                                    }}
+                                  />
+                                </div>
                               )}
                             </div>
                             {message.sender_id == user_id && (
@@ -405,7 +427,6 @@ function TopikChat() {
                     Silahkan pilih topik chat
                   </div>
                 )}
-
                 {selectedTopic && (
                   <div className="bg-gray-100 px-4 py-2 fixed bottom-0 w-full md:w-3/4">
                     <form
@@ -473,7 +494,7 @@ function TopikChat() {
           .bg-white.w-full.md\\:rounded-r-lg.md\\:border-r.md\\:border-green-400.w-full.md\\:w-1\\/4 {
             display: ${selectedTopic ? "none" : "block"};
           }
-          
+
           .flex-grow.w-full.md\\:rounded-l-lg.md\\:border-l.md\\:border-green-400.md\\:w-3\\/4.flex.flex-col {
             display: ${selectedTopic ? "flex" : "none"};
           }

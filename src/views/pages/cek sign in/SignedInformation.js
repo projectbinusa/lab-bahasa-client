@@ -128,28 +128,28 @@ function SignedInformation() {
             <table className="w-full table-auto text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th scope="col" className="px-5 py-3">
+                  <th scope="col" className="px-5 py-3 text-left">
                     No
                   </th>
-                  <th scope="col" className="px-5 py-3">
+                  <th scope="col" className="px-5 py-3 text-left">
                     ID Siswa
                   </th>
-                  <th scope="col" className="px-5 py-3">
+                  <th scope="col" className="px-5 py-3 text-left">
                     Nama
                   </th>
-                  <th scope="col" className="px-5 py-3">
+                  <th scope="col" className="px-5 py-3 text-left">
                     Gender
                   </th>
-                  <th scope="col" className="px-5 py-3">
+                  <th scope="col" className="px-5 py-3 text-left">
                     Kelas
                   </th>
-                  <th scope="col" className="px-5 py-3">
+                  <th scope="col" className="px-5 py-3 text-left">
                     Jurusan
                   </th>
-                  <th scope="col" className="px-5 py-3">
+                  <th scope="col" className="px-5 py-3 text-left">
                     Waktu Sign in
                   </th>
-                  <th scope="col" className="px-5 py-3">
+                  <th scope="col" className="px-5 py-3 text-left">
                     Komentar
                   </th>
                 </tr>
@@ -159,7 +159,7 @@ function SignedInformation() {
                   <tr>
                     <td
                       colSpan="8"
-                      className="px-5 py-4 text-gray-900 dark:text-gray-300"
+                      className="px-5 py-4 text-left text-gray-900 dark:text-gray-300"
                     >
                       {isSearching
                         ? "Pencarian Tidak Ditemukan"
@@ -174,17 +174,17 @@ function SignedInformation() {
                     >
                       <th
                         scope="row"
-                        className="px-5 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        className="px-5 py-4 text-left font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
                         {index + 1}
                       </th>
-                      <td className="px-3 py-4">{item.client_id || "-"}</td>
-                      <td className="px-3 py-4">{item.name || "-"}</td>
-                      <td className="px-3 py-4">{item.gender || "-"}</td>
-                      <td className="px-3 py-4">{item.class_id || "-"}</td>
-                      <td className="px-3 py-4">{item.departement || "-"}</td>
-                      <td className="px-3 py-4">{item.created_date || "-"}</td>
-                      <td className="px-3 py-4">{item.comment || "-"}</td>
+                      <td className="px-3 py-4 text-left">{item.client_id || "-"}</td>
+                      <td className="px-3 py-4 text-left">{item.name || "-"}</td>
+                      <td className="px-3 py-4 text-left">{item.gender || "-"}</td>
+                      <td className="px-3 py-4 text-left">{item.class_id || "-"}</td>
+                      <td className="px-3 py-4 text-left">{item.departement || "-"}</td>
+                      <td className="px-3 py-4 text-left">{item.created_date || "-"}</td>
+                      <td className="px-3 py-4 text-left">{item.comment || "-"}</td>
                     </tr>
                   ))
                 )}

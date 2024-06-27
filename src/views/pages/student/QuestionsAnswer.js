@@ -35,14 +35,14 @@ function QuestionsAnswer() {
       }
     } catch (error) {
       console.log(error);
-      Swal.fire({
-        icon: "error",
-        title: "Terjadi Kesalahan",
-        text: error.response
-          ? error.response.data.message
-          : "Tidak bisa get data",
-        showConfirmButton: true,
-      });
+      // Swal.fire({
+      //   icon: "error",
+      //   title: "Terjadi Kesalahan",
+      //   text: error.response
+      //     ? error.response.data.message
+      //     : "Tidak bisa get data",
+      //   showConfirmButton: true,
+      // });
     }
   };
 
@@ -71,19 +71,19 @@ function QuestionsAnswer() {
             <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-center text-xs text-white uppercase bg-green-500 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th scope="col" className="px-6 py-3">
+                  <th scope="col" className="px-6 py-3 text-left">
                     No
                   </th>
-                  <th scope="col" className="px-6 py-3">
+                  <th scope="col" className="px-6 py-3 text-left">
                     Pertanyaan
                   </th>
-                  <th scope="col" className="px-6 py-3">
+                  <th scope="col" className="px-6 py-3 text-left">
                     Waktu Berfikir
                   </th>
-                  <th scope="col" className="px-6 py-3">
+                  <th scope="col" className="px-6 py-3 text-left">
                     Waktu Penjawab
                   </th>
-                  <th scope="col" className="px-6 py-3">
+                  <th scope="col" className="px-6 py-3 text-left">
                     Aksi
                   </th>
                 </tr>
@@ -95,13 +95,19 @@ function QuestionsAnswer() {
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <th
                       scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      className="px-6 py-4 text-left font-medium text-gray-900 whitespace-nowrap dark:text-white">
                       {index + 1}
                     </th>
-                    <td className="px-6 py-4 capitalize">{question.name}</td>
-                    <td className="px-6 py-4 capitalize">{question.think_time}</td>
-                    <td className="px-6 py-4 capitalize">{question.answer_time}</td>
-                    <td className="px-6 py-4 capitalize">
+                    <td className="px-6 py-4 text-left capitalize">
+                      {question.name}
+                    </td>
+                    <td className="px-6 py-4 text-left capitalize">
+                      {question.think_time}
+                    </td>
+                    <td className="px-6 py-4 text-left capitalize">
+                      {question.answer_time}
+                    </td>
+                    <td className="px-6 py-4 text-left capitalize">
                       <Link
                         to={`/student-answer/${question.id}`}
                         className="py-2 px-3 bg-blue-500 rounded-lg text-white ">
