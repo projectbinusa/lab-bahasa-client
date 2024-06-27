@@ -4,7 +4,7 @@ import Navbar from "../../../component/Navbar1";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { API_DUMMY } from "../../../utils/api";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+// import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 const authConfig = {
   headers: {
@@ -17,7 +17,7 @@ function Dashboard() {
   const [server, setServer] = useState([]);
   const [kelas, setKelas] = useState([]);
   const [menageKelas, setMenageKelas] = useState([]);
-  const param = useParams();
+  // const param = useParams();
   const classId = localStorage.getItem("class_id");
 
   const getAllKelas = async () => {
@@ -26,11 +26,14 @@ function Dashboard() {
         `${API_DUMMY}/api/instructur/class?limit=100`,
         authConfig
       );
-      setKelas(response.data.data.filter((k) => k.id == classId));
-      console.log(
-        "filter class",
-        response.data.data.filter((k) => k.id == classId)
-      );
+      if (localStorage.getItem("role") == "student") {
+        setKelas(response.data.data.filter((k) => k.id == classId));
+        console.log(
+          "filter class",
+          response.data.data.filter((k) => k.id == classId)
+        );
+      }
+      setKelas(response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -39,7 +42,9 @@ function Dashboard() {
   const getManageName = async () => {
     try {
       const response = await axios.get(
-        `${API_DUMMY}/api/instructur/class/${param.id}/management_name_list?limit=100`,
+        `${API_DUMMY}/api/instructur/class/${localStorage.getItem(
+          "class_id"
+        )}/management_name_list?limit=100`,
         authConfig
       );
       setMenageKelas(response.data.data);
@@ -63,7 +68,9 @@ function Dashboard() {
   const getAllClient = async () => {
     try {
       const response = await axios.get(
-        `${API_DUMMY}/api/instructur/class/${param.id}/management_name_list?limit=100`,
+        `${API_DUMMY}/api/instructur/class/${localStorage.getItem(
+          "class_id"
+        )}/management_name_list?limit=100`,
         authConfig
       );
       setClient(response.data.data);
@@ -87,7 +94,7 @@ function Dashboard() {
       </div>
       <div className="flex-grow flex">
         <div className="container p-2 mx-auto sm:mt-5 md:mx-10 flex flex-col items-center justify-center">
-          <div className="md:flex block justify-center text-center w-full ml-[50%] mr-[50%]">
+          <div className="md:flex block justify-center text-center w-full ml-[20%] mr-[20%]">
             {localStorage.getItem("role") === "instructur" ? (
               <>
                 <div className="p-4 w-full sm:w-1/2 md:w-1/3">
@@ -172,7 +179,7 @@ function Dashboard() {
           <br />
 
           {/* Tabel Absensi */}
-          <div className="p-4 w-full text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+          <div className="p-4 w-full text-center ml-auto mr-auto bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
             <div className="flex justify-between">
               <h6 className="mb-2 text-xl font-bold text-black dark:text-white">
                 Kelola Kelas
@@ -218,25 +225,25 @@ function Dashboard() {
                       <tr
                         key={data.id}
                         className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                        <td className="px-6 py-4 text-left text-left whitespace-nowrap">
+                        <td className="px-6 py-4 text-left whitespace-nowrap">
                           {index + 1}
                         </td>
                         <td className="px-6 py-4 text-left">
                           <img src="" alt="" />
                         </td>
-                        <td className="px-6 py-4 text-left text-left whitespace-nowrap capitalize">
+                        <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
                           {data.name}
                         </td>
-                        <td className="px-6 py-4 text-left text-left whitespace-nowrap capitalize">
+                        <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
                           {data.description}
                         </td>
-                        <td className="px-6 py-4 text-left text-left whitespace-nowrap capitalize">
+                        <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
                           {data.is_active ? "Aktif" : "Tidak Aktif"}
                         </td>
-                        <td className="px-6 py-4 text-left text-left whitespace-nowrap capitalize">
+                        <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
                           {data.user_name ? data.user_name : "-"}
                         </td>
-                        <td className="px-6 py-4 text-left text-left whitespace-nowrap capitalize">
+                        <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
                           {data.user_id ? data.user_id : "-"}
                         </td>
                       </tr>
@@ -261,16 +268,24 @@ function Dashboard() {
                   <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead className="text-center text-xs text-white uppercase bg-green-500 dark:bg-gray-700 dark:text-gray-400">
                       <tr>
-                        <th className="px-6 py-3 text-left whitespace-nowrap">No</th>
+                        <th className="px-6 py-3 text-left whitespace-nowrap">
+                          No
+                        </th>
                         <th className="px-6 py-3 text-left whitespace-nowrap">
                           Id Kelas
                         </th>
                         <th className="px-6 py-3 text-left whitespace-nowrap">
                           Id Client
                         </th>
-                        <th className="px-6 py-3 text-left whitespace-nowrap">Nama</th>
-                        <th className="px-6 py-3 text-left whitespace-nowrap">Gender</th>
-                        <th className="px-6 py-3 text-left whitespace-nowrap">Jurusan</th>
+                        <th className="px-6 py-3 text-left whitespace-nowrap">
+                          Nama
+                        </th>
+                        <th className="px-6 py-3 text-left whitespace-nowrap">
+                          Gender
+                        </th>
+                        <th className="px-6 py-3 text-left whitespace-nowrap">
+                          Jurusan
+                        </th>
                         <th className="px-6 py-3 text-left whitespace-nowrap">
                           Terakhir login
                         </th>

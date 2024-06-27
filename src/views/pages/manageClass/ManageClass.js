@@ -290,25 +290,25 @@ function ManageClass() {
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3 text-left">
                       No
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3 text-left">
                       Gambar
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3 text-left">
                       Nama Server
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3 text-left">
                       Nama Kelas
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3 text-left">
                       Deskripsi
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3 text-left">
                       Aktif
                     </th>
-                    <th scope="col" className="px-6 py-3">
+                    <th scope="col" className="px-6 py-3 text-left">
                       Aksi
                     </th>
                   </tr>
@@ -320,21 +320,21 @@ function ManageClass() {
                       className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                       <th
                         scope="row"
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        className="px-6 py-4 text-left font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {index + 1}
                       </th>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 text-left">
                         <img src={data.file} alt="" />
                       </td>
-                      <td className="px-6 py-4 capitalize">{data.user_name}</td>
-                      <td className="px-6 py-4 capitalize">{data.name}</td>
-                      <td className="px-6 py-4 capitalize">
+                      <td className="px-6 py-4 text-left capitalize">{data.user_name}</td>
+                      <td className="px-6 py-4 text-left capitalize">{data.name}</td>
+                      <td className="px-6 py-4 text-left capitalize">
                         {data.description}
                       </td>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 text-left">
                         {data.is_active ? "Aktif" : "Tidak Aktif"}
                       </td>
-                      <td className="px-6 py-4 flex items-center gap-5 justify-center">
+                      <td className="px-6 py-4 flex items-center gap-5">
                         <button
                           className={`py-3 px-4 rounded-lg text-white ${
                             data.is_active

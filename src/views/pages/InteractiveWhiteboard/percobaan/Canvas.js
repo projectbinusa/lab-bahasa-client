@@ -162,7 +162,7 @@ const Canvas = ({
   };
 
   return (
-    <canvas
+    <canvas className="h-screen"
       ref={canvasRef}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}

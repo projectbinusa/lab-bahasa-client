@@ -141,7 +141,7 @@ function Navbar() {
                   Kamera
                 </Link>
                 <Link
-                  to={`/whiteboard/${classId}`}
+                  to={"/realtime-whiteboard"}
                   className="text-sm font-semibold">
                   <FontAwesomeIcon icon={faChalkboard} className="px-1" />
                   Papan tulis interaktif
@@ -278,8 +278,8 @@ function Navbar() {
             <div
               className={`${
                 isSidebarOpen ? "block" : "hidden"
-              } lg:block lg:flex-grow lg:items-center lg:justify-between lg:ml-80 w-full`}>
-              <div className="link flex flex-col lg:flex-row items-start lg:items-center gap-3 text-white p-3 lg:p-0">
+              } lg:block lg:flex-grow lg:items-center lg:justify-between lg:mx-36 w-full`}>
+              <div className="link flex flex-col lg:flex-row items-start lg:items-center gap-3 text-white py-1 px-1">
                 <Link
                   to={"/dashboard/" + classId}
                   className="text-sm font-semibold">
@@ -299,11 +299,17 @@ function Navbar() {
                   Kamera
                 </Link>
                 <Link
+                  to={"/realtime-whiteboard"}
+                  className="text-sm font-semibold">
+                  <FontAwesomeIcon icon={faChalkboard} className="px-1" />
+                  Papan Gambar
+                </Link>
+                <Link
                   to={"/interaction-student/" + classId}
                   className="text-sm font-semibold">
                   <FontAwesomeIcon icon={faUsers} className="px-1" />
                   Intseraksi Siswa
-                </Link>{" "}
+                </Link>
                 <div className={`relative ${isSidebarOpen ? "ml-0" : ""}`}>
                   <button
                     onClick={() => toggleDropdown("response")}
