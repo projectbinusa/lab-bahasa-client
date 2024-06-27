@@ -23,6 +23,8 @@ function TopikChat() {
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [dropdownIndex, setDropdownIndex] = useState(null);
   const [editMessageId, setEditMessageId] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const [initialContent, setInitialContent] = useState("");
   const class_id = localStorage.getItem("class_id");
   const user_id = localStorage.getItem("id");
   const [showTopikChat, setShowTopikChat] = useState(false);
@@ -46,20 +48,9 @@ function TopikChat() {
   const sendMessage = async (e) => {
     e.preventDefault();
     if (!selectedTopic) {
-      console.error("Group not selected.");
+      console.error("Topic not selected.");
       return;
     }
-
-    if (!content.trim() && !gambar) {
-      Swal.fire({
-        icon: "warning",
-        title: "Pesan tidak boleh kosong!",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      return;
-    }
-
     const formData = new FormData();
     formData.append("is_group", 1);
     if (gambar) {
@@ -68,7 +59,6 @@ function TopikChat() {
     if (content) {
       formData.append("content", content);
     }
-
     try {
       const response = await axios.post(
         `${API_DUMMY}/api/chat/class/${class_id}/topic_chat/${selectedTopic.id}`,
@@ -177,8 +167,16 @@ function TopikChat() {
   };
 
   const editMessage = (messageId, messageContent) => {
+    setEditMode(true);
     setEditMessageId(messageId);
     setContent(messageContent);
+    setInitialContent(messageContent);
+  };
+
+  const cancelEdit = () => {
+    setEditMode(false);
+    setEditMessageId(null);
+    setContent("");
   };
 
   const updateMessage = async (e) => {
@@ -210,6 +208,7 @@ function TopikChat() {
         setContent("");
         setGambar(null);
         setEditMessageId(null);
+        setEditMode(false);
       }
     } catch (error) {
       console.error("Error updating message:", error);
@@ -428,43 +427,42 @@ function TopikChat() {
                     Silahkan pilih topik chat
                   </div>
                 )}
+                {selectedTopic && (
+                  <div className="bg-gray-100 px-4 py-2 fixed bottom-0 w-full md:w-3/4">
+                    <form
+                      onSubmit={editMode ? updateMessage : sendMessage}
+                      className="flex items-center"
+                    >
+                      <input
+                        className="w-full border rounded-full py-2 px-4 mr-2"
+                        type="text"
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        placeholder="Ketik pesan anda... (max 200 karakter)"
+                        maxLength="200"
+                      />
+                      <input type="file" onChange={handleFileChange} />
+                      <button
+                        className="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-full"
+                        type="submit"
+                      >
+                        {editMode ? "Edit" : "Kirim"}
+                      </button>
+                      {editMode && (
+                        <button
+                          className="bg-red-500 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-full ml-2"
+                          type="button"
+                          onClick={cancelEdit}
+                        >
+                          Batalkan
+                        </button>
+                      )}
+                    </form>
+                  </div>
+                )}
+
               </div>
             </div>
-
-            {selectedTopic && (
-              <div className="bg-gray-100 px-4 py-2 fixed bottom-0 w-full md:w-3/4">
-                <form
-                  onSubmit={
-                    editMessageId !== null ? updateMessage : sendMessage
-                  }
-                  className="flex items-center">
-                  <input
-                    className="w-full border rounded-full py-2 px-4 mr-2"
-                    type="text"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    placeholder="Ketik pesan anda... (max 200 karakter)"
-                    maxLength="200"
-                  />
-                  <input type="file" onChange={handleFileChange} />
-                  {editMessageId !== null && (
-                    <button
-                      className="bg-red-500 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-full"
-                      onClick={() => {
-                        setEditMessageId(null);
-                        setContent("");
-                      }}>
-                      Batalkan
-                    </button>
-                  )}
-                  <button
-                    className="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-full"
-                    type="submit">
-                    {editMessageId !== null ? "Edit" : "Kirim"}
-                  </button>
-                </form>
-              </div>
-            )}
           </div>
         </div>
       </div>
