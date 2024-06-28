@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
 import Image from "../../../../component/Asset/roomImage.png";
@@ -8,6 +9,7 @@ const JoinCreateRoom = ({ uuid, setUser, setRoomJoined, userRole }) => {
   const [name, setName] = useState("");
   const [joinName, setJoinName] = useState("");
   const [joinRoomId, setJoinRoomId] = useState("");
+  const history = useHistory();
 
   const handleCreateSubmit = (e) => {
     e.preventDefault();
@@ -16,15 +18,23 @@ const JoinCreateRoom = ({ uuid, setUser, setRoomJoined, userRole }) => {
       return;
     }
 
-    setUser({
+    const user = {
       roomId,
       userId: uuid(),
       userName: name,
       host: true,
       presenter: true,
       role: userRole,
-    });
+    };
+
+    setUser(user);
     setRoomJoined(true);
+
+    if (userRole === "instructur") {
+      history.push("/whiteboard-instruktur");
+    } else {
+      toast.dark("Role instruktur tidak valid!");
+    }
   };
 
   const handleJoinSubmit = (e) => {
@@ -34,15 +44,23 @@ const JoinCreateRoom = ({ uuid, setUser, setRoomJoined, userRole }) => {
       return;
     }
 
-    setUser({
+    const user = {
       roomId: joinRoomId,
       userId: uuid(),
       userName: joinName,
       host: false,
       presenter: false,
       role: userRole,
-    });
+    };
+
+    setUser(user);
     setRoomJoined(true);
+
+    if (userRole === "student") {
+      history.push("/whiteboard-student");
+    } else {
+      toast.dark("Role student tidak valid!");
+    }
   };
 
   const generateRoomId = () => {
@@ -61,9 +79,7 @@ const JoinCreateRoom = ({ uuid, setUser, setRoomJoined, userRole }) => {
             <h2 className="text-2xl text-center mb-4">Buat Ruangan</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
-                <form
-                  onSubmit={handleCreateSubmit}
-                  className="grid grid-cols-1 gap-4">
+                <form onSubmit={handleCreateSubmit} className="grid grid-cols-1 gap-4">
                   <input
                     type="text"
                     placeholder="Nama Anda"
@@ -121,9 +137,7 @@ const JoinCreateRoom = ({ uuid, setUser, setRoomJoined, userRole }) => {
             <h2 className="text-2xl text-center mb-4">Gabung Ruangan</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
-                <form
-                  onSubmit={handleJoinSubmit}
-                  className="grid grid-cols-1 gap-4">
+                <form onSubmit={handleJoinSubmit} className="grid grid-cols-1 gap-4">
                   <input
                     type="text"
                     placeholder="Nama Anda"
