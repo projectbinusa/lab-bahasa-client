@@ -304,7 +304,7 @@ function ChatPribadi() {
                     </div>
                     {localStorage.getItem("role") != "student" ? (
                       <>
-                        <p className="text-center mt-1">{data.user_name}</p>
+                        <p className="text-center mt-1">{data.user_chat_name}</p>
                       </>
                     ) : (
                       <>{listUser}</>

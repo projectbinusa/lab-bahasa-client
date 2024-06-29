@@ -69,37 +69,42 @@ function AddUser() {
 
   return (
     <>
-      <div className="content-page container mx-auto p-8">
-        <div className="add-class mt-12 bg-white p-8 rounded-xl shadow-xl border border-gray-300">
-          <form onSubmit={saveChange}>
-            <div className="relative mb-5">
-              <label className="block mb-2 text-sm font-semibold text-gray-700">
-                Nama User
-              </label>
-              <select
-                className="flex-shrink-0 z-1 inline-flex w-full rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
-                onChange={handleSelectChange}>
-                <option selected>Pilih User</option>
-                {userChat.map((down) => (
-                  <option
-                    key={down.id}
-                    value={down.id}
-                    data-username={down.name}>
-                    {down.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex justify-end mt-8">
-              <button
-                type="submit"
-                className="px-6 py-3 rounded-lg text-white bg-green-400 hover:bg-green-600 text-base font-semibold">
-                Simpan
-              </button>
-            </div>
-          </form>
-        </div>
+      <div className="content-page container">
+  <div className="add-class mt-2 bg-white p-8 h-1/2 rounded-xl shadow-xl border border-gray-300">
+    <form onSubmit={saveChange}>
+      <div className="relative mb-5">
+        <label className="block mb-2 text-sm font-semibold text-gray-700">
+          Nama User
+        </label>
+        <select
+          className="flex-shrink-0 z-1 inline-flex w-full rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
+          onChange={handleSelectChange}
+        >
+          <option defaultValue disabled hidden>Pilih User</option>
+          {userChat.map((down) => (
+            <option
+              key={down.id}
+              value={down.id}
+              data-username={down.name}
+              className="text-left" // Added class to align text left
+            >
+              {down.name}
+            </option>
+          ))}
+        </select>
       </div>
+      <div className="flex justify-end mt-8">
+        <button
+          type="submit"
+          className="px-6 py-3 rounded-lg text-white bg-green-400 hover:bg-green-600 text-base font-semibold"
+        >
+          Simpan
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
     </>
   );
 }
