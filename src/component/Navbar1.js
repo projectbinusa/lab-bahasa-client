@@ -143,7 +143,8 @@ function Navbar() {
                 </Link>
                 <Link
                   to={"/realtime-whiteboard"}
-                  className="text-sm font-semibold">
+                  className="text-sm font-semibold"
+                >
                   <FontAwesomeIcon icon={faChalkboard} className="px-1" />
                   Papan tulis interaktif
                 </Link>
@@ -294,10 +295,10 @@ function Navbar() {
             <div
               className={`${
                 isSidebarOpen ? "block" : "hidden"
-              } lg:block lg:flex-grow lg:items-center lg:justify-between lg:mx-36 w-full`}>
+              } lg:block lg:flex-grow lg:items-center lg:justify-between lg:mx-36 w-full`}
+            >
               <div className="link flex flex-col lg:flex-row items-start lg:items-center gap-3 text-white py-1 px-1">
                 <Link to={"/"} className="text-sm font-semibold">
-
                   <FontAwesomeIcon icon={faChartLine} className="px-1" />
                   Halaman Utama
                 </Link>
@@ -317,7 +318,8 @@ function Navbar() {
                 </Link>
                 <Link
                   to={"/realtime-whiteboard"}
-                  className="text-sm font-semibold">
+                  className="text-sm font-semibold"
+                >
                   <FontAwesomeIcon icon={faChalkboard} className="px-1" />
                   Papan Gambar
                 </Link>
@@ -354,12 +356,12 @@ function Navbar() {
                         Kompetisi Respon
                       </Link>
                       <Link
-                        to={"/question-answer/" + classId}
+                        to={`/question-answer/${classId}`}
                         type="button"
-                        className="lock px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       >
-                        <FontAwesomeIcon icon={faUsers} className="px-1" />
-                        Question answer
+                        <FontAwesomeIcon icon={faUsers} className="mr-1" />
+                        Jawab Pertanyaan
                       </Link>
                     </div>
                   )}
