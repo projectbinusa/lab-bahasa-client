@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
 import io from "socket.io-client";
-import Sidebar from "./percobaan/Sidebar";
 import Room from "./percobaan/Room";
 import ClientRoom from "./percobaan/ClientRoom";
 import JoinCreateRoom from "./percobaan/JoinCreateRoom";
@@ -58,27 +56,22 @@ const RealtimeWhiteBoard = () => {
     <div className="flex flex-col h-screen overflow-hidden">
       <Navbar />
       <div className="home">
-        {/* <ToastContainer /> */}
         {roomJoined ? (
           <>
-            {/* <Sidebar users={users} user={user} socket={socket} />
-            {user.presenter ? ( */}
-              <Room
-                userNo={userNo}
-                user={user}
-                socket={socket}
-                setUsers={setUsers}
-                setUserNo={setUserNo}
-              />
-            {/* ) : ( */}
-              <ClientRoom
-                userNo={userNo}
-                user={user}
-                socket={socket}
-                setUsers={setUsers}
-                setUserNo={setUserNo}
-              />
-            {/* )} */}
+            <Room
+              userNo={userNo}
+              user={user}
+              socket={socket}
+              setUsers={setUsers}
+              setUserNo={setUserNo}
+            />
+            <ClientRoom
+              userNo={userNo}
+              user={user}
+              socket={socket}
+              setUsers={setUsers}
+              setUserNo={setUserNo}
+            />
           </>
         ) : (
           <JoinCreateRoom
@@ -89,15 +82,6 @@ const RealtimeWhiteBoard = () => {
           />
         )}
       </div>
-      {/* <style>
-        {`
-        .home {
-          padding: 20px;
-          background-color: #f8f9fa;
-          height: screen;
-        }
-        `}
-      </style> */}
     </div>
   );
 };
