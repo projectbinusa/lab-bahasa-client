@@ -38,6 +38,8 @@ import { RoomProvider } from "./views/pages/screenBroadcast/RoomProvider";
 import Index from "./views/pages/camera/Index";
 import StudentCamera from "./views/pages/camera/StudentCamera";
 import RealtimeWhiteBoard from "./views/pages/InteractiveWhiteboard/RealtimeWhiteBoard";
+import Rooms from "./views/pages/InteractiveWhiteboard/RealtimeWhiteBoard";
+import ClientRoom from "./views/pages/InteractiveWhiteboard/percobaan/ClientRoom";
 
 const checkTokenExpiration = () => {
   const token = localStorage.getItem("token");
@@ -201,6 +203,16 @@ const App = () => {
             <PrivateRoute
               path="/realtime-whiteboard"
               component={RealtimeWhiteBoard}
+              exact
+            />
+            <PrivateRoute
+              path="/whiteboard-instruktur"
+              component={Rooms}
+              exact
+            />
+            <PrivateRoute
+              path="/whiteboard-student"
+              component={ClientRoom}
               exact
             />
           </Switch>

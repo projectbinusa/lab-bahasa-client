@@ -22,7 +22,8 @@ function ChatApp() {
   const [gambar, setGambar] = useState(null);
   const [list, setList] = useState([]);
   const [selectedTopic, setSelectedTopic] = useState(null);
-  const [dropdownIndex, setDropdownIndex] = useState(null);
+  const [dropdownIndex1, setDropdownIndex1] = useState(null);
+  const [dropdownIndex2, setDropdownIndex2] = useState(null);
   const [editMessageId, setEditMessageId] = useState(null);
   const [showTopic, setShowTopic] = useState(false);
   const class_id = localStorage.getItem("class_id");
@@ -38,7 +39,6 @@ function ChatApp() {
       setSelectedTopic(null);
     }
   };
-
 
   // const handleReplay = (message) => {
   //   if (replayMessage && replayMessage.id === message.id) {
@@ -176,8 +176,6 @@ function ChatApp() {
       setChatTopic([]);
     }
   }, [selectedTopic]);
-  
-  
 
   const handleTopic = () => {
     setShowTopic(true);
@@ -196,10 +194,13 @@ function ChatApp() {
       getAllDatachatTopic(selectedTopic.id);
     }
   }, [selectedTopic]);
-  
 
-  const toggleDropdown = (index) => {
-    setDropdownIndex(dropdownIndex === index ? null : index);
+  const toggleDropdown = (index, dropdownType) => {
+    if (dropdownType === 1) {
+      setDropdownIndex1(dropdownIndex1 === index ? null : index);
+    } else if (dropdownType === 2) {
+      setDropdownIndex2(dropdownIndex2 === index ? null : index);
+    }
   };
 
   const editMessage = (messageId, messageContent) => {
@@ -231,7 +232,7 @@ function ChatApp() {
     try {
       const response = await axios.put(
         `${API_DUMMY}/api/chat/chat/${editMessageId}/class/${class_id}/topic_chat/${selectedTopic.id}`,
-        formData, // Pass FormData object directly as data
+        formData,
         authConfig
       );
 
@@ -309,15 +310,22 @@ function ChatApp() {
     }
   };
 
-
+  useEffect(() => {
+    setContent("");
+    setGambar(null);
+    setEditMessageId(null);
+    setReplayMessage(null);
+  }, [selectedTopic]);
+  
   return (
     <>
-      <div className="flex flex-col bg-gray-100">
+      <div className="flex flex-col bg-gray-100 min-h-screen">
         <Navbar />
         <div className="flex flex-grow flex-col md:flex-row md:justify-center gap-4 mt-3 mx-3">
           <div
-            className={`bg-white w-full md:rounded-r-lg md:border-r md:border-green-400 md:w-1/4 ${selectedTopic ? "hidden md:block" : "block"
-              }`}
+            className={`bg-white w-full md:rounded-r-lg md:border-r md:border-green-400 md:w-1/4 ${
+              selectedTopic ? "hidden md:block" : "block"
+            }`}
           >
             <div className="flex">
               <button
@@ -327,50 +335,65 @@ function ChatApp() {
                 Tambah Topik Chat
               </button>
             </div>
-            {list.map((topic, index) => (
-              <div
-                key={topic.id}
-                onClick={() => setSelectedTopicChat(topic)}
-                className={`cursor-pointer p-2 rounded ${selectedTopic?.id === topic.id
-                  ? "bg-green-500 text-white"
-                  : "bg-green-300 text-gray-800"
-                  }`}
-              >
-                <div className="flex justify-between items-center ">
-                  <div className="border-2 w-fit rounded-full border-green-500">
-                    <img className="w-9" src={img} alt="" />
-                  </div>
-                  <div className="text-center mt-1">{topic.name}</div>
-
-                  <div className="relative">
-                    <button
-                      className="text-gray-600 focus:outline-none"
-                      onClick={() => toggleDropdown(index)}
-                    >
-                      &#x2022;&#x2022;&#x2022;
-                    </button>
-                    {dropdownIndex === index && (
-                      <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-10">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteTopic(topic.id);
-                          }}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                        >
-                          Hapus Topic Chat
-                        </button>
-                      </div>
-                    )}
-                  </div>
+            <div className="flex-grow md:p-2 custom-scrollbar h-[90%]">
+              {list.length === 0 ? (
+                <div className="text-center md:py-60 md:bg-transparent bg-gray-100 text-gray-500 md:mt-4">
+                  <p className="md:my-0 py-6">Tidak ada topik yang dibahas.</p>
                 </div>
-              </div>
-            ))}
+              ) : (
+                list.map((topic, index) => (
+                  <div
+                    key={topic.id}
+                    onClick={() => setSelectedTopicChat(topic)}
+                    className={`rounded-lg p-2 flex gap-4 md:mt-0 mt-2 cursor-pointer mb-2 ${
+                      selectedTopic?.id === topic.id
+                        ? "bg-green-500 text-white"
+                        : "bg-green-300 text-gray-800"
+                    }`}
+                  >
+                    <div className="flex items-center flex-grow">
+                      <div className="border-2 w-fit rounded-full border-green-500 ml-auto">
+                        <img className="w-9" src={img} alt="" />
+                      </div>
+                      <div className="text-center flex-grow">
+                        <div className="text-center mt-1">{topic.name}</div>
+                      </div>
+                    </div>
+
+                    <div className="relative ml-auto">
+                      <button
+                        className="text-gray-600 focus:outline-none"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleDropdown(index, 1);
+                        }}
+                      >
+                        &#x2022;&#x2022;&#x2022;
+                      </button>
+                      {dropdownIndex1 === index && (
+                        <div className="absolute right-0 top-5 w-48 bg-white border rounded shadow-lg z-10">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteTopic(topic.id);
+                            }}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                          >
+                            Hapus Topic Chat
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
 
           <div
-            className={`flex-grow w-full md:rounded-l-lg md:border-l md:border-green-400 md:w-3/4 flex flex-col ${selectedTopic ? "" : "hidden md:flex"
-              }`}
+            className={`flex-grow w-full md:rounded-l-lg md:border-l md:border-green-400 md:w-3/4 flex flex-col ${
+              selectedTopic ? "" : "hidden md:flex"
+            }`}
           >
             <div className="flex-1 bg-white overflow-y-hidden h-96">
               <div className="border-2 rounded-t-lg border-green-500 bg-green-500 h-10 flex items-center">
@@ -385,110 +408,117 @@ function ChatApp() {
                 </h1>
               </div>
 
-              <div className="flex-grow p-2 overflow-y-auto custom-scrollbar h-[90%]">
+              <div className="flex-grow px-2 overflow-y-auto custom-scrollbar h-[84%]">
                 {selectedTopic ? (
                   chatTopic.length === 0 ? (
-                    <div className="relative flex items-center justify-center h-screen">
-                      <div className="text-center text-gray-500 md:my-60 relative z-10 bg-white px-2">
+                    <div className="flex items-center justify-center">
+                      <div className="text-center text-gray-500 md:my-60 z-1 bg-white px-2">
                         Belum ada pesan
                       </div>
                     </div>
                   ) : (
                     chatTopic.map((message, index) => (
-                      <div
-                        key={index}
-                        className={`px-4 py-2 ${message.sender_id == localStorage.getItem("id")
-                          ? "flex justify-end"
-                          : "flex justify-start"
+                      <>
+                        <div
+                          key={index}
+                          className={`px-4 ${
+                            message.sender_id == localStorage.getItem("id")
+                              ? "flex justify-end"
+                              : "flex justify-start"
                           }`}
-                      >
-                        <div className="flex w-96 items-center">
-                          <img
-                            className="w-8 h-8 rounded-full"
-                            src="https://picsum.photos/50/50"
-                            alt="User Avatar"
-                          />
-                          <div
-                            className={`${message.sender_id == localStorage.getItem("id")
-                              ? "bg-green-500 text-white"
-                              : "bg-green-400"
-                              } text-white rounded-lg p-2 w-[90%] shadow ml-2`}
-                          >
-                            {message.sender_id ==
+                        >
+                          <div className="flex w-80 items-center">
+                            <img
+                              className="w-8 h-8 rounded-full"
+                              src="https://picsum.photos/50/50"
+                              alt="User Avatar"
+                            />
+                            <div
+                              className={`relative ${
+                                message.sender_id == localStorage.getItem("id")
+                                  ? "bg-green-500 text-white"
+                                  : "bg-green-400"
+                              } text-white rounded-lg my-2 p-2 w-[90%] shadow ml-2`}
+                            >
+                              {message.sender_id ==
                               localStorage.getItem("id") ? (
-                              <>
-                                <div className="flex justify-between">
-                                  <p>{message.content}</p>
-                                  <button
-                                    className=""
-                                    onClick={() => toggleDropdown(index)}
-                                  >
-                                    <i className="fa-solid fa-ellipsis-vertical"></i>
-                                  </button>
-                                  {dropdownIndex === index && (
-                                    <div className="absolute right-0 mt-8 w-24 bg-white text-black border rounded shadow-lg">
+                                <>
+                                  <div className="flex justify-between">
+                                    <p>{message.content}</p>
+                                    <div className="relative">
                                       <button
-                                        className="block px-4 py-2 text-left w-full hover:bg-gray-200"
-                                        onClick={() =>
-                                          editMessage(
-                                            message.id,
-                                            message.content
-                                          )
-                                        }
+                                        className=""
+                                        onClick={() => toggleDropdown(index, 2)}
                                       >
-                                        Edit
+                                        <i className="fa-solid fa-ellipsis-vertical"></i>
                                       </button>
-                                      <button
-                                        className="block px-4 py-2 text-left w-full text-black hover:bg-gray-200"
-                                        onClick={() =>
-                                          deleteMessage(message.id)
-                                        }
-                                      >
-                                        Delete
-                                      </button>
+                                      {dropdownIndex2 === index && (
+                                        <div className="absolute right-0 w-24 bg-white text-black border rounded shadow-lg">
+                                          <button
+                                            className="block px-4 py-2 text-left w-full hover:bg-gray-200"
+                                            onClick={() =>
+                                              editMessage(
+                                                message.id,
+                                                message.content
+                                              )
+                                            }
+                                          >
+                                            Edit
+                                          </button>
+                                          <button
+                                            className="block px-4 py-2 text-left w-full text-black hover:bg-gray-200"
+                                            onClick={() =>
+                                              deleteMessage(message.id)
+                                            }
+                                          >
+                                            Delete
+                                          </button>
+                                        </div>
+                                      )}
                                     </div>
-                                  )}
-                                </div>
-                              </>
-                            ) : (
-                              <>
-                                <p
-                                  className="mb-2 font-semibold"
+                                  </div>
+                                </>
+                              ) : (
+                                <>
+                                  <p
+                                    className="mb-2 font-semibold"
+                                    style={{
+                                      color: userColors[message.sender_id],
+                                    }}
+                                  >
+                                    {message.sender_name}
+                                  </p>
+                                  <p>{message.content}</p>
+                                </>
+                              )}
+                              {message.gambar && (
+                                <img
+                                  className="mt-2"
+                                  src={message.gambar}
+                                  alt="Image"
                                   style={{
-                                    color: userColors[message.sender_id],
+                                    maxWidth: "200px",
+                                    maxHeight: "200px",
                                   }}
-                                >
-                                  {message.sender_name}
-                                </p>
-                                <p>{message.content}</p>
-                              </>
-                            )}
-                            {message.gambar && (
-                              <img
-                                className="mt-2"
-                                src={message.gambar}
-                                alt="Image"
-                                style={{
-                                  maxWidth: "200px",
-                                  maxHeight: "200px",
-                                }}
-                              />
-                            )}
-                            <p>{formatDate(message.created_date)}</p>
+                                />
+                              )}
+                              <p>{formatDate(message.created_date)}</p>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      </>
                     ))
                   )
                 ) : (
-                  <div className="relative flex items-center justify-center h-screen">
-                    <div className="text-center text-gray-500 md:my-60 relative z-10 bg-white px-2">
+                  <div className="flex items-center justify-center">
+                    <div className="text-center text-gray-500 md:my-60 z-1 bg-white px-2">
                       Silahkan pilih Topik Chat
                     </div>
                   </div>
                 )}
               </div>
             </div>
+
             {selectedTopic && (
               <div className="bg-gray-100 px-4 py-2 fixed bottom-0 w-full md:w-3/4">
                 <form
@@ -511,16 +541,20 @@ function ChatApp() {
                   <button
                     type="submit"
                     style={{
-                      marginRight: '1rem',
-                      backgroundColor: '#10B981',
-                      color: 'white',
-                      fontWeight: 'bold',
-                      padding: '0.5rem 1rem',
-                      borderRadius: '0.5rem',
-                      cursor: 'pointer'
+                      marginRight: "1rem",
+                      backgroundColor: "#10B981",
+                      color: "white",
+                      fontWeight: "bold",
+                      padding: "0.5rem 1rem",
+                      borderRadius: "0.5rem",
+                      cursor: "pointer",
                     }}
-                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#059669'}
-                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#10B981'}
+                    onMouseOver={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#059669")
+                    }
+                    onMouseOut={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#10B981")
+                    }
                   >
                     {editMessageId ? "Edit" : "Kirim"}
                   </button>
@@ -529,16 +563,20 @@ function ChatApp() {
                       type="button"
                       onClick={cancelEdit}
                       style={{
-                        marginRight: '1rem',
-                        backgroundColor: '#EF4444',
-                        color: 'white',
-                        fontWeight: 'bold',
-                        padding: '0.5rem 1rem',
-                        borderRadius: '0.5rem',
-                        cursor: 'pointer'
+                        marginRight: "1rem",
+                        backgroundColor: "#EF4444",
+                        color: "white",
+                        fontWeight: "bold",
+                        padding: "0.5rem 1rem",
+                        borderRadius: "0.5rem",
+                        cursor: "pointer",
                       }}
-                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#DC2626'} // hover:bg-red-600
-                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#EF4444'} // bg-red-500
+                      onMouseOver={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#DC2626")
+                      }
+                      onMouseOut={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#EF4444")
+                      }
                     >
                       Batalkan
                     </button>
