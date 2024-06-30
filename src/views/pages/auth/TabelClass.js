@@ -114,8 +114,8 @@ function TabelClass() {
     getAllData();
   }, [searchTerm, limit, currentPage]);
 
-  const handleNextPage = (id) => {
-    history.push(`/`);
+  const handleNextPage = () => {
+    history.push("/");
   };
 
   return (
@@ -224,7 +224,7 @@ function TabelClass() {
                           Number(localStorage.getItem("class_id")) && (
                           <button
                             className="py-3 px-4 rounded-lg text-white bg-green-500"
-                            onClick={() => handleNextPage(data.id)}
+                            onClick={handleNextPage}
                           >
                             <FontAwesomeIcon
                               className="text-lg"

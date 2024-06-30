@@ -128,28 +128,28 @@ function SignedInformation() {
             <table className="w-full table-auto text-sm text-left text-gray-500 dark:text-gray-400">
               <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
-                  <th scope="col" className="px-5 py-3 text-left">
+                  <th scope="col" className="px-5 py-3 text-center">
                     No
                   </th>
-                  <th scope="col" className="px-5 py-3 text-left">
+                  <th scope="col" className="px-5 py-3 text-center">
                     ID Siswa
                   </th>
-                  <th scope="col" className="px-5 py-3 text-left">
+                  <th scope="col" className="px-5 py-3 text-center">
                     Nama
                   </th>
-                  <th scope="col" className="px-5 py-3 text-left">
+                  <th scope="col" className="px-5 py-3 text-center">
                     Gender
                   </th>
-                  <th scope="col" className="px-5 py-3 text-left">
+                  <th scope="col" className="px-5 py-3 text-center">
                     Kelas
                   </th>
-                  <th scope="col" className="px-5 py-3 text-left">
+                  <th scope="col" className="px-5 py-3 text-center">
                     Jurusan
                   </th>
-                  <th scope="col" className="px-5 py-3 text-left">
+                  <th scope="col" className="px-5 py-3 text-center">
                     Waktu Sign in
                   </th>
-                  <th scope="col" className="px-5 py-3 text-left">
+                  <th scope="col" className="px-5 py-3 text-center">
                     Komentar
                   </th>
                 </tr>
@@ -174,29 +174,29 @@ function SignedInformation() {
                     >
                       <th
                         scope="row"
-                        className="px-5 py-4 text-left font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        className="px-5 py-4 text-center font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
                         {index + 1}
                       </th>
-                      <td className="px-3 py-4 text-left">
+                      <td className="px-3 py-4 text-center">
                         {item.client_id || "-"}
                       </td>
-                      <td className="px-3 py-4 text-left capitalize">
+                      <td className="px-3 py-4 text-center capitalize">
                         {item.name || "-"}
                       </td>
-                      <td className="px-3 py-4 text-left capitalize">
+                      <td className="px-3 py-4 text-center capitalize">
                         {item.gender || "-"}
                       </td>
-                      <td className="px-3 py-4 text-left capitalize">
+                      <td className="px-3 py-4 text-center capitalize">
                         {item.class_id || "-"}
                       </td>
-                      <td className="px-3 py-4 text-left capitalize">
+                      <td className="px-3 py-4 text-center capitalize">
                         {item.departement || "-"}
                       </td>
-                      <td className="px-3 py-4 text-left capitalize">
+                      <td className="px-3 py-4 text-center capitalize">
                         {item.created_date || "-"}
                       </td>
-                      <td className="px-3 py-4 text-left capitalize">
+                      <td className="px-3 py-4 text-center capitalize">
                         {item.comment || "-"}
                       </td>
                     </tr>
