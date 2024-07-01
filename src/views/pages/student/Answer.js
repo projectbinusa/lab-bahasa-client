@@ -6,6 +6,7 @@ import {
   useHistory,
   useParams,
 } from "react-router-dom/cjs/react-router-dom.min";
+import Navbar from "../../../component/Navbar1";
 
 const authConfig = {
   headers: {
@@ -83,7 +84,7 @@ function AnswerQuestion() {
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          window.location.reload("/response-competition/"+localStorage.getItem("class_id"));
+          history.push(`/question-answer/${class_id}`);
         });
       } else {
         Swal.fire({
@@ -105,12 +106,14 @@ function AnswerQuestion() {
   };
 
   return (
-    <div className="flex mt-10">
-      <div className="content-page container mx-auto">
-        <div className="w-full p-4 bg-white rounded-xl shadow-xl border border-gray-300">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-800">
+    <div className="flex flex-col h-screen">
+      <Navbar />
+      <div className="content-page container mx-auto mt-10">
+        <div className="w-11/12 p-3 bg-white rounded-lg shadow-lg border border-gray-300 mx-auto">
+          <h1 className="text-lg sm:text-xl font-bold text-gray-800">
             Jawab Pertanyaan
           </h1>
+
           {question && (
             <form onSubmit={saveChange}>
               <div className="mb-4">
