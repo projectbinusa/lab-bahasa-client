@@ -149,7 +149,7 @@ function Navbar() {
                   Papan tulis interaktif
                 </Link>
                 <Link
-                  to={`/interaction-student/${classId}`}
+                 to={`/realtime-interaction`}
                   className="text-sm font-semibold"
                 >
                   <FontAwesomeIcon icon={faChalkboardUser} className="px-1" />
@@ -324,7 +324,7 @@ function Navbar() {
                   Papan Gambar
                 </Link>
                 <Link
-                  to={"/interaction-student/" + classId}
+                  to={`/realtime-interaction`}
                   className="text-sm font-semibold"
                 >
                   <FontAwesomeIcon icon={faUsers} className="px-1" />
