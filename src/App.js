@@ -40,6 +40,10 @@ import StudentCamera from "./views/pages/camera/StudentCamera";
 import RealtimeWhiteBoard from "./views/pages/InteractiveWhiteboard/RealtimeWhiteBoard";
 import Rooms from "./views/pages/InteractiveWhiteboard/RealtimeWhiteBoard";
 import ClientRoom from "./views/pages/InteractiveWhiteboard/percobaan/ClientRoom";
+import RealtimeInteraksi from "./views/pages/InteractiveWhiteboard/RealtimeInteraksi";
+import Roomss from "./views/pages/InteractiveWhiteboard/RealtimeInteraksi";
+import ClientRoomStudent from "./views/pages/InteractiveWhiteboard/percobaan/ClientRoomStudent";
+import StudentInteraksi from "./views/pages/InteractiveWhiteboard/StudentInteraksi";
 
 const checkTokenExpiration = () => {
   const token = localStorage.getItem("token");
@@ -213,6 +217,26 @@ const App = () => {
             <PrivateRoute
               path="/whiteboard-student"
               component={ClientRoom}
+              exact
+            />
+             <PrivateRoute
+              path="/realtime-interaction"
+              component={RealtimeInteraksi}
+              exact
+            />
+              <PrivateRoute
+              path="/interaction-instruktur"
+              component={Roomss}
+              exact
+            />
+            <PrivateRoute
+              path="/interaksi-student"
+              component={ClientRoomStudent}
+              exact
+            />
+            <PrivateRoute
+              path="/student-interaksi"
+              component={StudentInteraksi}
               exact
             />
           </Switch>
