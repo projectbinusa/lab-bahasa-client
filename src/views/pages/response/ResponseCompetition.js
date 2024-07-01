@@ -100,7 +100,8 @@ function ResponseCompetition() {
                   <select
                     value={limit}
                     onChange={handleLimitChange}
-                    className="flex-shrink-0 z-1 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600">
+                    className="flex-shrink-0 z-1 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
+                  >
                     <option value="10">10</option>
                     <option value="20">20</option>
                     <option value="50">50</option>
@@ -212,10 +213,11 @@ function ResponseCompetition() {
                           </td>
                           {localStorage.getItem("role") === "instructur" ? (
                             <>
-                              <td className="whitespace-nowrap px-6 py-4 flex items-center gap-5 justify-center">
+                              <td className="whitespace-nowrap px-6 py-4 text-left flex items-center">
                                 <Link
                                   to={"/score-answer/" + data.id}
-                                  className="py-3 px-4 bg-green-500 rounded-lg text-white">
+                                  className="py-2 px-4 bg-green-500 rounded-lg text-white"
+                                >
                                   <i className="fa-solid fa-star"></i>
                                 </Link>
                               </td>

@@ -290,16 +290,16 @@ function ManageName() {
                           {index + 1}
                         </th>
                         <td className="px-6 py-4 text-left">
-                          {manage.client_id}
+                          {manage.client_id ? manage.client_id : "-"}
                         </td>
                         <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
                           {manage.name}
                         </td>
                         <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
-                          {manage.gender}
+                          {manage.gender ? manage.gender : "-"}
                         </td>
                         <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
-                          {manage.departement}
+                          {manage.departement ? manage.departement : "-"}
                         </td>
                         <td className="px-6 py-4 text-left whitespace-nowrap capitalize">
                           {manage.class_id}
