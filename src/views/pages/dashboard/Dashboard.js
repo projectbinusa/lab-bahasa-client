@@ -306,7 +306,7 @@ function Dashboard() {
                           </td>
                         </tr>
                       ) : (
-                        menageKelas.map((data, index) => (
+                        menageKelas.slice(0, 10).map((data, index) => (
                           <tr
                             key={data.id}
                             className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
