@@ -203,10 +203,10 @@ function ManageClass() {
 
   return (
     <>
-      <div className="flex flex-col h-screen">
-        <Navbar />
-        <div className="px-32">
-          <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-8 mb-10">
+      <div className="flex flex-col min-h-screen overflow-x-hidden">
+        <Navbar className="overflow-x-hidden" />
+        <div className="px-4 sm:px-8 md:px-16 lg:px-32">
+          <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-8">
             <div className="flex justify-between">
               <h6 className="mb-2 text-xl font-bold text-gray-900 dark:text-white">
                 Kelola Kelas
@@ -220,7 +220,7 @@ function ManageClass() {
                         id="search-dropdown"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        class="block p-2.5 w-full z-20 text-sm rounded-l-md text-gray-900 bg-gray-50 border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500 "
+                        class="block p-2.5 w-full md:w-full z-1 text-sm rounded-l-md text-gray-900 bg-gray-50 border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
                         placeholder="Search name..."
                         required
                       />
@@ -324,7 +324,7 @@ function ManageClass() {
                         {index + 1}
                       </th>
                       <td className="px-6 py-4 text-left">
-                        <img src={data.file} alt="" />
+                        <img src={data.gambar} alt="" />
                       </td>
                       <td className="px-6 py-4 text-left capitalize">{data.user_name}</td>
                       <td className="px-6 py-4 text-left capitalize">{data.name}</td>

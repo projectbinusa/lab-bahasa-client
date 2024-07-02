@@ -254,12 +254,13 @@ function Navbar() {
                           : "top-full right-0 mr-2"
                       } mt-2 lg:w-48 bg-white rounded-md shadow-lg py-2 z-1`}
                     >
-                      {/* <Link
-                        to="/manage-class/
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 whitespace-nowrap hover:bg-gray-100">
+                      <Link
+                        to={`/manage-class/${classId}`}
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 whitespace-nowrap hover:bg-gray-100"
+                      >
                         <FontAwesomeIcon icon={faUsers} className="mr-2" />{" "}
-                        Kelola Kelas
-                      </Link> */}
+                        Kelola Daftar Kelas
+                      </Link>
                       <Link
                         to={`/manage-name/${classId}`}
                         className="block w-full text-left px-4 py-2 text-sm text-gray-700 whitespace-nowrap hover:bg-gray-100"
