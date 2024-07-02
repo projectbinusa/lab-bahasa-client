@@ -19,17 +19,25 @@ function Questions() {
   const [phase, setPhase] = useState("think");
   const [timer, setTimer] = useState(null);
 
+  const parseTimeToSeconds = (time) => {
+    const [hours, minutes] = time.split(":").map(Number);
+    const now = new Date();
+    const target = new Date();
+
+    target.setHours(hours, minutes, 0, 0);
+  
+    // Check if the target time is in the past, if so, add one day to the target time
+    if (target < now) {
+      target.setDate(target.getDate() + 1);
+    }
+
+    return Math.floor((target - now) / 1000);
+  };
+
   const formatTime = (seconds) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-
-    // Menggabungkan waktu ke dalam format jam:menit:detik
-    const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
-      .toString()
-      .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
-
-    return formattedTime;
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
   const saveChange = async () => {
@@ -85,11 +93,13 @@ function Questions() {
 
   const startCompetition = () => {
     setPhase("think");
-    startTimer(thinkTime, "think");
+    const thinkTimeSeconds = parseTimeToSeconds(thinkTime);
+    const answerTimeSeconds = parseTimeToSeconds(answerTime);
+    startTimer(thinkTimeSeconds, "think");
     setTimeout(() => {
       setPhase("answer");
-      startTimer(answerTime, "answer");
-    }, thinkTime * 1000);
+      startTimer(answerTimeSeconds, "answer");
+    }, thinkTimeSeconds * 1000);
     saveChange().then(() => {
       window.location.reload("/question");
     });
@@ -117,12 +127,6 @@ function Questions() {
     }
   };
 
-  // const handleTimeChange = (e, setTime) => {
-  //   const timeParts = e.target.value.split(":");
-  //   const seconds = parseInt(timeParts[0]) * 3600 + parseInt(timeParts[1]) * 60;
-  //   setTime(seconds);
-  // };
-
   return (
     <div className="flex flex-col h-screen">
       <Navbar />
@@ -143,7 +147,7 @@ function Questions() {
               onChange={(e) => setType(e.target.value)}
               className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
               <option value="">Pilih jenis</option>
-              <option value="Fist to Answer">Tinjau untuk menjawab</option>
+              <option value="First to Answer">Tinjau untuk menjawab</option>
               <option value="Enter an Answer">Masukkan jawaban</option>
               <option value="Demo to Answer">Demo untuk menjawab</option>
             </select>
@@ -166,7 +170,7 @@ function Questions() {
             <label
               htmlFor="think-time"
               className="mb-1 text-sm font-semibold text-gray-700 block">
-              Waktu berfikir:
+              Waktu berpikir:
             </label>
             <input
               type="time"
