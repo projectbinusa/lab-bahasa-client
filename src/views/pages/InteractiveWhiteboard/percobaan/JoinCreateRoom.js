@@ -1,75 +1,139 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
 import Image from "../../../../component/Asset/roomImage.png";
 
-const JoinCreateRoom = ({ uuid, setUser, setRoomJoined, userRole }) => {
+const JoinCreateRoom = ({ uuid, setUser, setRoomJoined }) => {
   const [roomId, setRoomId] = useState(uuid());
   const [name, setName] = useState("");
   const [joinName, setJoinName] = useState("");
   const [joinRoomId, setJoinRoomId] = useState("");
-  const history = useHistory();
+  const userRole = localStorage.getItem("role");
 
   const handleCreateSubmit = (e) => {
     e.preventDefault();
-    if (!name) {
-      toast.dark("Silakan masukkan nama Anda!");
-      return;
-    }
+    if (!name) return toast.dark("Please enter your name!");
 
-    const user = {
+    setUser({
       roomId,
       userId: uuid(),
       userName: name,
       host: true,
       presenter: true,
-      role: userRole,
-    };
-
-    setUser(user);
+    });
     setRoomJoined(true);
-
-    if (userRole === "instructur") {
-      history.push("/whiteboard-instruktur");
-    } else {
-      toast.dark("Role instruktur tidak valid!");
-    }
   };
-
   const handleJoinSubmit = (e) => {
     e.preventDefault();
-    if (!joinName) {
-      toast.dark("Silakan masukkan nama Anda!");
-      return;
-    }
+    if (!joinName) return toast.dark("Please enter your name!");
 
-    const user = {
+    setUser({
       roomId: joinRoomId,
       userId: uuid(),
       userName: joinName,
       host: false,
       presenter: false,
-      role: userRole,
-    };
-
-    setUser(user);
+    });
     setRoomJoined(true);
-
-    if (userRole === "student") {
-      history.push("/whiteboard-student");
-    } else {
-      toast.dark("Role student tidak valid!");
-    }
-  };
-
-  const generateRoomId = () => {
-    const newRoomId = uuid();
-    setRoomId(newRoomId);
   };
 
   return (
-    <div className="container mx-auto p-8">
+    <>
+      {/* <div className="container">
+        <div className="row">
+          <div className="col-md-12">
+            <h1 className="text-center my-5">
+              Welcome To Realtime Whiteboard Sharing App
+            </h1>
+          </div>
+        </div>
+        <div className="row mx-5 mt-5">
+          <div className="col-md-5 p-5 border mx-auto">
+            <h1 className="text-center text-primary mb-5">Create Room</h1>
+            <form onSubmit={handleCreateSubmit}>
+              <div className="form-group my-2">
+                <input
+                  type="text"
+                  placeholder="Name"
+                  className="form-control"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+              <div className="input-group my-2 border align-items-center">
+                <input
+                  type="text"
+                  className="form-control border-0 outline-0"
+                  value={roomId}
+                  readOnly={true}
+                  style={{
+                    boxShadow: "none",
+                    zIndex: "0 !important",
+                    fontsize: "0.89rem !important",
+                  }}
+                />
+                <div className="input-group-append">
+                  <button
+                    className="btn btn-outline-primary  border-0 btn-sm"
+                    type="button"
+                    onClick={() => setRoomId(uuid())}>
+                    Generate
+                  </button>
+                  &nbsp;&nbsp;
+                  <CopyToClipboard
+                    text={roomId}
+                    onCopy={() =>
+                      toast.success("Room Id Copied To Clipboard!")
+                    }>
+                    <button
+                      className="btn btn-outline-dark border-0 btn-sm"
+                      type="button">
+                      Copy
+                    </button>
+                  </CopyToClipboard>
+                </div>
+              </div>
+              <div className="form-group mt-5">
+                <button type="submit" className="form-control btn btn-dark">
+                  Create Room
+                </button>
+              </div>
+            </form>
+          </div>
+          <div className="col-md-5 p-5 border mx-auto">
+            <h1 className="text-center text-primary mb-5">Join Room</h1>
+            <form onSubmit={handleJoinSubmit}>
+              <div className="form-group my-2">
+                <input
+                  type="text"
+                  placeholder="Name"
+                  className="form-control"
+                  value={joinName}
+                  onChange={(e) => setJoinName(e.target.value)}
+                />
+              </div>
+              <div className="form-group my-2">
+                <input
+                  type="text"
+                  className="form-control outline-0"
+                  value={joinRoomId}
+                  onChange={(e) => setJoinRoomId(e.target.value)}
+                  placeholder="Room Id"
+                  style={{
+                    boxShadow: "none",
+                  }}
+                />
+              </div>
+              <div className="form-group mt-5">
+                <button type="submit" className="form-control btn btn-dark">
+                  Join Room
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div> */}
+      <div className="container mx-auto p-8">
       <h1 className="text-3xl text-center mb-4">
         Selamat Datang di Aplikasi Berbagi Whiteboard Realtime
       </h1>
@@ -89,13 +153,13 @@ const JoinCreateRoom = ({ uuid, setUser, setRoomJoined, userRole }) => {
                     required
                   />
                   <div className="flex items-center">
-                    <CopyToClipboard
+                    {/* <CopyToClipboard
                       text={roomId}
                       onCopy={() => toast.success("Room Id Telah Disalin!")}>
                       <button className="text-black rounded-lg mr-1 focus:outline-none">
                         Salin
                       </button>
-                    </CopyToClipboard>
+                    </CopyToClipboard> */}
                     <input
                       type="text"
                       className="form-input w-full px-4 py-2 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:border-blue-500"
@@ -107,12 +171,12 @@ const JoinCreateRoom = ({ uuid, setUser, setRoomJoined, userRole }) => {
                     />
                   </div>
                   <div className="flex items-center justify-between">
-                    <button
-                      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg mt-2 md:w-28 focus:outline-none"
-                      type="button"
-                      onClick={generateRoomId}>
-                      Generate
-                    </button>
+                  <button
+                    className="btn btn-outline-primary  border-0 btn-sm"
+                    type="button"
+                    onClick={() => setRoomId(uuid())}>
+                    Generate
+                  </button>
                     <button
                       type="submit"
                       className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg mt-2 md:w-40 focus:outline-none">
@@ -173,6 +237,7 @@ const JoinCreateRoom = ({ uuid, setUser, setRoomJoined, userRole }) => {
         )}
       </div>
     </div>
+    </>
   );
 };
 

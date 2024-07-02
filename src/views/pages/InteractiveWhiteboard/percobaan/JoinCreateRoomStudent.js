@@ -9,60 +9,33 @@ function JoinCreateRoomStudent({ uuid, setUser, setRoomJoined, userRole }) {
   const [name, setName] = useState("");
   const [joinName, setJoinName] = useState("");
   const [joinRoomId, setJoinRoomId] = useState("");
-  const history = useHistory();
 
   const handleCreateSubmit = (e) => {
     e.preventDefault();
-    if (!name) {
-      toast.dark("Silakan masukkan nama Anda!");
-      return;
-    }
+    if (!name) return toast.dark("Please enter your name!");
 
-    const user = {
+    setUser({
       roomId,
       userId: uuid(),
       userName: name,
       host: true,
       presenter: true,
-      role: userRole,
-    };
-
-    setUser(user);
+    });
     setRoomJoined(true);
-
-    if (userRole === "instructur") {
-      history.push("/interaction-instruktur");
-    } else {
-      toast.dark("Role instruktur tidak valid!");
-    }
   };
-
   const handleJoinSubmit = (e) => {
     e.preventDefault();
-    if (!joinName) {
-      toast.dark("Silakan masukkan nama Anda!");
-      return;
-    }
+    if (!joinName) return toast.dark("Please enter your name!");
 
-    const user = {
+    setUser({
       roomId: joinRoomId,
       userId: uuid(),
       userName: joinName,
       host: false,
       presenter: false,
-      role: userRole,
-    };
-
-    setUser(user);
+    });
     setRoomJoined(true);
-
-    if (userRole === "student") {
-      history.push("/interaksi-student");
-    } else {
-      toast.dark("Role student tidak valid!");
-    }
   };
-
   const generateRoomId = () => {
     const newRoomId = uuid();
     setRoomId(newRoomId);

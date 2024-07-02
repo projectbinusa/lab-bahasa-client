@@ -22,11 +22,13 @@ function ChatPribadi() {
   const [content, setContent] = useState("");
   const [gambar, setGambar] = useState(null);
   const [list, setList] = useState([]);
-  const [listUser, setListUser] = useState("");
+  const [name, setName] = useState("");
+  const [listUser, setListUser] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [dropdownIndex, setDropdownIndex] = useState(null);
   const [editMessageId, setEditMessageId] = useState(null);
   const class_id = localStorage.getItem("class_id");
+  const role = localStorage.getItem("role");
   const userId = localStorage.getItem("user_id");
   const [userColors, setUserColors] = useState({});
   const messagesEndRef = useRef(null);
@@ -40,15 +42,6 @@ function ChatPribadi() {
     }
   };
 
-  // const handleReplay = (message) => {
-  //   if (replayMessage && replayMessage.id === message.id) {
-  //     // Jika pesan sudah direplay, kosongkan replayMessage
-  //     setReplayMessage(null);
-  //   } else {
-  //     // Jika belum, set replayMessage dengan data pesan yang dipilih
-  //     setReplayMessage(message);
-  //   }
-  // };
   const [showChatPribadi, setShowChatPribadi] = useState(false);
   const handleChatPribadi = () => {
     setShowChatPribadi(true);
@@ -57,15 +50,16 @@ function ChatPribadi() {
   const handleCloseChatPribadi = () => {
     setShowChatPribadi(false);
   };
+
   useEffect(() => {
-    socket.on("receiveMessage", (message) => {
-      if (message.User_id === selectedUser?.id) {
+    socket.on("receiveMessagePribadi", (message) => {
+      if (message.receiver_id === selectedUser?.id || message.sender_id === selectedUser?.id) {
         setChatUser((prevChatUser) => [...prevChatUser, message]);
       }
     });
 
     return () => {
-      socket.off("receiveMessage");
+      socket.off("receiveMessagePribadi");
     };
   }, [selectedUser]);
 
@@ -107,7 +101,6 @@ function ChatPribadi() {
     if (content) {
       formData.append("content", content);
     }
-    // formData.append("receiver_id", user_id);
     formData.append("is_group", 0);
 
     try {
@@ -118,7 +111,7 @@ function ChatPribadi() {
       );
       if (response.status === 200) {
         const newMessage = response.data.data;
-        socket.emit("sendMessage", newMessage);
+        socket.emit("sendMessagePribadi", newMessage);
         setContent("");
         setGambar(null);
       }
@@ -150,7 +143,12 @@ function ChatPribadi() {
         `${API_DUMMY}/api/class/${class_id}/user_chat`,
         authConfig
       );
+      const mappedData = response.data.data.map((item) => ({
+        id: item.id,
+        userName: item.user_chat_name,
+      }));
       setList(response.data.data);
+      setName(mappedData);
     } catch (error) {
       console.log(error);
     }
@@ -159,14 +157,15 @@ function ChatPribadi() {
   const getAllUser = async () => {
     try {
       const response = await axios.get(
-        `${API_DUMMY}/api/instructur/class/${class_id}`,
+        `${API_DUMMY}/api/instructur/class/${class_id}/management_name_list?limit=100`,
         authConfig
       );
-      // const filteredUsers = response.data.data.filter(
-      //   (user) => user.role === "instructur" && user.class_id === parseInt(class_id)
-      // );
-      setListUser(response.data.data.user_name);
-      console.log(response.data.data.user_name);
+      const filteredUsers = response.data.data.filter(
+        (user) =>
+          (role === "instructur" && user.role === "student" && user.class_id === parseInt(class_id)) ||
+          (role === "student" && user.role === "instructur" && user.class_id === parseInt(class_id))
+      );
+      setListUser(filteredUsers);
     } catch (error) {
       console.log(error);
     }
@@ -202,7 +201,6 @@ function ChatPribadi() {
 
   const editMessage = (messageId, messageContent) => {
     setEditMessageId(messageId);
-    // Jika sedang replay, hapus prefix "Re: " dari replayMessage
     if (messageContent.startsWith("Re: ")) {
       setContent(messageContent.substring(4));
     } else {
@@ -223,10 +221,8 @@ function ChatPribadi() {
       formData.append("gambar", gambar);
     }
     if (content) {
-      // Tambahkan prefix "Re: " jika sedang replay
       formData.append("content", replayMessage ? `Re: ${content}` : content);
     }
-    // formData.append("receiver_id", user_id);
 
     try {
       const response = await axios.put(
@@ -254,7 +250,7 @@ function ChatPribadi() {
       );
       if (selectedUser) {
         getAllDataChatUser(selectedUser.id);
-        setReplayMessage(null); // Hapus replay jika pesan dihapus
+        setReplayMessage(null);
       }
     } catch (error) {
       console.error("Error deleting message:", error);
@@ -263,11 +259,11 @@ function ChatPribadi() {
 
   return (
     <>
-      <div className="flex flex-col bg-gray-100 h-screen">
+      <div className="flex flex-col bg-gray-100 h- overflow-y-hidden">
         <Navbar />
         <div className="flex flex-grow flex-col md:flex-row md:justify-center gap-4 mt-3 mx-3">
           <div
-            className={`bg-white w-full md:rounded-r-lg md:border-r md:border-green-400 md:w-1/4 ${
+            className={`bg-white w-full md:rounded-r-lg md:border-r h-[495px] md:border-green-400 md:w-1/4 ${
               selectedUser ? "hidden md:block" : "block"
             }`}>
             <div className="flex">
@@ -285,41 +281,81 @@ function ChatPribadi() {
                 <div className="text-center md:py-60 md:bg-transparent bg-gray-100 text-gray-500 md:mt-4">
                   <p className="md:my-0 py-6">Tidak ada chat User.</p>
                 </div>
-              ) : (
-                list.map((data, index) => (
-                  <div
-                    key={index}
-                    className={`bg-${
-                      selectedUser && selectedUser.id === data.id
-                        ? "green-500 text-white"
-                        : "green-300"
-                    } rounded-lg p-2 flex gap-4 md:mt-0 mt-2 cursor-pointer mb-2`}
-                    onClick={() => setSelectedGrub(data)}>
-                    <div className="border-2 w-fit rounded-full border-green-500">
-                      <img
-                        className="w-9"
-                        src="https://cdn.icon-icons.com/icons2/2506/PNG/512/user_icon_150670.png"
-                        alt=""
-                      />
+              ) : role == "instructur" ? (
+                <>
+                  {" "}
+                  {listUser.map((data, index) => (
+                    <div
+                      key={index}
+                      className={`bg-${
+                        selectedUser && selectedUser.id === data.id
+                          ? "green-500 text-white"
+                          : "green-300"
+                      } rounded-lg p-2 flex gap-4 md:mt-0 mt-2 cursor-pointer mb-2`}
+                      onClick={() => setSelectedGrub(data)}>
+                      <div className="border-2 w-fit rounded-full border-green-500">
+                        <img
+                          className="w-9"
+                          src="https://cdn.icon-icons.com/icons2/2506/PNG/512/user_icon_150670.png"
+                          alt=""
+                        />
+                      </div>
+                      {localStorage.getItem("role") != "student" ? (
+                        <>
+                          <p className="text-center mt-1">{data.name}</p>
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-center mt-1">{name}</p>
+                        </>
+                      )}
                     </div>
-                    {localStorage.getItem("role") != "student" ? (
-                      <>
-                        <p className="text-center mt-1">{data.user_chat_name}</p>
-                      </>
-                    ) : (
-                      <>{listUser}</>
-                    )}
-                  </div>
-                ))
+                  ))}
+                </>
+              ) : (
+                <>
+                  {" "}
+                  {listUser.map((data, index) => (
+                    <div
+                      key={index}
+                      className={`bg-${
+                        selectedUser && selectedUser.id === data.id
+                          ? "green-500 text-white"
+                          : "green-300"
+                      } rounded-lg p-2 flex gap-4 md:mt-0 mt-2 cursor-pointer mb-2`}
+                      onClick={() => setSelectedGrub(data)}>
+                      <div className="border-2 w-fit rounded-full border-green-500">
+                        <img
+                          className="w-9"
+                          src="https://cdn.icon-icons.com/icons2/2506/PNG/512/user_icon_150670.png"
+                          alt=""
+                        />
+                      </div>
+                      {list.map((user, index) =>
+                        localStorage.getItem("role") != "student" ? (
+                          <>
+                            <p className="text-center mt-1">{data.name}</p>
+                          </>
+                        ) : (
+                          <>
+                            <p className="text-center mt-1" key={index}>
+                              {user.user_chat_name}
+                            </p>
+                          </>
+                        )
+                      )}
+                    </div>
+                  ))}
+                </>
               )}
             </div>
           </div>
 
           <div
-            className={`flex-grow w-full md:rounded-l-lg md:border-l md:border-green-400 md:w-3/4 flex flex-col ${
+            className={`flex-grow w-full h-[450px] md:rounded-l-lg md:border-l md:border-green-400 md:w-3/4 flex flex-col ${
               selectedUser ? "" : "hidden md:flex"
             }`}>
-            <div className="flex-1 bg-white overflow-y-hidden">
+            <div className="flex-1 bg-white">
               <div className="border-2 rounded-t-lg border-green-500 bg-green-500 h-10 flex items-center">
                 <button
                   className="text-white text-lg ml-4 font-semibold md:hidden"
@@ -331,7 +367,7 @@ function ChatPribadi() {
                 </h1>
               </div>
 
-              <div className="flex-grow p-2 overflow-y-auto custom-scrollbar h-[95%]">
+              <div className="flex-grow p-2 overflow-y-auto custom-scrollbar h-auto">
                 {selectedUser ? (
                   chatUser.length === 0 ? (
                     <div className="text-center text-gray-500 md:my-56 my-80">
@@ -368,7 +404,7 @@ function ChatPribadi() {
                                     <i className="fa-solid fa-ellipsis-vertical"></i>
                                   </button>
                                   {dropdownIndex === index && (
-                                    <div className="absolute right-0 mt-8 w-24 bg-white text-black border rounded shadow-lg">
+                                    <div className="absolute right-7 mt-8 w-24 bg-white text-black border rounded shadow-lg">
                                       <button
                                         className="block px-4 py-2 text-left w-full hover:bg-gray-200"
                                         onClick={() =>
