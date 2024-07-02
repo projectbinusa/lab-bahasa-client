@@ -8,7 +8,7 @@ import AddGroup from "../../../component/Modal/ObrolanGrub";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import Swal from "sweetalert2";
 
-const socket = io("http://localhost:3000");
+const socket = io("http://localhost:4000");
 
 const authConfig = {
   headers: {
@@ -40,28 +40,6 @@ function ChatApp() {
     }
   };
 
-  // const handleReplay = (message) => {
-  //   if (replayMessage && replayMessage.id === message.id) {
-  //     // Jika pesan sudah direplay, kosongkan replayMessage
-  //     setReplayMessage(null);
-  //   } else {
-  //     // Jika belum, set replayMessage dengan data pesan yang dipilih
-  //     setReplayMessage(message);
-  //   }
-  // };
-
-  useEffect(() => {
-    socket.on("receiveMessage", (message) => {
-      if (message.group_id === selectedGroup?.id) {
-        setChatGroup((prevChatGroup) => [...prevChatGroup, message]);
-      }
-    });
-
-    return () => {
-      socket.off("receiveMessage");
-    };
-  }, [selectedGroup]);
-
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatGroup]);
@@ -84,6 +62,18 @@ function ChatApp() {
     });
     setUserColors(newColors);
   }, [chatGroup]);
+
+  useEffect(() => {
+    socket.on("receiveMessage", (message) => {
+      if (message.group_id === selectedGroup?.id) {
+        setChatGroup((prevChatGroup) => [...prevChatGroup, message]);
+      }
+    });
+
+    return () => {
+      socket.off("receiveMessage");
+    };
+  }, [selectedGroup]);
 
   const sendMessage = async (e) => {
     e.preventDefault();
@@ -110,9 +100,10 @@ function ChatApp() {
       );
       if (response.status === 200) {
         const newMessage = response.data.data;
-        socket.emit("sendMessage", newMessage);
+        socket.emit("sendMessage", newMessage); // Mengirim pesan baru ke server
         setContent("");
         setGambar(null);
+        // getAllDataChatGroup(); // Tidak perlu panggil ulang, karena sudah realtime
       }
     } catch (error) {
       console.error("Error sending message:", error);
@@ -176,8 +167,6 @@ function ChatApp() {
       setChatGroup([]); // Kosongkan chatGroup jika tidak ada grup yang dipilih
     }
   }, [selectedGroup]);
-  
-  
 
   const handleGroup = () => {
     setShowGroup(true);
@@ -196,7 +185,6 @@ function ChatApp() {
       getAllDataChatGroup(selectedGroup.id);
     }
   }, [selectedGroup]);
-  
 
   const toggleDropdown = (index) => {
     setDropdownIndex(dropdownIndex === index ? null : index);
@@ -309,75 +297,75 @@ function ChatApp() {
     }
   };
 
-
   return (
     <>
-      <div className="flex flex-col bg-gray-100">
+      <div className="flex flex-col bg-gray-100 h-screen">
         <Navbar />
         <div className="flex flex-grow flex-col md:flex-row md:justify-center gap-4 mt-3 mx-3">
           <div
-            className={`bg-white w-full md:rounded-r-lg md:border-r md:border-green-400 md:w-1/4 ${selectedGroup ? "hidden md:block" : "block"
-              }`}
-          >
+            className={`bg-whitew-full md:rounded-r-lg md:border-r md:border-green-400 md:w-1/4 ${
+              selectedGroup ? "hidden md:block" : "block"
+            }`}>
             <div className="flex">
               <button
                 onClick={handleGroup}
-                className="bg-green-500 flex-1 h-10 flex items-center justify-center text-white text-lg rounded-t-lg"
-              >
+                className="bg-green-500 flex-1 h-10 flex items-center justify-center text-white text-lg rounded-t-lg">
                 Tambah Group
               </button>
             </div>
-            {list.map((group, index) => (
-              <div
-                key={group.id}
-                onClick={() => setSelectedGrub(group)}
-                className={`cursor-pointer p-2 rounded ${selectedGroup?.id === group.id
-                  ? "bg-green-500 text-white"
-                  : "bg-green-300 text-gray-800"
-                  }`}
-              >
-                <div className="flex justify-between items-center ">
-                  <div className="border-2 w-fit rounded-full border-green-500">
-                    <img className="w-9" src={img} alt="" />
-                  </div>
-                  <div className="text-center mt-1">{group.name}</div>
+            <div className="p-3">
+              {list.map((group, index) => (
+                <div
+                  key={group.id}
+                  onClick={() => setSelectedGrub(group)}
+                  className={`cursor-pointer p-2 mt-3 rounded ${
+                    selectedGroup?.id === group.id
+                      ? "bg-green-500 text-white"
+                      : "bg-green-300 text-gray-800"
+                  }`}>
+                  <div className="flex justify-between items-center ">
+                    <div className="border-2 w-fit rounded-full border-green-500">
+                      <img className="w-9" src={img} alt="" />
+                    </div>
+                    <div className="text-center mt-1">{group.name}</div>
 
-                  <div className="relative">
-                    <button
-                      className="text-gray-600 focus:outline-none"
-                      onClick={() => toggleDropdown(index)}
-                    >
-                      &#x2022;&#x2022;&#x2022;
-                    </button>
-                    {dropdownIndex === index && (
-                      <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-10">
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteGroup(group.id);
-                          }}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                        >
-                          Hapus Group
-                        </button>
-                      </div>
-                    )}
+                    <div className="">
+                      <button
+                        className="text-gray-600 focus:outline-none"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleDropdown(index, 1);
+                        }}>
+                        &#x2022;&#x2022;&#x2022;
+                      </button>
+                      {dropdownIndex === index && (
+                        <div className="absolute left-24 mt-2 w-48 bg-white border rounded shadow-lg z-10">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteGroup(group.id);
+                            }}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
+                            Hapus Group
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
 
           <div
-            className={`flex-grow w-full md:rounded-l-lg md:border-l md:border-green-400 md:w-3/4 flex flex-col ${selectedGroup ? "" : "hidden md:flex"
-              }`}
-          >
-            <div className="flex-1 bg-white overflow-y-hidden h-96">
+            className={`flex-grow w-full md:rounded-l-lg md:border-l md:border-green-400 md:w-3/4 flex flex-col ${
+              selectedGroup ? "" : "hidden md:flex"
+            }`}>
+            <div className="flex-1 bg-white overflow-y-scroll">
               <div className="border-2 rounded-t-lg border-green-500 bg-green-500 h-10 flex items-center">
                 <button
                   className="text-white text-lg ml-4 font-semibold md:hidden"
-                  onClick={() => setSelectedGroup(null)}
-                >
+                  onClick={() => setSelectedGroup(null)}>
                   &lt;Kembali
                 </button>
                 <h1 className="text-white text-lg ml-4 font-semibold">
@@ -385,11 +373,11 @@ function ChatApp() {
                 </h1>
               </div>
 
-              <div className="flex-grow p-2 overflow-y-auto custom-scrollbar h-[90%]">
+              <div className="flex-grow p-2 overflow-y-auto custom-scrollbar h-[400px]">
                 {selectedGroup ? (
                   chatGroup.length === 0 ? (
-                    <div className="relative flex items-center justify-center h-screen">
-                      <div className="text-center text-gray-500 md:my-60 relative z-10 bg-white px-2">
+                    <div className="flex items-center justify-center h-screen">
+                      <div className="text-center text-gray-500 md:my-60 z-10 bg-white px-2">
                         Belum ada pesan
                       </div>
                     </div>
@@ -397,11 +385,11 @@ function ChatApp() {
                     chatGroup.map((message, index) => (
                       <div
                         key={index}
-                        className={`px-4 py-2 ${message.sender_id == localStorage.getItem("id")
-                          ? "flex justify-end"
-                          : "flex justify-start"
-                          }`}
-                      >
+                        className={`px-4 py-2 ${
+                          message.sender_id == localStorage.getItem("id")
+                            ? "flex justify-end"
+                            : "flex justify-start"
+                        }`}>
                         <div className="flex w-96 items-center">
                           <img
                             className="w-8 h-8 rounded-full"
@@ -409,20 +397,18 @@ function ChatApp() {
                             alt="User Avatar"
                           />
                           <div
-                            className={`${message.sender_id == localStorage.getItem("id")
-                              ? "bg-green-500 text-white"
-                              : "bg-gray-400"
-                              } text-white rounded-lg p-2 w-[90%] shadow ml-2`}
-                          >
-                            {message.sender_id ==
-                              localStorage.getItem("id") ? (
+                            className={`${
+                              message.sender_id == localStorage.getItem("id")
+                                ? "bg-green-500 text-white"
+                                : "bg-green-400"
+                            } text-white rounded-lg p-2 w-[90%] shadow ml-2`}>
+                            {message.sender_id == localStorage.getItem("id") ? (
                               <>
                                 <div className="flex justify-between">
                                   <p>{message.content}</p>
                                   <button
                                     className=""
-                                    onClick={() => toggleDropdown(index)}
-                                  >
+                                    onClick={() => toggleDropdown(index)}>
                                     <i className="fa-solid fa-ellipsis-vertical"></i>
                                   </button>
                                   {dropdownIndex === index && (
@@ -434,16 +420,14 @@ function ChatApp() {
                                             message.id,
                                             message.content
                                           )
-                                        }
-                                      >
+                                        }>
                                         Edit
                                       </button>
                                       <button
                                         className="block px-4 py-2 text-left w-full text-black hover:bg-gray-200"
                                         onClick={() =>
                                           deleteMessage(message.id)
-                                        }
-                                      >
+                                        }>
                                         Delete
                                       </button>
                                     </div>
@@ -456,8 +440,7 @@ function ChatApp() {
                                   className="mb-2 font-semibold"
                                   style={{
                                     color: userColors[message.sender_id],
-                                  }}
-                                >
+                                  }}>
                                   {message.sender_name}
                                 </p>
                                 <p>{message.content}</p>
@@ -481,8 +464,8 @@ function ChatApp() {
                     ))
                   )
                 ) : (
-                  <div className="relative flex items-center justify-center h-screen">
-                    <div className="text-center text-gray-500 md:my-60 relative z-10 bg-white px-2">
+                  <div className="flex items-center justify-center h-screen">
+                    <div className="text-center text-gray-500 md:my-60 z-10 bg-white px-2">
                       Silahkan pilih Grub
                     </div>
                   </div>
@@ -493,8 +476,7 @@ function ChatApp() {
               <div className="bg-gray-100 px-4 py-2 fixed bottom-0 w-full md:w-3/4">
                 <form
                   onSubmit={editMessageId ? updateMessage : sendMessage}
-                  className="flex items-center space-x-4"
-                >
+                  className="flex items-center space-x-4">
                   <input
                     type="file"
                     onChange={handleFileChange}
@@ -511,17 +493,20 @@ function ChatApp() {
                   <button
                     type="submit"
                     style={{
-                      marginRight: '1rem',
-                      backgroundColor: '#10B981',
-                      color: 'white',
-                      fontWeight: 'bold',
-                      padding: '0.5rem 1rem',
-                      borderRadius: '0.5rem',
-                      cursor: 'pointer'
+                      marginRight: "1rem",
+                      backgroundColor: "#10B981",
+                      color: "white",
+                      fontWeight: "bold",
+                      padding: "0.5rem 1rem",
+                      borderRadius: "0.5rem",
+                      cursor: "pointer",
                     }}
-                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#059669'}
-                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#10B981'}
-                  >
+                    onMouseOver={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#059669")
+                    }
+                    onMouseOut={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#10B981")
+                    }>
                     {editMessageId ? "Edit" : "Kirim"}
                   </button>
                   {editMessageId && (
@@ -529,16 +514,20 @@ function ChatApp() {
                       type="button"
                       onClick={cancelEdit}
                       style={{
-                        marginRight: '1rem',
-                        backgroundColor: '#EF4444',
-                        color: 'white',
-                        fontWeight: 'bold',
-                        padding: '0.5rem 1rem',
-                        borderRadius: '0.5rem',
-                        cursor: 'pointer'
+                        marginRight: "1rem",
+                        backgroundColor: "#EF4444",
+                        color: "white",
+                        fontWeight: "bold",
+                        padding: "0.5rem 1rem",
+                        borderRadius: "0.5rem",
+                        cursor: "pointer",
                       }}
-                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#DC2626'} // hover:bg-red-600
-                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#EF4444'} // bg-red-500
+                      onMouseOver={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#DC2626")
+                      } // hover:bg-red-600
+                      onMouseOut={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#EF4444")
+                      } // bg-red-500
                     >
                       Batalkan
                     </button>

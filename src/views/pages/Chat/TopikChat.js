@@ -7,7 +7,7 @@ import Navbar from "../../../component/Navbar1";
 import AddTopikChat from "../../../component/Modal/TopikObrolan";
 import Swal from "sweetalert2";
 
-const socket = io("http://localhost:3000");
+const socket = io("http://localhost:4000");
 
 const authConfig = {
   headers: {
@@ -16,7 +16,7 @@ const authConfig = {
   },
 };
 
-function ChatApp() {
+function TopikChat() {
   const [chatTopic, setChatTopic] = useState([]);
   const [content, setContent] = useState("");
   const [gambar, setGambar] = useState(null);
@@ -39,28 +39,6 @@ function ChatApp() {
       setSelectedTopic(null);
     }
   };
-
-  // const handleReplay = (message) => {
-  //   if (replayMessage && replayMessage.id === message.id) {
-  //     // Jika pesan sudah direplay, kosongkan replayMessage
-  //     setReplayMessage(null);
-  //   } else {
-  //     // Jika belum, set replayMessage dengan data pesan yang dipilih
-  //     setReplayMessage(message);
-  //   }
-  // };
-
-  useEffect(() => {
-    socket.on("receiveMessage", (message) => {
-      if (message.group_id === selectedTopic?.id) {
-        setChatTopic((prevChatTopic) => [...prevChatTopic, message]);
-      }
-    });
-
-    return () => {
-      socket.off("receiveMessage");
-    };
-  }, [selectedTopic]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -85,10 +63,22 @@ function ChatApp() {
     setUserColors(newColors);
   }, [chatTopic]);
 
+  useEffect(() => {
+    socket.on("receiveMessageTopic", (message) => {
+      if (message.group_id === selectedTopic?.id) {
+        setChatTopic((prevChatTopic) => [...prevChatTopic, message]);
+      }
+    });
+
+    return () => {
+      socket.off("receiveMessageTopic");
+    };
+  }, [selectedTopic]);
+
   const sendMessage = async (e) => {
     e.preventDefault();
     if (!selectedTopic) {
-      console.error("Topik Chat not selected.");
+      console.error("Topik Chat belum dipilih.");
       return;
     }
 
@@ -108,9 +98,10 @@ function ChatApp() {
         formData,
         authConfig
       );
+
       if (response.status === 200) {
         const newMessage = response.data.data;
-        socket.emit("sendMessage", newMessage);
+        socket.emit("sendMessageTopic", newMessage);
         setContent("");
         setGambar(null);
       }
@@ -231,7 +222,7 @@ function ChatApp() {
 
     try {
       const response = await axios.put(
-        `${API_DUMMY}/api/chat/chat/${editMessageId}/class/${class_id}/topic_chat/${selectedTopic.id}`,
+        `${API_DUMMY}/api/chat/update/${editMessageId}/class/${class_id}/topic_chat/${selectedTopic.id}`,
         formData,
         authConfig
       );
@@ -247,22 +238,11 @@ function ChatApp() {
       console.error("Error updating message:", error);
     }
   };
+
   const deleteMessage = async (messageId) => {
     try {
-      const confirmDelete = await Swal.fire({
-        title: "Anda yakin?",
-        text: "Pesan akan dihapus secara permanen!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Ya, hapus!",
-        cancelButtonText: "Batal",
-      });
-
-      if (confirmDelete.isConfirmed) {
         await axios.delete(
-          `${API_DUMMY}/api/chat/chat/${messageId}/class/${class_id}/topic_chat/${selectedTopic.id}`,
+          `${API_DUMMY}/api/chat/delete/${messageId}/class/${class_id}/topic_chat/${selectedTopic.id}`,
           authConfig
         );
 
@@ -272,12 +252,11 @@ function ChatApp() {
         }
 
         Swal.fire("Terhapus!", "Pesan berhasil dihapus.", "success");
-      }
     } catch (error) {
       console.error("Error deleting message:", error);
-      Swal.fire("Gagal!", "Gagal menghapus pesan.", "error");
     }
   };
+
 
   const handleDeleteTopic = async (topic_chat_id) => {
     const confirmDelete = await Swal.fire({
@@ -310,13 +289,6 @@ function ChatApp() {
     }
   };
 
-  useEffect(() => {
-    setContent("");
-    setGambar(null);
-    setEditMessageId(null);
-    setReplayMessage(null);
-  }, [selectedTopic]);
-  
   return (
     <>
       <div className="flex flex-col bg-gray-100 min-h-screen">
@@ -325,13 +297,11 @@ function ChatApp() {
           <div
             className={`bg-white w-full md:rounded-r-lg md:border-r md:border-green-400 md:w-1/4 ${
               selectedTopic ? "hidden md:block" : "block"
-            }`}
-          >
+            }`}>
             <div className="flex">
               <button
                 onClick={handleTopic}
-                className="bg-green-500 flex-1 h-10 flex items-center justify-center text-white text-lg rounded-t-lg"
-              >
+                className="bg-green-500 flex-1 h-10 flex items-center justify-center text-white text-lg rounded-t-lg">
                 Tambah Topik Chat
               </button>
             </div>
@@ -349,36 +319,33 @@ function ChatApp() {
                       selectedTopic?.id === topic.id
                         ? "bg-green-500 text-white"
                         : "bg-green-300 text-gray-800"
-                    }`}
-                  >
-                    <div className="flex items-center flex-grow">
+                    }`}>
+                    <div className="flex gap-3 items-center flex-grow">
                       <div className="border-2 w-fit rounded-full border-green-500 ml-auto">
                         <img className="w-9" src={img} alt="" />
                       </div>
-                      <div className="text-center flex-grow">
-                        <div className="text-center mt-1">{topic.name}</div>
+                      <div className="text-left flex-grow">
+                        <div className="text-left mt-1">{topic.name}</div>
                       </div>
                     </div>
 
-                    <div className="relative ml-auto">
+                    <div className="ml-auto">
                       <button
                         className="text-gray-600 focus:outline-none"
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleDropdown(index, 1);
-                        }}
-                      >
+                        }}>
                         &#x2022;&#x2022;&#x2022;
                       </button>
                       {dropdownIndex1 === index && (
-                        <div className="absolute right-0 top-5 w-48 bg-white border rounded shadow-lg z-10">
+                        <div className="absolute left-24 w-48 bg-white border rounded shadow-lg z-10">
                           <button
                             onClick={(e) => {
                               e.stopPropagation();
                               handleDeleteTopic(topic.id);
                             }}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                          >
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
                             Hapus Topic Chat
                           </button>
                         </div>
@@ -393,14 +360,12 @@ function ChatApp() {
           <div
             className={`flex-grow w-full md:rounded-l-lg md:border-l md:border-green-400 md:w-3/4 flex flex-col ${
               selectedTopic ? "" : "hidden md:flex"
-            }`}
-          >
+            }`}>
             <div className="flex-1 bg-white overflow-y-hidden h-96">
               <div className="border-2 rounded-t-lg border-green-500 bg-green-500 h-10 flex items-center">
                 <button
                   className="text-white text-lg ml-4 font-semibold md:hidden"
-                  onClick={() => setSelectedTopic(null)}
-                >
+                  onClick={() => setSelectedTopic(null)}>
                   &lt;Kembali
                 </button>
                 <h1 className="text-white text-lg ml-4 font-semibold">
@@ -425,8 +390,7 @@ function ChatApp() {
                             message.sender_id == localStorage.getItem("id")
                               ? "flex justify-end"
                               : "flex justify-start"
-                          }`}
-                        >
+                          }`}>
                           <div className="flex w-80 items-center">
                             <img
                               className="w-8 h-8 rounded-full"
@@ -434,22 +398,22 @@ function ChatApp() {
                               alt="User Avatar"
                             />
                             <div
-                              className={`relative ${
+                              className={` ${
                                 message.sender_id == localStorage.getItem("id")
                                   ? "bg-green-500 text-white"
                                   : "bg-green-400"
-                              } text-white rounded-lg my-2 p-2 w-[90%] shadow ml-2`}
-                            >
+                              } text-white rounded-lg my-2 p-2 w-[90%] shadow ml-2`}>
                               {message.sender_id ==
                               localStorage.getItem("id") ? (
                                 <>
                                   <div className="flex justify-between">
                                     <p>{message.content}</p>
-                                    <div className="relative">
+                                    <div className="">
                                       <button
                                         className=""
-                                        onClick={() => toggleDropdown(index, 2)}
-                                      >
+                                        onClick={() =>
+                                          toggleDropdown(index, 2)
+                                        }>
                                         <i className="fa-solid fa-ellipsis-vertical"></i>
                                       </button>
                                       {dropdownIndex2 === index && (
@@ -461,16 +425,14 @@ function ChatApp() {
                                                 message.id,
                                                 message.content
                                               )
-                                            }
-                                          >
+                                            }>
                                             Edit
                                           </button>
                                           <button
                                             className="block px-4 py-2 text-left w-full text-black hover:bg-gray-200"
                                             onClick={() =>
                                               deleteMessage(message.id)
-                                            }
-                                          >
+                                            }>
                                             Delete
                                           </button>
                                         </div>
@@ -484,8 +446,7 @@ function ChatApp() {
                                     className="mb-2 font-semibold"
                                     style={{
                                       color: userColors[message.sender_id],
-                                    }}
-                                  >
+                                    }}>
                                     {message.sender_name}
                                   </p>
                                   <p>{message.content}</p>
@@ -523,8 +484,7 @@ function ChatApp() {
               <div className="bg-gray-100 px-4 py-2 fixed bottom-0 w-full md:w-3/4">
                 <form
                   onSubmit={editMessageId ? updateMessage : sendMessage}
-                  className="flex items-center space-x-4"
-                >
+                  className="flex items-center space-x-4">
                   <input
                     type="file"
                     onChange={handleFileChange}
@@ -554,8 +514,7 @@ function ChatApp() {
                     }
                     onMouseOut={(e) =>
                       (e.currentTarget.style.backgroundColor = "#10B981")
-                    }
-                  >
+                    }>
                     {editMessageId ? "Edit" : "Kirim"}
                   </button>
                   {editMessageId && (
@@ -576,8 +535,7 @@ function ChatApp() {
                       }
                       onMouseOut={(e) =>
                         (e.currentTarget.style.backgroundColor = "#EF4444")
-                      }
-                    >
+                      }>
                       Batalkan
                     </button>
                   )}
@@ -629,4 +587,4 @@ function ChatApp() {
   );
 }
 
-export default ChatApp;
+export default TopikChat;

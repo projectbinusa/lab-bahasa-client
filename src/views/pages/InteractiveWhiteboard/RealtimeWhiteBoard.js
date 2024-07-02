@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 import io from "socket.io-client";
 import Room from "./percobaan/Room";
 import ClientRoom from "./percobaan/ClientRoom";
 import JoinCreateRoom from "./percobaan/JoinCreateRoom";
-import Navbar from "../../../component/Navbar1";
-import "react-toastify/dist/ReactToastify.css";
 
 const server = "http://localhost:4000";
 const connectionOptions = {
@@ -21,7 +20,6 @@ const RealtimeWhiteBoard = () => {
   const [roomJoined, setRoomJoined] = useState(false);
   const [user, setUser] = useState({});
   const [users, setUsers] = useState([]);
-  const [userRole, setUserRole] = useState("");
 
   const uuid = () => {
     var S4 = () => {
@@ -44,20 +42,18 @@ const RealtimeWhiteBoard = () => {
   };
 
   useEffect(() => {
-    const role = localStorage.getItem("role");
-    setUserRole(role);
-
     if (roomJoined) {
       socket.emit("user-joined", user);
     }
   }, [roomJoined]);
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
-      <Navbar />
-      <div className="home">
-        {roomJoined ? (
-          <>
+    <div className="home">
+      {/* <ToastContainer /> */}
+      {roomJoined ? (
+        <>
+          {/* <Sidebar users={users} user={user} socket={socket} /> */}
+          {user.presenter ? (
             <Room
               userNo={userNo}
               user={user}
@@ -65,6 +61,7 @@ const RealtimeWhiteBoard = () => {
               setUsers={setUsers}
               setUserNo={setUserNo}
             />
+          ) : (
             <ClientRoom
               userNo={userNo}
               user={user}
@@ -72,18 +69,16 @@ const RealtimeWhiteBoard = () => {
               setUsers={setUsers}
               setUserNo={setUserNo}
             />
-          </>
-        ) : (
-          <JoinCreateRoom
-            uuid={uuid}
-            setRoomJoined={setRoomJoined}
-            setUser={setUser}
-            userRole={userRole}
-          />
-        )}
-      </div>
+          )}
+        </>
+      ) : (
+        <JoinCreateRoom
+          uuid={uuid}
+          setRoomJoined={setRoomJoined}
+          setUser={setUser}
+        />
+      )}
     </div>
   );
 };
-
 export default RealtimeWhiteBoard;

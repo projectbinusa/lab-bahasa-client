@@ -6,65 +6,84 @@ const { userJoin, getUsers, userLeave } = require("../server/utils/user");
 
 const bodyParser = require("body-parser");
 const app = express();
+const app1 = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000", // Sesuaikan dengan URL aplikasi Anda
+    origin: "http://localhost:3000",
     methods: ["GET", "POST"],
   },
 });
 
 app.use(cors());
-app.use(bodyParser.json());
+app1.use(bodyParser.json());
 
-// State untuk menyimpan gambar per room
-let roomImages = {};
+let cameraStatus = {};
+let userRoom;
+let class_id;
+let imageUrl;
+
+app1.post("/camera-status", (req, res) => {
+  const { studentId, status } = req.body;
+  cameraStatus[studentId] = status;
+  res.send({ success: true });
+});
+
+app1.get("/camera-status/:studentId", (req, res) => {
+  const studentId = req.params.studentId;
+  res.send({ status: cameraStatus[studentId] });
+});
+
+app.get("/", (req, res) => {
+  res.send("server");
+});
 
 io.on("connection", (socket) => {
   console.log("a user connected");
-
   socket.on("user-joined", (data) => {
     const { roomId, userId, userName, host, presenter } = data;
+    userRoom = roomId;
     const user = userJoin(socket.id, userName, roomId, host, presenter);
-    const roomUsers = getUsers(roomId);
-
-    socket.join(roomId);
-    socket.emit("message", { message: "Welcome to ChatRoom" });
-    socket.broadcast.to(roomId).emit("message", {
+    const roomUsers = getUsers(user.room);
+    socket.join(user.room);
+    socket.emit("message", {
+      message: "Welcome to ChatRoom",
+    });
+    socket.broadcast.to(user.room).emit("message", {
       message: `${user.username} has joined`,
     });
 
-    io.to(roomId).emit("users", roomUsers);
-
-    // Kirim gambar terakhir yang ada di room kepada user yang baru bergabung
-    if (roomImages[roomId]) {
-      socket.emit("canvasImage", roomImages[roomId]);
-    }
+    io.to(user.room).emit("users", roomUsers);
+    io.to(user.room).emit("canvasImage", imageUrl);
   });
 
   socket.on("drawing", (data) => {
-    const { roomId, imageUrl } = data;
-    roomImages[roomId] = imageUrl; // Simpan gambar di state roomImages
-
-    socket.broadcast.to(roomId).emit("canvasImage", imageUrl);
+    imageUrl = data;
+    socket.broadcast.to(userRoom).emit("canvasImage", imageUrl);
   });
 
   socket.on("disconnect", () => {
     const userLeaves = userLeave(socket.id);
+    const roomUsers = getUsers(userRoom);
 
     if (userLeaves) {
-      const { room: roomId, username } = userLeaves;
-      const roomUsers = getUsers(roomId);
-
-      io.to(roomId).emit("message", {
-        message: `${username} left the chat`,
+      io.to(userLeaves.room).emit("message", {
+        message: `${userLeaves.username} left the chat`,
       });
-      io.to(roomId).emit("users", roomUsers);
+      io.to(userLeaves.room).emit("users", roomUsers);
     }
   });
 
   socket.on("sendMessage", (message) => {
     io.emit("receiveMessage", message);
+  });
+
+  socket.on("sendMessageTopic", (message) => {
+    io.emit("receiveMessageTopic", message);
+  });
+
+  socket.on("sendMessagePribadi", (message) => {
+    io.emit("receiveMessagePribadi", message);
   });
 
   socket.on("raiseHand", (data) => {
@@ -76,12 +95,14 @@ io.on("connection", (socket) => {
   });
 
   socket.on("joinWhiteboard", (room) => {
-    socket.join(room); // Bergabung ke room papan gambar yang sesuai
+    socket.join(room);
   });
 
-  socket.on("shareLink", ({ link }) => {
-    // Kirim tautan kepada semua siswa yang terhubung
-    socket.broadcast.emit("receiveLink", { link });
+  socket.on("drawing", (data) => {
+    io.to(`guru_${class_id}`).emit("drawing", data);
+  });
+  socket.on('shareLink', ({ link }) => {
+    socket.broadcast.emit('receiveLink', { link });
   });
 
 });

@@ -47,7 +47,7 @@ function LoginSiswa() {
         });
 
         // Logika redirect berdasarkan role user dan class_id
-        if (userData.role === "instructor") {
+        if (userData.role === "instructur") {
           history.push("/tabel-class");
           setTimeout(() => {
             window.location.reload();
@@ -118,7 +118,7 @@ function LoginSiswa() {
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    required  
+                    required
                   />
                 </div>
                 {requirePassword && (

@@ -146,10 +146,9 @@ function Login() {
                   />
                   <span
                     class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer mt-5"
-                    onClick={() => setShowPassword(!showPassword)} // Mengubah state showPassword ketika ikon diklik
+                    onClick={() => setShowPassword(!showPassword)}
                   >
                     {showPassword ? <FaEye /> : <FaEyeSlash />}{" "}
-                    {/* Menampilkan ikon view atau hide password sesuai dengan state showPassword */}
                   </span>
                 </div>
                 <div class="mb-6 text-center">
@@ -167,6 +166,12 @@ function Login() {
                     href="/forgotpass"
                   >
                     Tidak ingat kata sandi?
+                  </a>
+                  <a
+                    class="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
+                    href="/login-siswa"
+                  >
+                    Login sebagai siswa
                   </a>
                 </div>
               </form>
