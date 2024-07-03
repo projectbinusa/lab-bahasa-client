@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useHistory } from "react-router-dom";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
-import Swal from "sweetalert2";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useRoom } from "./RoomProvider";
 import io from "socket.io-client";
+import BackHandOutlinedIcon from "@mui/icons-material/BackHandOutlined";
+import DoNotTouchOutlinedIcon from "@mui/icons-material/DoNotTouchOutlined";
 
 const socket = io("http://localhost:4000");
 
@@ -12,17 +15,16 @@ const Room = () => {
   const { roomID } = useParams();
   const { fetchedKodeRuang } = useRoom();
   const history = useHistory();
-  const [raiseHandStatus, setRaiseHandStatus] = useState({});
+  const [raiseHandStatus, setRaiseHandStatus] = useState({
+    [username]: false,
+  });
+  const [raiseHandToastId, setRaiseHandToastId] = useState(null);
+  const [showRaiseHandButton, setShowRaiseHandButton] = useState(false); // State untuk mengontrol visibilitas tombol
 
   useEffect(() => {
     if (roomID !== fetchedKodeRuang) {
-      Swal.fire({
-        icon: "error",
-        title: "Akses Ditolak",
-        text: "Anda tidak diizinkan untuk mengakses ruangan ini.",
-      }).then(() => {
-        history.push("/code-room/" + localStorage.getItem("class_id"));
-      });
+      toast.error("Akses Ditolak: Anda tidak diizinkan untuk mengakses ruangan ini.");
+      history.push("/code-room/" + localStorage.getItem("class_id"));
     } else {
       const joinRoom = async () => {
         const appID = 946219318;
@@ -42,6 +44,9 @@ const Room = () => {
             mode: ZegoUIKitPrebuilt.GroupCall,
           },
         });
+
+        // Setelah join room, munculkan tombol angkat tangan
+        setShowRaiseHandButton(true);
       };
 
       joinRoom();
@@ -51,6 +56,12 @@ const Room = () => {
           ...prevStatus,
           [data.userId]: true,
         }));
+
+        const newToastId = toast.success("Anda telah mengangkat tangan.", {
+          autoClose: false,
+          closeButton: false,
+        });
+        setRaiseHandToastId(newToastId);
       });
 
       socket.on("lowerHand", (data) => {
@@ -58,6 +69,11 @@ const Room = () => {
           ...prevStatus,
           [data.userId]: false,
         }));
+
+        if (raiseHandToastId) {
+          toast.dismiss(raiseHandToastId);
+          setRaiseHandToastId(null);
+        }
       });
 
       return () => {
@@ -65,30 +81,55 @@ const Room = () => {
         socket.off("lowerHand");
       };
     }
-  }, [roomID, fetchedKodeRuang, username, history]);
+  }, [roomID, fetchedKodeRuang, username, history, raiseHandToastId]);
 
-  const handleRaiseHand = () => {
-    socket.emit("raiseHand", { userId: username });
-  };
+  const handleToggleHand = () => {
+    if (raiseHandStatus[username]) {
+      socket.emit("lowerHand", { userId: username });
+      setRaiseHandStatus({ [username]: false });
 
-  const handleLowerHand = () => {
-    socket.emit("lowerHand", { userId: username });
+      if (raiseHandToastId) {
+        toast.dismiss(raiseHandToastId);
+        setRaiseHandToastId(null);
+      }
+    } else {
+      socket.emit("raiseHand", { userId: username });
+      setRaiseHandStatus({ [username]: true });
+      const newToastId = toast.success("Anda telah mengangkat tangan.", {
+        autoClose: false,
+        closeButton: false,
+      });
+      setRaiseHandToastId(newToastId);
+    }
   };
 
   return (
     <>
-      <button className="relative bg-blue-300 p-3" onClick={handleRaiseHand}>Raise Hand</button>
-      <button className="relative bg-blue-300 p-3" onClick={handleLowerHand}>Lower Hand</button>
-      <div>
-        {Object.entries(raiseHandStatus).map(([userId, isRaised]) => (
-          <div key={userId}>
-            {userId}: {isRaised ? "Hand Raised" : "Hand Lowered"}
+      <div style={{ width: "100%", height: "100%" }}>
+        <div id="zego-meeting" style={{ width: "100%", height: "90%" }}>
+          {showRaiseHandButton && ( // Hanya munculkan tombol jika showRaiseHandButton true
+            <button
+              className="absolute bottom-4 left-96 bg-gray-700 p-2.5 rounded-lg"
+              onClick={handleToggleHand}
+              style={{ zIndex: 999 }}
+            >
+              {raiseHandStatus[username] ? (
+                <DoNotTouchOutlinedIcon className="text-gray-300" />
+              ) : (
+                <BackHandOutlinedIcon className="text-gray-300" />
+              )}
+            </button>
+          )}
+          <div>
+            {Object.entries(raiseHandStatus).map(([userId, isRaised]) => (
+              <div key={userId}>
+                {userId}: {isRaised ? "Hand Raised" : "Hand Lowered"}
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
-      <div style={{ width: "100vw", height: "100vh" }}>
-        <div id="zego-meeting" style={{ width: "100%", height: "90%" }}></div>
-      </div>
+      <ToastContainer position="bottom-right" autoClose={false} />
     </>
   );
 };
