@@ -31,6 +31,9 @@ function ChatApp() {
   const [userColors, setUserColors] = useState({});
   const messagesEndRef = useRef(null);
   const [replayMessage, setReplayMessage] = useState(null);
+  const [newMessagesCount, setNewMessagesCount] = useState({});
+  const [groupMessageCount, setGroupMessageCount] = useState({});
+  const [lastTimestamp, setLastTimestamp] = useState(null);
 
   const setSelectedGrub = (data) => {
     if (data && (!selectedGroup || selectedGroup.id !== data.id)) {
@@ -146,14 +149,39 @@ function ChatApp() {
     }
   };
 
+  let lastMessageId = null; // Track the last message ID or timestamp
+
   const getAllDataChatGroup = async (group_id) => {
     try {
       const response = await axios.get(
         `${API_DUMMY}/api/chat/class/${class_id}/group/${group_id}`,
         authConfig
       );
-      const reversedMessages = response.data.data.slice().reverse();
+      const messages = response.data.data;
+      const reversedMessages = messages.slice().reverse();
       setChatGroup(reversedMessages);
+
+      // Update the message count for the selected group
+      setGroupMessageCount((prevCounts) => ({
+        ...prevCounts,
+        [group_id]: reversedMessages.length,
+      }));
+
+      // Find new messages since the last fetch
+      const newMessages = lastMessageId
+        ? messages.filter((msg) => msg.id > lastMessageId)
+        : messages;
+
+      // Update lastMessageId with the latest message ID
+      if (messages.length > 0) {
+        lastMessageId = messages[messages.length - 1].id;
+      }
+
+      // Update the new messages count state
+      setNewMessagesCount((prevCounts) => ({
+        ...prevCounts,
+        [group_id]: newMessages.length,
+      }));
     } catch (error) {
       console.log(error);
       setChatGroup([]);
@@ -305,11 +333,13 @@ function ChatApp() {
           <div
             className={`bg-whitew-full md:rounded-r-lg md:border-r md:border-green-400 md:w-1/4 ${
               selectedGroup ? "hidden md:block" : "block"
-            }`}>
+            }`}
+          >
             <div className="flex">
               <button
                 onClick={handleGroup}
-                className="bg-green-500 flex-1 h-10 flex items-center justify-center text-white text-lg rounded-t-lg">
+                className="bg-green-500 flex-1 h-10 flex items-center justify-center text-white text-lg rounded-t-lg"
+              >
                 Tambah Group
               </button>
             </div>
@@ -322,20 +352,24 @@ function ChatApp() {
                     selectedGroup?.id === group.id
                       ? "bg-green-500 text-white"
                       : "bg-green-300 text-gray-800"
-                  }`}>
+                  }`}
+                >
                   <div className="flex justify-between items-center ">
                     <div className="border-2 w-fit rounded-full border-green-500">
                       <img className="w-9" src={img} alt="" />
                     </div>
                     <div className="text-center mt-1">{group.name}</div>
-
+                    {/* <div className="ml-2 text-gray-600">
+                      {newMessagesCount[group.id] || 0} Pesan Baru
+                    </div> */}
                     <div className="">
                       <button
                         className="text-gray-600 focus:outline-none"
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleDropdown(index, 1);
-                        }}>
+                        }}
+                      >
                         &#x2022;&#x2022;&#x2022;
                       </button>
                       {dropdownIndex === index && (
@@ -345,7 +379,8 @@ function ChatApp() {
                               e.stopPropagation();
                               handleDeleteGroup(group.id);
                             }}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                          >
                             Hapus Group
                           </button>
                         </div>
@@ -360,12 +395,14 @@ function ChatApp() {
           <div
             className={`flex-grow w-full md:rounded-l-lg md:border-l md:border-green-400 md:w-3/4 flex flex-col ${
               selectedGroup ? "" : "hidden md:flex"
-            }`}>
+            }`}
+          >
             <div className="flex-1 bg-white overflow-y-scroll">
               <div className="border-2 rounded-t-lg border-green-500 bg-green-500 h-10 flex items-center">
                 <button
                   className="text-white text-lg ml-4 font-semibold md:hidden"
-                  onClick={() => setSelectedGroup(null)}>
+                  onClick={() => setSelectedGroup(null)}
+                >
                   &lt;Kembali
                 </button>
                 <h1 className="text-white text-lg ml-4 font-semibold">
@@ -389,7 +426,8 @@ function ChatApp() {
                           message.sender_id == localStorage.getItem("id")
                             ? "flex justify-end"
                             : "flex justify-start"
-                        }`}>
+                        }`}
+                      >
                         <div className="flex w-96 items-center">
                           <img
                             className="w-8 h-8 rounded-full"
@@ -401,14 +439,16 @@ function ChatApp() {
                               message.sender_id == localStorage.getItem("id")
                                 ? "bg-green-500 text-white"
                                 : "bg-green-400"
-                            } text-white rounded-lg p-2 w-[90%] shadow ml-2`}>
+                            } text-white rounded-lg p-2 w-[90%] shadow ml-2`}
+                          >
                             {message.sender_id == localStorage.getItem("id") ? (
                               <>
                                 <div className="flex justify-between">
                                   <p>{message.content}</p>
                                   <button
                                     className=""
-                                    onClick={() => toggleDropdown(index)}>
+                                    onClick={() => toggleDropdown(index)}
+                                  >
                                     <i className="fa-solid fa-ellipsis-vertical"></i>
                                   </button>
                                   {dropdownIndex === index && (
@@ -420,14 +460,16 @@ function ChatApp() {
                                             message.id,
                                             message.content
                                           )
-                                        }>
+                                        }
+                                      >
                                         Edit
                                       </button>
                                       <button
                                         className="block px-4 py-2 text-left w-full text-black hover:bg-gray-200"
                                         onClick={() =>
                                           deleteMessage(message.id)
-                                        }>
+                                        }
+                                      >
                                         Delete
                                       </button>
                                     </div>
@@ -440,7 +482,8 @@ function ChatApp() {
                                   className="mb-2 font-semibold"
                                   style={{
                                     color: userColors[message.sender_id],
-                                  }}>
+                                  }}
+                                >
                                   {message.sender_name}
                                 </p>
                                 <p>{message.content}</p>
@@ -476,7 +519,8 @@ function ChatApp() {
               <div className="bg-gray-100 px-4 py-2 fixed bottom-0 w-full md:w-3/4">
                 <form
                   onSubmit={editMessageId ? updateMessage : sendMessage}
-                  className="flex items-center space-x-4">
+                  className="flex items-center space-x-4"
+                >
                   <input
                     type="file"
                     onChange={handleFileChange}
@@ -506,7 +550,8 @@ function ChatApp() {
                     }
                     onMouseOut={(e) =>
                       (e.currentTarget.style.backgroundColor = "#10B981")
-                    }>
+                    }
+                  >
                     {editMessageId ? "Edit" : "Kirim"}
                   </button>
                   {editMessageId && (
