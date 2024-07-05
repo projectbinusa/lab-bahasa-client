@@ -26,10 +26,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     render={(props) =>
       checkTokenExpiration() ? (
         <Component {...props} />
-      ) : localStorage.getItem("role") === "instructur" ? (
-        <Redirect to="/login" />
       ) : (
-        <Redirect to="/login-siswa" />
+        <Redirect to="/login" />
       )
     }
   />

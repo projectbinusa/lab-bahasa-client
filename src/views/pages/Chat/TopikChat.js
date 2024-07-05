@@ -305,7 +305,7 @@ function TopikChat() {
                 Tambah Topik Chat
               </button>
             </div>
-            <div className="flex-grow md:p-2 custom-scrollbar h-[90%]">
+            <div className="flex-grow md:p-2 overflow-y-scroll custom-scrollbar h-[90%]">
               {list.length === 0 ? (
                 <div className="text-center md:py-60 md:bg-transparent bg-gray-100 text-gray-500 md:mt-4">
                   <p className="md:my-0 py-6">Tidak ada topik yang dibahas.</p>

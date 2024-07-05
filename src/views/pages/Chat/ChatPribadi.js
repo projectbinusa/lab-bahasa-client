@@ -53,7 +53,10 @@ function ChatPribadi() {
 
   useEffect(() => {
     socket.on("receiveMessagePribadi", (message) => {
-      if (message.receiver_id === selectedUser?.id || message.sender_id === selectedUser?.id) {
+      if (
+        message.receiver_id === selectedUser?.id ||
+        message.sender_id === selectedUser?.id
+      ) {
         setChatUser((prevChatUser) => [...prevChatUser, message]);
       }
     });
@@ -148,6 +151,7 @@ function ChatPribadi() {
         userName: item.user_chat_name,
       }));
       setList(response.data.data);
+      console.log(response.data.data);
       setName(mappedData);
     } catch (error) {
       console.log(error);
@@ -162,8 +166,12 @@ function ChatPribadi() {
       );
       const filteredUsers = response.data.data.filter(
         (user) =>
-          (role === "instructur" && user.role === "student" && user.class_id === parseInt(class_id)) ||
-          (role === "student" && user.role === "instructur" && user.class_id === parseInt(class_id))
+          (role === "instructur" &&
+            user.role === "student" &&
+            user.class_id === parseInt(class_id)) ||
+          (role === "student" &&
+            user.role === "instructur" &&
+            user.class_id === parseInt(class_id))
       );
       setListUser(filteredUsers);
     } catch (error) {
@@ -179,6 +187,7 @@ function ChatPribadi() {
       );
       const reversedMessages = response.data.data.slice().reverse();
       setChatUser(reversedMessages);
+      console.log(reversedMessages);
     } catch (error) {
       console.log(error);
     }
@@ -276,7 +285,7 @@ function ChatPribadi() {
               </button>
             </div>
 
-            <div className="flex-grow md:p-2 overflow-y-auto custom-scrollbar">
+            <div className="flex-grow md:p-2 overflow-y-scroll h-[90%] custom-scrollbar">
               {list.length === 0 ? (
                 <div className="text-center md:py-60 md:bg-transparent bg-gray-100 text-gray-500 md:mt-4">
                   <p className="md:my-0 py-6">Tidak ada chat User.</p>
@@ -300,15 +309,15 @@ function ChatPribadi() {
                           alt=""
                         />
                       </div>
-                      {localStorage.getItem("role") != "student" ? (
-                        <>
-                          <p className="text-center mt-1">{data.name}</p>
-                        </>
-                      ) : (
-                        <>
-                          <p className="text-center mt-1">{name}</p>
-                        </>
-                      )}
+                      {/* {localStorage.getItem("role") != "student" ? (
+                        <> */}
+                      <p className="text-center mt-1">{data.name}</p>
+                      {/* </> */}
+                      {/* // ) : (
+                      //   <>
+                      //     <p className="text-center mt-1">{name}</p>
+                      //   </>
+                      // )} */}
                     </div>
                   ))}
                 </>
@@ -331,18 +340,20 @@ function ChatPribadi() {
                           alt=""
                         />
                       </div>
-                      {list.map((user, index) =>
-                        localStorage.getItem("role") != "student" ? (
-                          <>
-                            <p className="text-center mt-1">{data.name}</p>
-                          </>
-                        ) : (
-                          <>
-                            <p className="text-center mt-1" key={index}>
-                              {user.user_chat_name}
-                            </p>
-                          </>
+                      {list.map(
+                        (user, index) => (
+                          // localStorage.getItem("role") != "student" ? (
+                          //   <>
+                          //     <p className="text-center mt-1">{data.name}</p>
+                          //   </>
+                          // ) : (
+                          // <>
+                          <p className="text-center mt-1" key={index}>
+                            {user.user_chat_name}
+                          </p>
                         )
+                        //   {/* </>
+                        // ) */}
                       )}
                     </div>
                   ))}
@@ -352,7 +363,7 @@ function ChatPribadi() {
           </div>
 
           <div
-            className={`flex-grow w-full h-[450px] md:rounded-l-lg md:border-l md:border-green-400 md:w-3/4 flex flex-col ${
+            className={`flex-grow w-full h-[410px] md:rounded-l-lg md:border-l md:border-green-400 md:w-3/4 flex flex-col ${
               selectedUser ? "" : "hidden md:flex"
             }`}>
             <div className="flex-1 bg-white">
@@ -367,7 +378,7 @@ function ChatPribadi() {
                 </h1>
               </div>
 
-              <div className="flex-grow p-2 overflow-y-auto custom-scrollbar h-auto">
+              <div className="flex-grow p-2 overflow-y-scroll custom-scrollbar h-[410px]">
                 {selectedUser ? (
                   chatUser.length === 0 ? (
                     <div className="text-center text-gray-500 md:my-56 my-80">

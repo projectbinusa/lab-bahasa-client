@@ -41,7 +41,7 @@ const authConfig = {
   },
 };
 
-const socket = io("http://localhost:4000");
+const socket = io("http://localhost:5000");
 
 const InteraksiStudent = () => {
   const [color, setColor] = useState("#000000");
@@ -53,34 +53,40 @@ const InteraksiStudent = () => {
   const [selectedStudents, setSelectedStudents] = useState([]);
   const [students, setStudents] = useState([]);
   const [siswaWhiteboards, setSiswaWhiteboards] = useState({});
-  const [mode, setMode] = useState("co-draw"); // Default mode is "co-draw"
-  const [openDialog, setOpenDialog] = useState(false); // State untuk mengelola dialog
+  const [list, setList] = useState([]);
+  const [mode, setMode] = useState("co-draw");
+  const [openDialog, setOpenDialog] = useState(false);
   const class_id = localStorage.getItem("class_id");
+  const role = localStorage.getItem("role");
 
   const canvasRef = useRef();
-  const guruCanvasRef = useRef(); // Ref untuk papan gambar guru
+  const guruCanvasRef = useRef();
 
+  
   useEffect(() => {
     getAllData();
     getAllSiswaWhiteboards();
 
-    // Join guru ke papan gambar mereka sendiri
-    socket.emit("joinWhiteboard", `guru_${class_id}`);
+    const room = role === "instructur" ? `guru_${class_id}` : `siswa_${class_id}`;
+    socket.emit("joinWhiteboard", { room, role });
 
-    // Listener untuk perintah menggambar dari server
-    socket.on("drawing", (drawData) => {
-      if (canvasRef.current) {
-        canvasRef.current.loadPaths(drawData);
+    socket.on("drawing", ({ whiteboardId, paths }) => {
+      // Menggunakan whiteboardId untuk membedakan pembaruan yang diterima
+      if (whiteboardId === `guru_${class_id}`) {
+        canvasRef.current.loadPaths(paths);
+      } else if (siswaWhiteboards[whiteboardId]) {
+        siswaWhiteboards[whiteboardId].current.loadPaths(paths);
       }
     });
 
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [class_id, role]);
+
+
 
   useEffect(() => {
-    // Handle mode changes
     if (mode === "individual") {
       const newCanvases = {};
       selectedStudents.forEach((studentId) => {
@@ -93,25 +99,17 @@ const InteraksiStudent = () => {
         ...newCanvases,
       }));
     }
-  }, [mode, selectedStudents, siswaWhiteboards]);
+  }, [mode, selectedStudents]);
 
   const handleShare = () => {
     console.log("Berbagi papan");
-  };
-
-  const handleSendMessage = () => {
-    const newMessages = [...messages, message];
-    setMessages(newMessages);
-    setMessage("");
   };
 
   const handleClearBoard = () => {
     if (mode === "co-draw") {
       canvasRef.current.clearCanvas();
     } else {
-      // Clear guru's canvas
       guruCanvasRef.current.clearCanvas();
-      // Clear selected students' canvases
       selectedStudents.forEach((studentId) => {
         if (siswaWhiteboards[studentId]) {
           siswaWhiteboards[studentId].current.clearCanvas();
@@ -124,9 +122,7 @@ const InteraksiStudent = () => {
     if (mode === "co-draw") {
       canvasRef.current.undo();
     } else {
-      // Undo guru's canvas
       guruCanvasRef.current.undo();
-      // Undo selected students' canvases
       selectedStudents.forEach((studentId) => {
         if (siswaWhiteboards[studentId]) {
           siswaWhiteboards[studentId].current.undo();
@@ -139,9 +135,7 @@ const InteraksiStudent = () => {
     if (mode === "co-draw") {
       canvasRef.current.redo();
     } else {
-      // Redo guru's canvas
       guruCanvasRef.current.redo();
-      // Redo selected students' canvases
       selectedStudents.forEach((studentId) => {
         if (siswaWhiteboards[studentId]) {
           siswaWhiteboards[studentId].current.redo();
@@ -223,19 +217,42 @@ const InteraksiStudent = () => {
           timer: 1500,
         });
         setOpenDialog(false);
+
+        // Setelah menambahkan siswa, perlu update state siswaWhiteboards
+        const newCanvases = {};
+        selectedStudents.forEach((studentId) => {
+          if (!siswaWhiteboards[studentId]) {
+            newCanvases[studentId] = React.createRef();
+          }
+        });
+        setSiswaWhiteboards((prevWhiteboards) => ({
+          ...prevWhiteboards,
+          ...newCanvases,
+        }));
       }
     } catch (error) {
       console.log(error);
     }
   };
 
+
   const getAllData = async () => {
     try {
       const response = await axios.get(
-      `${API_DUMMY}/api/instructur/class/${class_id}/management_name_list?limit=100`,
+        `${API_DUMMY}/api/instructur/class/${class_id}/management_name_list?limit=100`,
         authConfig
       );
-      setStudents(response.data.data);
+      const filteredUsers = response.data.data.filter(
+        (user) =>
+          (role === "instructur" &&
+            user.role === "student" &&
+            user.class_id === parseInt(class_id)) ||
+          (role === "student" &&
+            user.role === "instructur" &&
+            user.class_id === parseInt(class_id))
+      );
+      setStudents(filteredUsers);
+      console.log(filteredUsers);
     } catch (error) {
       console.log(error);
     }
@@ -248,15 +265,16 @@ const InteraksiStudent = () => {
         authConfig
       );
       setSiswaWhiteboards(response.data.data);
+      setList(response.data.data);
+      console.log(response.data.data);
     } catch (error) {
       console.log(error);
     }
   };
 
   const handleDraw = async (paths) => {
-    if (mode === "co-draw") {
-      socket.emit("drawing", { whiteboardId: `guru_${class_id}`, paths });
-    }
+    const whiteboardId = mode === "co-draw" ? `guru_${class_id}` : `student_${class_id}`;
+    socket.emit("drawing", { whiteboardId, paths });
   };
 
   return (
@@ -273,180 +291,180 @@ const InteraksiStudent = () => {
         <Typography variant="h4" gutterBottom sx={{ py: 1, px: 2 }}>
           Papan Interaksi dengan Siswa
         </Typography>
-        <Divider />
-        <Grid container spacing={2} sx={{ flexGrow: 1 }}>
-          <Grid item xs={12} md={9}>
-            {mode === "co-draw" ? (
-              <ReactSketchCanvas
-                ref={canvasRef}
-                height="77vh"
-                style={{ backgroundColor: "white" }}
-                {...getToolProps()}
-                strokeWidth={width}
-                strokeColor={tool === "eraser" ? "#ffffff" : color}
-                allowOnlyPointerType="all"
-                onChange={handleDraw}
-              />
-            ) : (
-              <Box key="guru" sx={{ width: "100%", marginBottom: "20px" }}>
-                <Typography variant="h6">{`Papan Guru`}</Typography>
-                <ReactSketchCanvas
-                  ref={guruCanvasRef}
-                  height="77vh"
-                  style={{ backgroundColor: "white" }}
-                  {...getToolProps()}
-                  strokeWidth={width}
-                  strokeColor={tool === "eraser" ? "#ffffff" : color}
-                  allowOnlyPointerType="all"
+        <Box
+          sx={{
+            flexGrow: 1,
+            display: "flex",
+            flexDirection: "column",
+            px: 2,
+          }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={3}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  backgroundColor: "white",
+                  padding: "10px",
+                  borderRadius: "5px",
+                  boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+                }}>
+                <Tooltip title="Brush" placement="right">
+                  <IconButton
+                    color={tool === "brush" ? "primary" : "default"}
+                    onClick={() => setTool("brush")}>
+                    <Brush />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Shape" placement="right">
+                  <IconButton
+                    color={tool === "shape" ? "primary" : "default"}
+                    onClick={() => setTool("shape")}>
+                    <FormatShapes />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Circle" placement="right">
+                  <IconButton
+                    color={tool === "circle" ? "primary" : "default"}
+                    onClick={() => setTool("circle")}>
+                    <Circle />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Eraser" placement="right">
+                  <IconButton
+                    color={tool === "eraser" ? "primary" : "default"}
+                    onClick={() => setTool("eraser")}>
+                    <Delete />
+                  </IconButton>
+                </Tooltip>
+                <Divider />
+                <Tooltip title="Undo" placement="right">
+                  <IconButton onClick={handleUndo}>
+                    <Undo />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Redo" placement="right">
+                  <IconButton onClick={handleRedo}>
+                    <Redo />
+                  </IconButton>
+                </Tooltip>
+                <Divider />
+                <Tooltip title="Add New Board" placement="right">
+                  <IconButton onClick={handleNewBoard}>
+                    <AddCircleOutline />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Share" placement="right">
+                  <IconButton onClick={handleOpenDialog}>
+                    <Share />
+                  </IconButton>
+                </Tooltip>
+                <Divider />
+                <Typography variant="subtitle1" gutterBottom>
+                  Color
+                </Typography>
+                <input
+                  type="color"
+                  value={color}
+                  onChange={(e) => setColor(e.target.value)}
+                  style={{ width: "100%" }}
+                />
+                <Typography variant="subtitle1" gutterBottom>
+                  Width
+                </Typography>
+                <Slider
+                  value={width}
+                  onChange={(e, newValue) => setWidth(newValue)}
+                  min={1}
+                  max={20}
+                />
+                <Divider />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={mode === "individual"}
+                      onChange={() =>
+                        setMode((prevMode) =>
+                          prevMode === "individual" ? "co-draw" : "individual"
+                        )
+                      }
+                    />
+                  }
+                  label="Individual Mode"
                 />
               </Box>
-            )}
-            {mode === "individual" &&
-              selectedStudents.map((studentId) => (
-                <Box
-                  key={studentId}
-                  sx={{ width: "100%", marginBottom: "20px" }}>
-                  <Typography variant="h6">{`Papan untuk siswa ${studentId}`}</Typography>
+            </Grid>
+            <Grid item xs={12} sm={9}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  backgroundColor: "white",
+                  padding: "10px",
+                  borderRadius: "5px",
+                  boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
+                  height: "70vh",
+                  overflowY: "auto",
+                }}>
+                {mode === "co-draw" && (
                   <ReactSketchCanvas
-                    ref={siswaWhiteboards[studentId]}
-                    height="77vh"
-                    style={{ backgroundColor: "white" }}
-                    {...getToolProps()}
+                    ref={canvasRef}
+                    style={{ border: "0.0625rem solid #9c9c9c", height: "60vh" }}
+                    width="100%"
+                    height="100%"
+                    strokeColor={color}
                     strokeWidth={width}
-                    strokeColor={tool === "eraser" ? "#ffffff" : color}
-                    allowOnlyPointerType="all"
+                    onUpdate={(updatedPaths) => handleDraw(updatedPaths)}
+                    {...getToolProps()}
                   />
-                </Box>
-              ))}
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <Box sx={{ ml: 1, mr: 2, mt: 2 }}>
-              <Typography variant="h6">Peralatan</Typography>
-              <Tooltip title="Kuas">
-                <IconButton onClick={() => setTool("brush")}>
-                  <Brush />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Bentuk">
-                <IconButton onClick={() => setTool("shape")}>
-                  <FormatShapes />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Lingkaran">
-                <IconButton onClick={() => setTool("circle")}>
-                  <Circle />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Penghapus">
-                <IconButton onClick={() => setTool("eraser")}>
-                  <Delete />
-                </IconButton>
-              </Tooltip>
-              <Divider />
-              <Typography variant="h6">Pengaturan</Typography>
-              <Typography gutterBottom>Ketebalan Garis</Typography>
-              <Slider
-                value={width}
-                onChange={(e, newValue) => setWidth(newValue)}
-                min={1}
-                max={100}
-                valueLabelDisplay="auto"
-                sx={{ mx: 0 }}
-              />
-              <TextField
-                label="Warna"
-                type="color"
-                value={color}
-                onChange={(e) => setColor(e.target.value)}
-                fullWidth
-                sx={{ mt: 2 }}
-              />
-              <Divider />
-              <Typography variant="h6">Kontrol</Typography>
-              <Tooltip title="Undo">
-                <IconButton onClick={handleUndo}>
-                  <Undo />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Redo">
-                <IconButton onClick={handleRedo}>
-                  <Redo />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Bersihkan">
-                <IconButton onClick={handleClearBoard}>
-                  <Delete />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Papan Baru">
-                <IconButton onClick={handleNewBoard}>
-                  <AddCircleOutline />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Bagikan">
-                <IconButton onClick={handleShare}>
-                  <Share />
-                </IconButton>
-              </Tooltip>
-              <Divider />
-              {/* <Typography variant="h6">Pesan</Typography> */}
-              {/* <Box sx={{ height: 200, overflowY: "auto" }}>
-                {messages.map((msg, index) => (
-                  <Typography key={index}>{msg}</Typography>
-                ))}
+                )}
+                {mode === "individual" && (
+                  <>
+                    <ReactSketchCanvas
+                      ref={guruCanvasRef}
+                      style={{ border: "0.0625rem solid #9c9c9c", height: "60vh" }}
+                      width="100%"
+                      height="100%"
+                      strokeColor={color}
+                      strokeWidth={width}
+                      onUpdate={(updatedPaths) => handleDraw(updatedPaths)}
+                      {...getToolProps()}
+                    />
+                    <Typography variant="h6" gutterBottom>
+                      Siswa-siswa yang dipilih:
+                    </Typography>
+                    <Grid container spacing={2}>
+                      {selectedStudents.map((studentId) => (
+                        <Grid item xs={12} sm={6} key={studentId}>
+                          <Typography variant="subtitle1">
+                            {students.find((student) => student.id === studentId)?.name}
+                          </Typography>
+                          <ReactSketchCanvas
+                            ref={siswaWhiteboards[studentId]}
+                            style={{ border: "0.0625rem solid #9c9c9c", height: "30vh" }}
+                            width="100%"
+                            height="100%"
+                            strokeColor={color}
+                            strokeWidth={width}
+                            onUpdate={(updatedPaths) => handleDraw(updatedPaths)}
+                            {...getToolProps()}
+                          />
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </>
+                )}
               </Box>
-              <TextField
-                label="Ketik pesan"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                fullWidth
-                multiline
-                rows={4}
-                sx={{ mt: 2 }}
-              />
-              <Button variant="contained" onClick={handleSendMessage} sx={{ mt: 2 }}>
-                Kirim
-              </Button> */}
-              <Box sx={{ mt: 2 }}>
-                <Button
-                  variant="contained"
-                  onClick={handleOpenDialog}
-                  sx={{ mb: 2 }}>
-                  Pilih Murid
-                </Button>
-              </Box>
-              <Box>
-                <Button
-                  variant="contained"
-                  onClick={() => handleModeChange("individual")}>
-                  Mode Individual
-                </Button>
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
-        <Divider sx={{ mt: 2 }} />
-        <Divider sx={{ my: 2 }} />
-        <Box sx={{ p: 2 }}>
-          <Typography variant="h6">History</Typography>
-          <Grid container spacing={2}>
-            {history.map((image, index) => (
-              <Grid item key={index} xs={12} sm={6}>
-                <Box sx={{ width: "100%" }}>
-                  <img src={image} alt={`Canvas ${index}`} width="100%" />
-                </Box>
-              </Grid>
-            ))}
+            </Grid>
           </Grid>
         </Box>
       </Box>
-
       <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Pilih Murid</DialogTitle>
+        <DialogTitle>Bagikan Papan Interaksi dengan Siswa</DialogTitle>
         <DialogContent>
           <List>
-            {students.map((student, index) => (
-              <ListItem key={index}>
+            {students.map((student) => (
+              <ListItem key={student.id}>
                 <FormControlLabel
                   control={
                     <Checkbox
@@ -461,11 +479,9 @@ const InteraksiStudent = () => {
           </List>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
-            Batal
-          </Button>
-          <Button onClick={saveChange} color="primary">
-            Pilih
+          <Button onClick={handleCloseDialog}>Batal</Button>
+          <Button onClick={saveChange} variant="contained" color="primary">
+            Simpan
           </Button>
         </DialogActions>
       </Dialog>

@@ -85,14 +85,13 @@ const Camera = () => {
   return (
     <div>
       <div style={{ width: "100vw", height: "100vh" }} ref={elementRef} />
-      {isInstructor && (
+      {/* {isInstructor && (
         <div style={{ position: "absolute", top: 10, right: 10 }}>
           <button onClick={() => toggleCamera("studentId1")}>
             Toggle Student Camera
           </button>
-          {/* Replace "studentId1" with the actual student ID */}
         </div>
-      )}
+      )} */}
     </div>
   );
 };

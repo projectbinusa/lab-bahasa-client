@@ -152,15 +152,30 @@ const Canvas = ({
     setIsDrawing(false);
   };
 
+  const handleDownload = () => {
+    const canvas = canvasRef.current;
+    const link = document.createElement("a");
+    link.download = "drawing.png";
+    link.href = canvas.toDataURL();
+    link.click();
+  };
+
   return (
-    <div
-      className="col-md-8 overflow-hidden border border-dark px-0 mx-auto mt-3"
-      style={{ height: "500px" }}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-    >
-      <canvas ref={canvasRef} />
+    <div className="h-screen">
+      {" "}
+      <button
+        onClick={handleDownload}
+        className="flex items-center text-center bg-green-500 text-white w-fit p-2 rounded-md ml-auto mr-auto">
+        Download
+      </button>
+      <div
+        className="col-md-8 overflow-hidden border border-dark px-0 mx-auto mt-3 h-[150%]"
+        style={{ height: "500px" }}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}>
+        <canvas ref={canvasRef} />
+      </div>
     </div>
   );
 };

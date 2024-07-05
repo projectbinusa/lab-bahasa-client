@@ -6,6 +6,9 @@ import ClientRoomStudent from "./percobaan/ClientRoomStudent";
 import JoinCreateRoomStudent from "./percobaan/JoinCreateRoomStudent";
 import Navbar from "../../../component/Navbar1";
 import "react-toastify/dist/ReactToastify.css";
+import Room from "./percobaan/Room";
+import ClientRoom from "./percobaan/ClientRoom";
+import JoinCreateRoom from "./percobaan/JoinCreateRoom";
 
 const server = "http://localhost:4000";
 const connectionOptions = {
@@ -55,13 +58,13 @@ function RealtimeInteraksi() {
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <Navbar />
-      <div className="home">
+      <div className="home overflow-y-auto">
         {/* <ToastContainer /> */}
         {roomJoined ? (
           <>
             {/* <Sidebar users={users} user={user} socket={socket} />
           {user.presenter ? ( */}
-            <RoomStudent
+            <Room
               userNo={userNo}
               user={user}
               socket={socket}
@@ -69,7 +72,7 @@ function RealtimeInteraksi() {
               setUserNo={setUserNo}
             />
             {/* ) : ( */}
-            <ClientRoomStudent
+            <ClientRoom
               userNo={userNo}
               user={user}
               socket={socket}
@@ -79,7 +82,7 @@ function RealtimeInteraksi() {
             {/* )} */}
           </>
         ) : (
-          <JoinCreateRoomStudent
+          <JoinCreateRoom
             uuid={uuid}
             setRoomJoined={setRoomJoined}
             setUser={setUser}
@@ -87,7 +90,7 @@ function RealtimeInteraksi() {
           />
         )}
       </div>
-      {/* <style>
+      <style>
       {`
       .home {
         padding: 20px;
@@ -95,7 +98,7 @@ function RealtimeInteraksi() {
         height: screen;
       }
       `}
-    </style> */}
+    </style>
     </div>
   );
 }
