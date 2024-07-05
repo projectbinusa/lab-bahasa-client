@@ -167,6 +167,7 @@ function Login() {
                   >
                     Tidak ingat kata sandi?
                   </a>
+                  <br/>
                   <a
                     class="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
                     href="/login-siswa"

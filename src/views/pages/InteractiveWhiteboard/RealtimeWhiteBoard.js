@@ -4,6 +4,7 @@ import io from "socket.io-client";
 import Room from "./percobaan/Room";
 import ClientRoom from "./percobaan/ClientRoom";
 import JoinCreateRoom from "./percobaan/JoinCreateRoom";
+import Navbar from "../../../component/Navbar1";
 
 const server = "http://localhost:4000";
 const connectionOptions = {
@@ -48,36 +49,39 @@ const RealtimeWhiteBoard = () => {
   }, [roomJoined]);
 
   return (
-    <div className="home">
-      {/* <ToastContainer /> */}
-      {roomJoined ? (
-        <>
-          {/* <Sidebar users={users} user={user} socket={socket} /> */}
-          {user.presenter ? (
-            <Room
-              userNo={userNo}
-              user={user}
-              socket={socket}
-              setUsers={setUsers}
-              setUserNo={setUserNo}
-            />
-          ) : (
-            <ClientRoom
-              userNo={userNo}
-              user={user}
-              socket={socket}
-              setUsers={setUsers}
-              setUserNo={setUserNo}
-            />
-          )}
-        </>
-      ) : (
-        <JoinCreateRoom
-          uuid={uuid}
-          setRoomJoined={setRoomJoined}
-          setUser={setUser}
-        />
-      )}
+    <div className="flex flex-col h-screen overflow-hidden">
+      <Navbar />
+      <div className="home overflow-y-auto h-screen">
+        {/* <ToastContainer /> */}
+        {roomJoined ? (
+          <>
+            {/* <Sidebar users={users} user={user} socket={socket} /> */}
+            {user.presenter ? (
+              <Room
+                userNo={userNo}
+                user={user}
+                socket={socket}
+                setUsers={setUsers}
+                setUserNo={setUserNo}
+              />
+            ) : (
+              <ClientRoom
+                userNo={userNo}
+                user={user}
+                socket={socket}
+                setUsers={setUsers}
+                setUserNo={setUserNo}
+              />
+            )}
+          </>
+        ) : (
+          <JoinCreateRoom
+            uuid={uuid}
+            setRoomJoined={setRoomJoined}
+            setUser={setUser}
+          />
+        )}
+      </div>
     </div>
   );
 };

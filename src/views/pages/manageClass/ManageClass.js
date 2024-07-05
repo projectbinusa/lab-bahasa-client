@@ -203,8 +203,10 @@ function ManageClass() {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen overflow-x-hidden">
-        <Navbar className="overflow-x-hidden" />
+      <div className="flex flex-col min-h-screen">
+      <div className="sticky top-0 z-50">
+        <Navbar />
+      </div>
         <div className="px-4 sm:px-8 md:px-16 lg:px-32">
           <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-8">
             <div className="flex justify-between">
@@ -214,7 +216,7 @@ function ManageClass() {
               <div className="flex justify-end">
                 <div class="max-w-lg mx-auto">
                   <div class="flex mr-2">
-                    <div class="relative w-full">
+                    <div class="w-full">
                       <input
                         type="search"
                         id="search-dropdown"
@@ -228,7 +230,7 @@ function ManageClass() {
                     <select
                       value={limit}
                       onChange={handleLimitChange}
-                      class="flex-shrink-0 z-10 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600">
+                      class="z-1 flex-shrink-0 z-10 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600">
                       <option value="10">10</option>
                       <option value="20">20</option>
                       <option value="50">50</option>
@@ -269,7 +271,7 @@ function ManageClass() {
                   />
                   <input
                     type="file"
-                    accept=".csv"
+                    accept=".xlsx"
                     onChange={handleImport}
                     className="hidden"
                   />
@@ -286,7 +288,7 @@ function ManageClass() {
               </div>
             </div>
             <hr />
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-5">
+            <div className="overflow-x-auto shadow-md sm:rounded-lg mt-5">
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                 <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>

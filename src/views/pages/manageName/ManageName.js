@@ -162,7 +162,7 @@ function ManageName() {
           <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-8">
             <div className="flex flex-col md:flex-row justify-between mb-4">
               <h6 className="text-xl text-left font-bold text-gray-900 dark:text-white">
-                Kelola Daftar Nama
+                Kelola Siswa
               </h6>
               <div className="flex flex-col md:flex-row items-center gap-2 mt-4 md:mt-0 w-full md:w-auto">
                 <div className="flex items-center w-full md:w-auto">

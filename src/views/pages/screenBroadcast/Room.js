@@ -107,7 +107,7 @@ const Room = () => {
     <>
       <div style={{ width: "100%", height: "100%" }}>
         <div id="zego-meeting" style={{ width: "100%", height: "90%" }}>
-          {showRaiseHandButton && ( // Hanya munculkan tombol jika showRaiseHandButton true
+          {/* {showRaiseHandButton && ( // Hanya munculkan tombol jika showRaiseHandButton true
             <button
               className="absolute bottom-4 left-96 bg-gray-700 p-2.5 rounded-lg"
               onClick={handleToggleHand}
@@ -119,7 +119,7 @@ const Room = () => {
                 <BackHandOutlinedIcon className="text-gray-300" />
               )}
             </button>
-          )}
+          )} */}
           <div>
             {Object.entries(raiseHandStatus).map(([userId, isRaised]) => (
               <div key={userId}>
