@@ -44,6 +44,7 @@ import RealtimeInteraksi from "./views/pages/InteractiveWhiteboard/RealtimeInter
 import Roomss from "./views/pages/InteractiveWhiteboard/RealtimeInteraksi";
 import ClientRoomStudent from "./views/pages/InteractiveWhiteboard/percobaan/ClientRoomStudent";
 import StudentInteraksi from "./views/pages/InteractiveWhiteboard/StudentInteraksi";
+import PilihanGanda from "./views/pages/response/PilihanGanda";
 
 const checkTokenExpiration = () => {
   const token = localStorage.getItem("token");
@@ -144,6 +145,11 @@ const App = () => {
               exact
             />
             <PrivateRoute
+              path="/pilihan-ganda/:classId"
+              component={PilihanGanda}
+              exact
+            />
+            <PrivateRoute
               path="/signed-information/:classId"
               component={SignedInformation}
               exact
@@ -219,12 +225,12 @@ const App = () => {
               component={ClientRoom}
               exact
             />
-             <PrivateRoute
+            <PrivateRoute
               path="/realtime-interaction"
               component={RealtimeInteraksi}
               exact
             />
-              <PrivateRoute
+            <PrivateRoute
               path="/interaction-instruktur"
               component={Roomss}
               exact

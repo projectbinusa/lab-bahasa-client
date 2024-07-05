@@ -149,7 +149,7 @@ function Navbar() {
                   Papan tulis interaktif
                 </Link>
                 <Link
-                 to={`/realtime-interaction`}
+                  to={`/realtime-interaction`}
                   className="text-sm font-semibold"
                 >
                   <FontAwesomeIcon icon={faChalkboardUser} className="px-1" />
@@ -232,6 +232,13 @@ function Navbar() {
                       >
                         <FontAwesomeIcon icon={faQuestion} className="mr-2" />{" "}
                         Pertanyaan
+                      </Link>
+                      <Link
+                        to={`/pilihan-ganda/${classId}`}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      >
+                        <FontAwesomeIcon icon={faQuestion} className="mr-2" />{" "}
+                        Pilihan Ganda
                       </Link>
                     </div>
                   )}
