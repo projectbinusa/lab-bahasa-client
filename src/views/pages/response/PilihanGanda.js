@@ -14,8 +14,6 @@ function PilihanGanda() {
   const [questions, setQuestions] = useState([
     { name: "", options: ["", "", "", ""], correctOption: null },
   ]);
-  const [thinkTime, setThinkTime] = useState("");
-  const [answerTime, setAnswerTime] = useState("");
 
   const handleOptionChange = (questionIndex, optionIndex, value) => {
     const newQuestions = [...questions];
@@ -42,13 +40,13 @@ function PilihanGanda() {
     ]);
   };
 
-  const saveChange = async () => {
+  const saveQuestions = async () => {
     const data = questions.map((q) => ({
       question_text: q.name,
       options: q.options,
       correct_answer: q.correctOption,
     }));
-    let url_hit = `${API_DUMMY}/api/instructur/class/${localStorage.getItem(
+    const url_hit = `${API_DUMMY}/api/instructur/class/${localStorage.getItem(
       "class_id"
     )}/response_competition`;
 
@@ -57,7 +55,7 @@ function PilihanGanda() {
       if (response.status === 200) {
         Swal.fire({
           icon: "success",
-          title: "Kompetisi dimulai.",
+          title: "Soal berhasil ditambahkan.",
           showConfirmButton: false,
           timer: 1500,
         });
@@ -72,50 +70,14 @@ function PilihanGanda() {
     }
   };
 
-  const startCompetition = () => {
-    saveChange().then(() => {
-      window.location.reload("/question");
-    });
-  };
-
   return (
     <div className="flex flex-col h-screen">
       <Navbar />
       <div className="content-page container mx-auto mt-10">
         <div className="w-11/12 p-3 bg-white rounded-lg shadow-lg border border-gray-300 mx-auto">
           <h1 className="text-lg sm:text-xl font-bold text-gray-800">
-            Kompetisi Respon Pilihan Ganda
+            Soal Pilihan Ganda
           </h1>
-          <div className="mb-3">
-            <label
-              htmlFor="think-time"
-              className="mb-1 text-sm font-semibold text-gray-700 block"
-            >
-              Waktu berpikir:
-            </label>
-            <input
-              type="time"
-              id="think-time"
-              value={thinkTime}
-              onChange={(e) => setThinkTime(e.target.value)}
-              className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
-            />
-          </div>
-          <div className="mb-3">
-            <label
-              htmlFor="answer-time"
-              className="mb-1 text-sm font-semibold text-gray-700 block"
-            >
-              Waktu jawab:
-            </label>
-            <input
-              type="time"
-              id="answer-time"
-              value={answerTime}
-              onChange={(e) => setAnswerTime(e.target.value)}
-              className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
-            />
-          </div>
           {questions.map((question, questionIndex) => (
             <div key={questionIndex} className="mb-5">
               <div className="mb-3 mt-3">
@@ -176,9 +138,9 @@ function PilihanGanda() {
           </button>
           <button
             className="w-full py-2 font-semibold text-white bg-green-500 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 mb-2"
-            onClick={startCompetition}
+            onClick={saveQuestions}
           >
-            Mulai Kompetisi
+            Submit
           </button>
         </div>
       </div>
