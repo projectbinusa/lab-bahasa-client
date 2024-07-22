@@ -1,16 +1,17 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, useNavigate } from "react-router-dom"; // Correct import statement
 import { API_DUMMY } from "../../../utils/api";
 import Swal from "sweetalert2";
+import login from "../../../component/Asset/login.png";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false); // State untuk mengontrol apakah password ditampilkan atau tidak
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -64,15 +65,12 @@ function Login() {
 
         // Logika redirect berdasarkan role user
         if (role === "instructur") {
-          history.push("/tabel-class");
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
+          navigate("/tabel-class");
         } else if (role === "student") {
-          history.push("/tabel-class");
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
+          navigate("/tabel-class");
+          // setTimeout(() => {
+          //   window.location.reload();
+          // }, 1500);
         }
       }
     } catch (error) {
@@ -88,38 +86,37 @@ function Login() {
   };
 
   return (
-    <body class="font-mono ">
+    <body className="font-mono bg-gray-100 h-screen">
       {/* Container */}
-      <div class="container mx-auto ">
+      <div className="container mx-auto ">
         <br />
         <br />
-        <div class="flex justify-center px-6 my-16">
+        <div className="flex justify-center px-6 my-16">
           {/* Row */}
-          <div class="w-full xl:w-3/4 lg:w-11/12 flex">
+          <div className="w-full xl:w-3/4 lg:w-11/12 flex justify-between">
             {/* Col */}
-            <div
-              class="w-full h-auto hidden lg:block lg:w-4/5 bg-cover rounded-l-lg"
-              style={{
-                backgroundImage:
-                  " url('https://img.freepik.com/free-vector/profile-interface-concept-illustration_114360-3360.jpg?t=st=1715662478~exp=1715666078~hmac=d78ead5c54d0721c4f7c007da66f71aef3ff0138faaa3cc16f9042adde7faa5a&w=740')",
-              }}
-            ></div>
+            {/* <div className="hidden lg:block rounded-l-lg"> */}
+            <img
+              style={{ width: "50%" }}
+              className="hidden lg:block rounded-l-lg"
+              src={login}
+              alt=""
+            />
+            {/* </div> */}
             {/* Col */}
-            <div class="w-full lg:w-9/12 bg-white p-8 rounded-lg lg:rounded-l-none shadow-lg shadow-slate-400">
-              <h3 class="pt-4 text-2xl text-center">Login!</h3>
+            <div className="w-full lg:w-9/12 bg-white px-3 rounded-lg h-fit lg:rounded-l-none shadow-lg shadow-slate-400">
+              <h3 className="pt-4 text-2xl text-center">Login!</h3>
               <form
                 onSubmit={handleLogin}
-                class="px-8 pt-6 pb-8 mb-4 bg-white rounded"
-              >
-                <div class="mb-4 md:mr-2 md:mb-0">
+                className="px-8 pt-6 pb-8 mb-4 bg-white rounded">
+                <div className="mb-4 md:mr-2 md:mb-0">
                   <label
-                    class="block mb-2 text-sm font-bold text-gray-700"
-                    for="firstName"
-                  >
+                    className="block mb-2 text-sm font-bold text-gray-700"
+                    htmlFor="firstName">
                     Email
                   </label>
                   <input
-                    class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                    className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                     id="email"
                     type="email"
                     placeholder="Email"
@@ -128,15 +125,14 @@ function Login() {
                     required
                   />
                 </div>
-                <div class="mb-4 md:mr-2 md:mb-0 relative">
+                <div className="mb-4 md:mr-2 md:mb-0 relative">
                   <label
-                    class="block mb-2 text-sm font-bold text-gray-700"
-                    for="password"
-                  >
+                    className="block mb-2 text-sm font-bold text-gray-700"
+                    htmlFor="password">
                     Password
                   </label>
                   <input
-                    class="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                    className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                     id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="******************"
@@ -145,35 +141,31 @@ function Login() {
                     required
                   />
                   <span
-                    class="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer mt-5"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer mt-5"
+                    onClick={() => setShowPassword(!showPassword)}>
                     {showPassword ? <FaEye /> : <FaEyeSlash />}{" "}
                   </span>
                 </div>
-                <div class="mb-6 text-center">
+                <div className="mb-6 text-center">
                   <button
-                    class="w-full px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700 focus:outline-none focus:shadow-outline"
-                    type="submit"
-                  >
+                    className="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+                    type="submit">
                     Masuk akun
                   </button>
                 </div>
-                <hr class="mb-6 border-t" />
-                <div class="text-center">
-                  <a
-                    class="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
-                    href="/forgotpass"
-                  >
+                <hr className="mb-6 border-t" />
+                <div className="text-center">
+                  <Link
+                    className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
+                    to="/forgotpass">
                     Tidak ingat kata sandi?
-                  </a>
-                  <br/>
-                  <a
-                    class="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
-                    href="/login-siswa"
-                  >
+                  </Link>
+                  <br />
+                  <Link
+                    className="inline-block text-sm text-blue-500 align-baseline hover:text-blue-800"
+                    to="/login-siswa">
                     Login sebagai siswa
-                  </a>
+                  </Link>
                 </div>
               </form>
             </div>

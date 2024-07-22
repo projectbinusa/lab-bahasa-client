@@ -1,10 +1,9 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useNavigate } from "react-router-dom"; // Correct import statement
 import Swal from "sweetalert2";
 import { API_DUMMY } from "../../../utils/api";
+import loginSiswa from "../../../component/Asset/loginSiswa.png";
 
 function LoginSiswa() {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,10 +11,11 @@ function LoginSiswa() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const verifikasiPassword = localStorage.getItem("verifikasi_password") === 'true';
+    const verifikasiPassword =
+      localStorage.getItem("verifikasi_password") === "true";
     setRequirePassword(verifikasiPassword);
   }, []);
 
@@ -48,7 +48,7 @@ function LoginSiswa() {
 
         // Logika redirect berdasarkan role user dan class_id
         if (userData.role === "instructur") {
-          history.push("/tabel-class");
+          navigate("/tabel-class");
           setTimeout(() => {
             window.location.reload();
           }, 1500);
@@ -62,7 +62,7 @@ function LoginSiswa() {
               timer: 1500,
             });
           } else {
-            history.push("/tabel-class");
+            navigate("/tabel-class");
             setTimeout(() => {
               window.location.reload();
             }, 1500);
@@ -95,16 +95,22 @@ function LoginSiswa() {
           {/* Row */}
           <div className="w-full xl:w-3/4 lg:w-11/12 flex">
             {/* Col */}
-            <div
-              className="w-full h-auto hidden lg:block lg:w-4/5 bg-cover rounded-l-lg"
-              style={{
-                backgroundImage:
-                  " url('https://img.freepik.com/free-vector/profile-interface-concept-illustration_114360-3360.jpg?t=st=1715662478~exp=1715666078~hmac=d78ead5c54d0721c4f7c007da66f71aef3ff0138faaa3cc16f9042adde7faa5a&w=740')",
-              }}></div>
+            {/* <div className="w-full h-auto hidden lg:block lg:w-4/5 bg-cover rounded-l-lg"> */}
+            {/* <div class="hidden lg:block"> */}
+            <img
+              style={{ width: "50%" }}
+              className="hidden lg:block rounded-l-lg"
+              src={loginSiswa}
+              alt=""
+            />
+            {/* </div> */}
+            {/* </div> */}
             {/* Col */}
             <div className="w-full lg:w-9/12 bg-white p-8 rounded-lg lg:rounded-l-none shadow-lg shadow-slate-400">
               <h3 className="pt-4 text-2xl text-center">Login!</h3>
-              <form onSubmit={handleLogin} className="px-8 pt-6 pb-8 mb-4 bg-white rounded">
+              <form
+                onSubmit={handleLogin}
+                className="px-8 pt-6 pb-8 mb-4 bg-white rounded">
                 <div className="mb-4 md:mr-2 md:mb-0">
                   <label
                     className="block mb-2 text-sm font-bold text-gray-700"
@@ -121,34 +127,36 @@ function LoginSiswa() {
                     required
                   />
                 </div>
-                {requirePassword && (
-                  <div className="mb-4 md:mr-2 md:mb-0">
-                    <label
-                      className="block mb-2 text-sm font-bold text-gray-700"
-                      htmlFor="password">
-                      Password
-                    </label>
-                    <div className="relative">
-                      <input
-                        className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="******************"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                      />
-                      <FontAwesomeIcon
-                        icon={showPassword ? faEyeSlash : faEye}
-                        onClick={togglePasswordVisibility}
-                        className="absolute top-4 right-3 transform -translate-y-1/2 cursor-pointer text-gray-600"
-                      />
-                    </div>
+                {/* {requirePassword && ( */}
+                <div className="mb-4 md:mr-2 md:mb-0">
+                  <label
+                    className="block mb-2 text-sm font-bold text-gray-700"
+                    htmlFor="password">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      className="w-full px-3 py-2 mb-3 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="******************"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                    />
+                    <i
+                      onClick={togglePasswordVisibility}
+                      class={` absolute top-4 right-3 transform -translate-y-1/2 cursor-pointer text-gray-600 ${
+                        showPassword
+                          ? "fa-solid fa-eye-slash"
+                          : "fa-solid fa-eye"
+                      }`}></i>
                   </div>
-                )}
+                </div>
+                {/* )} */}
                 <div className="mb-6 text-center">
                   <button
-                    className="w-full px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700 focus:outline-none focus:shadow-outline"
+                    className="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
                     type="submit">
                     Masuk akun
                   </button>

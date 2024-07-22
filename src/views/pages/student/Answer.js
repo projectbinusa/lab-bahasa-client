@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { API_DUMMY } from "../../../utils/api";
-import { useHistory, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Navbar from "../../../component/Navbar1";
 
 const authConfig = {
@@ -16,9 +16,12 @@ function AnswerQuestion() {
   const [question_id, setQuestionId] = useState(null);
   const [answer, setAnswer] = useState("");
   const [timeLeft, setTimeLeft] = useState(null);
+  const [hasAnswered, setHasAnswered] = useState(false);
+  const [isAnsweredByOther, setIsAnsweredByOther] = useState(false);
   const class_id = localStorage.getItem("class_id");
   const param = useParams();
-  const history = useHistory();
+  const navigate = useNavigate();
+  const user_id = localStorage.getItem("id");
 
   const getQuestion = async () => {
     try {
@@ -32,6 +35,7 @@ function AnswerQuestion() {
         setQuestionId(questionData.id);
         const duration = parseTimeToSeconds(questionData.answer_time);
         setTimeLeft(duration);
+        await checkIfAnswered(questionData.id);
       } else {
         Swal.fire({
           icon: "error",
@@ -41,14 +45,25 @@ function AnswerQuestion() {
       }
     } catch (error) {
       console.log(error);
-      // Swal.fire({
-      //   icon: "error",
-      //   title: "Terjadi Kesalahan",
-      //   text: error.response
-      //     ? error.response.data.message
-      //     : "Tidak bisa mendapatkan data",
-      //   showConfirmButton: true,
-      // });
+    }
+  };
+
+  const checkIfAnswered = async (questionId) => {
+    try {
+      const response = await axios.get(
+        `${API_DUMMY}/api/instructur/class/${class_id}/answer/question/${questionId}`,
+        authConfig
+      );
+      const answers = response.data.data;
+      setIsAnsweredByOther(answers.length > 0); // Check if there is any answer
+      const userAnswer = answers.find(
+        (answer) => answer.user_id == user_id
+      );
+      setHasAnswered(!!userAnswer);
+      console.log("data: ", response.data.data);
+      console.log("user answer: ", userAnswer);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -63,7 +78,7 @@ function AnswerQuestion() {
         title: "Waktu habis!",
         showConfirmButton: true,
       }).then(() => {
-        history.push(`/result/${param.id}`);
+        navigate(`/result/${param.id}`);
       });
     }
 
@@ -74,16 +89,12 @@ function AnswerQuestion() {
       }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft, history, param.id]);
+  }, [timeLeft, navigate, param.id]);
 
-  const parseTimeToSeconds = (time) => {
-    const [hours, minutes] = time.split(":").map(Number);
+  const parseTimeToSeconds = (isoTime) => {
+    const target = new Date(isoTime);
     const now = new Date();
-    const target = new Date();
 
-    target.setHours(hours, minutes, 0, 0);
-
-    // Check if the target time is in the past, if so, add one day to the target time
     if (target < now) {
       target.setDate(target.getDate() + 1);
     }
@@ -98,6 +109,23 @@ function AnswerQuestion() {
   };
 
   const submitAnswer = async () => {
+    if (hasAnswered) {
+      Swal.fire({
+        icon: "warning",
+        title: "Pertanyaan ini sudah di jawab oleh orang lain / anda sudah menjawab pertanyaan ini.",
+        showConfirmButton: true,
+      });
+      return;
+    }
+    if (isAnsweredByOther) {
+      Swal.fire({
+        icon: "warning",
+        title: "Pertanyaan ini sudah di jawab oleh orang lain / anda sudah menjawab pertanyaan ini.",
+        showConfirmButton: true,
+      });
+      return;
+    }
+
     const data = {
       question_id: question_id,
       answer: answer,
@@ -111,13 +139,14 @@ function AnswerQuestion() {
       );
 
       if (response.status === 200) {
+        setHasAnswered(true);
         Swal.fire({
           icon: "success",
           title: "Jawaban berhasil disimpan.",
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          history.push(`/question-answer/${class_id}`);
+          navigate(`/question-answer/${class_id}`);
         });
       }
     } catch (error) {
@@ -143,28 +172,48 @@ function AnswerQuestion() {
           </h1>
           {question && (
             <div>
-              <p className="text-sm font-semibold text-gray-700 mb-3">
+              <p className="text-xl mt-3 font-semibold text-gray-700 mb-3">
                 {question.name}
               </p>
-              <div className="mb-3">
-                <label
-                  htmlFor="answer"
-                  className="mb-1 text-sm font-semibold text-gray-700 block">
-                  Jawaban:
-                </label>
+              {isAnsweredByOther ? (
                 <textarea
                   id="answer"
-                  value={answer}
-                  onChange={(e) => setAnswer(e.target.value)}
-                  className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+                  disabled
+                  placeholder="Pertanyaan ini sudah di jawab oleh orang lain / anda sudah menjawab pertanyaan ini"
+                  className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                   rows="4"
                 />
-              </div>
-              <button
-                className="w-full py-2 font-semibold text-white bg-green-500 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 mb-2"
-                onClick={submitAnswer}>
-                Kirim Jawaban
-              </button>
+              ) : hasAnswered ? (
+                <textarea
+                  id="answer"
+                  disabled
+                  placeholder="Pertanyaan ini sudah di jawab oleh orang lain / anda sudah menjawab pertanyaan ini"
+                  className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  rows="4"
+                />
+              ) : (
+                <div>
+                  <div className="mb-3">
+                    <label
+                      htmlFor="answer"
+                      className="mb-1 text-sm font-semibold text-gray-700 block">
+                      Jawaban:
+                    </label>
+                    <textarea
+                      id="answer"
+                      value={answer}
+                      onChange={(e) => setAnswer(e.target.value)}
+                      className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                      rows="4"
+                    />
+                  </div>
+                  <button
+                    className="w-full py-2 font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-2"
+                    onClick={submitAnswer}>
+                    Kirim Jawaban
+                  </button>
+                </div>
+              )}
               <p className="text-sm font-semibold text-gray-700 mt-3">
                 Sisa Waktu: {formatTime(timeLeft)}
               </p>

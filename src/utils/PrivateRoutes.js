@@ -1,36 +1,13 @@
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import { Navigate, useLocation } from "react-router-dom";
 
-const checkTokenExpiration = () => {
-  const token = localStorage.getItem("token");
-  if (!token) return false;
+function PrivateRoute({ children }) {
+  const location = useLocation();
 
-  try {
-    const decoded = jwtDecode(token);
-    const currentTime = Date.now() / 1000;
-    if (decoded.exp < currentTime) {
-      localStorage.removeItem("token");
-      return false;
-    }
-    return true;
-  } catch (error) {
-    localStorage.removeItem("token");
-    return false;
+  if (!localStorage.getItem("token")) {
+    return <Navigate to="/login" state={{ from: location }} />;
   }
-};
-
-const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={(props) =>
-      checkTokenExpiration() ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/login" />
-      )
-    }
-  />
-);
+  return children;
+}
 
 export default PrivateRoute;

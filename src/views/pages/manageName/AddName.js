@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import Swal from "sweetalert2";
 import { API_DUMMY } from "../../../utils/api";
+import { useNavigate } from "react-router-dom";
 
 function AddName({ onClose }) {
   const [name, setName] = useState("");
@@ -11,7 +11,7 @@ function AddName({ onClose }) {
   const [password, setPassword] = useState("");
   const [email, setemail] = useState("");
   const [password_prompt, setpassword_prompt] = useState("");
-  const history = useHistory();
+  const navigate = useNavigate();
   const class_id = localStorage.getItem("class_id");
 
   const authConfig = {
@@ -36,7 +36,7 @@ function AddName({ onClose }) {
     try {
       const response = await axios.post(url_hit, data, authConfig);
       if (response.status === 200) {
-        history.push("/manage-name/" + localStorage.getItem("class_id"));
+        navigate("/manage-name/" + localStorage.getItem("class_id"));
         Swal.fire({
           icon: "success",
           title: "Berhasil Menambahkan Data.",
@@ -67,7 +67,7 @@ function AddName({ onClose }) {
                   <input
                     type="text"
                     id="className"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                     placeholder="Masukkan Nama"
                     required
                     value={email}
@@ -81,7 +81,7 @@ function AddName({ onClose }) {
                   <input
                     type="text"
                     id="className"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                     placeholder="Masukkan Nama"
                     required
                     value={name}
@@ -94,7 +94,7 @@ function AddName({ onClose }) {
                 </label>
                 <select
                   id="gender"
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                   value={gender}
                   onChange={(e) => setGender(e.target.value)}
                   required
@@ -112,7 +112,7 @@ function AddName({ onClose }) {
                   <input
                     type="text"
                     id="className"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                     placeholder="Masukkan Jurusan"
                     required
                     value={departement}
@@ -127,7 +127,7 @@ function AddName({ onClose }) {
                   <input
                     type="text"
                     id="className"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                     placeholder="Masukkan Password"
                     required
                     value={password}
@@ -141,7 +141,7 @@ function AddName({ onClose }) {
                   <input
                     type="text"
                     id="className"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                     placeholder="Masukkan Password"
                     required
                     value={password_prompt}
@@ -152,7 +152,7 @@ function AddName({ onClose }) {
               <div className="flex justify-end mt-4">
                 <button
                   type="submit"
-                  className="px-6 py-3 rounded-lg text-white bg-green-400 hover:bg-green-600 text-base font-semibold"
+                  className="px-6 py-3 rounded-lg text-white bg-blue-400 hover:bg-blue-600 text-base font-semibold"
                 >
                   Simpan
                 </button>

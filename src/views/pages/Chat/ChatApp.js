@@ -5,7 +5,7 @@ import { API_DUMMY } from "../../../utils/api";
 import io from "socket.io-client";
 import Navbar from "../../../component/Navbar1";
 import AddGroup from "../../../component/Modal/ObrolanGrub";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const socket = io("http://localhost:4000");
@@ -247,7 +247,7 @@ function ChatApp() {
     try {
       const response = await axios.put(
         `${API_DUMMY}/api/chat/chat/${editMessageId}/class/${class_id}/group/${selectedGroup.id}`,
-        formData, // Pass FormData object directly as data
+        formData,
         authConfig
       );
 
@@ -327,19 +327,17 @@ function ChatApp() {
 
   return (
     <>
-      <div className="flex flex-col bg-gray-100 h-screen">
+      <div className="flex flex-col h-auto">
         <Navbar />
         <div className="flex flex-grow flex-col md:flex-row md:justify-center gap-4 mt-3 mx-3">
           <div
-            className={`bg-whitew-full md:rounded-r-lg md:border-r md:border-green-400 md:w-1/4 ${
+            className={`md:rounded-r-lg h-screen bg-white overflow-y-auto md:border md:border-blue-400 md:w-1/4 ${
               selectedGroup ? "hidden md:block" : "block"
-            }`}
-          >
+            }`}>
             <div className="flex">
               <button
                 onClick={handleGroup}
-                className="bg-green-500 flex-1 h-10 flex items-center justify-center text-white text-lg rounded-t-lg"
-              >
+                className="bg-blue-700 flex-1 h-10 flex items-center justify-center text-white text-lg rounded-t-lg">
                 Tambah Group
               </button>
             </div>
@@ -350,12 +348,11 @@ function ChatApp() {
                   onClick={() => setSelectedGrub(group)}
                   className={`cursor-pointer p-2 mt-3 rounded ${
                     selectedGroup?.id === group.id
-                      ? "bg-green-500 text-white"
-                      : "bg-green-300 text-gray-800"
-                  }`}
-                >
+                      ? "bg-blue-700 text-white"
+                      : "bg-blue-300 text-gray-800"
+                  }`}>
                   <div className="flex justify-between items-center ">
-                    <div className="border-2 w-fit rounded-full border-green-500">
+                    <div className="border-2 w-fit rounded-full border-blue-700">
                       <img className="w-9" src={img} alt="" />
                     </div>
                     <div className="text-center mt-1">{group.name}</div>
@@ -368,8 +365,7 @@ function ChatApp() {
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleDropdown(index, 1);
-                        }}
-                      >
+                        }}>
                         &#x2022;&#x2022;&#x2022;
                       </button>
                       {dropdownIndex === index && (
@@ -379,8 +375,7 @@ function ChatApp() {
                               e.stopPropagation();
                               handleDeleteGroup(group.id);
                             }}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
-                          >
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
                             Hapus Group
                           </button>
                         </div>
@@ -393,16 +388,14 @@ function ChatApp() {
           </div>
 
           <div
-            className={`flex-grow w-full md:rounded-l-lg md:border-l md:border-green-400 md:w-3/4 flex flex-col ${
+            className={`flex-grow w-full md:rounded-l-lg md:border-l md:border-blue-400 md:w-3/4 flex flex-col ${
               selectedGroup ? "" : "hidden md:flex"
-            }`}
-          >
-            <div className="flex-1 bg-white overflow-y-scroll">
-              <div className="border-2 rounded-t-lg border-green-500 bg-green-500 h-10 flex items-center">
+            }`}>
+            <div className="flex-1 bg-white">
+              <div className="border-2 rounded-t-lg border-blue-700 bg-blue-700 h-10 flex items-center">
                 <button
                   className="text-white text-lg ml-4 font-semibold md:hidden"
-                  onClick={() => setSelectedGroup(null)}
-                >
+                  onClick={() => setSelectedGroup(null)}>
                   &lt;Kembali
                 </button>
                 <h1 className="text-white text-lg ml-4 font-semibold">
@@ -410,7 +403,7 @@ function ChatApp() {
                 </h1>
               </div>
 
-              <div className="flex-grow p-2 overflow-y-auto custom-scrollbar h-[400px]">
+              <div className="flex-grow p-2 h-screen overflow-y-auto custom-scrollbar">
                 {selectedGroup ? (
                   chatGroup.length === 0 ? (
                     <div className="flex items-center justify-center h-screen">
@@ -426,8 +419,7 @@ function ChatApp() {
                           message.sender_id == localStorage.getItem("id")
                             ? "flex justify-end"
                             : "flex justify-start"
-                        }`}
-                      >
+                        }`}>
                         <div className="flex w-96 items-center">
                           <img
                             className="w-8 h-8 rounded-full"
@@ -437,18 +429,16 @@ function ChatApp() {
                           <div
                             className={`${
                               message.sender_id == localStorage.getItem("id")
-                                ? "bg-green-500 text-white"
-                                : "bg-green-400"
-                            } text-white rounded-lg p-2 w-[90%] shadow ml-2`}
-                          >
+                                ? "bg-blue-700 text-white"
+                                : "bg-blue-400"
+                            } text-white rounded-lg p-2 w-[90%] shadow ml-2`}>
                             {message.sender_id == localStorage.getItem("id") ? (
                               <>
                                 <div className="flex justify-between">
                                   <p>{message.content}</p>
                                   <button
                                     className=""
-                                    onClick={() => toggleDropdown(index)}
-                                  >
+                                    onClick={() => toggleDropdown(index)}>
                                     <i className="fa-solid fa-ellipsis-vertical"></i>
                                   </button>
                                   {dropdownIndex === index && (
@@ -460,16 +450,14 @@ function ChatApp() {
                                             message.id,
                                             message.content
                                           )
-                                        }
-                                      >
+                                        }>
                                         Edit
                                       </button>
                                       <button
                                         className="block px-4 py-2 text-left w-full text-black hover:bg-gray-200"
                                         onClick={() =>
                                           deleteMessage(message.id)
-                                        }
-                                      >
+                                        }>
                                         Delete
                                       </button>
                                     </div>
@@ -482,8 +470,7 @@ function ChatApp() {
                                   className="mb-2 font-semibold"
                                   style={{
                                     color: userColors[message.sender_id],
-                                  }}
-                                >
+                                  }}>
                                   {message.sender_name}
                                 </p>
                                 <p>{message.content}</p>
@@ -519,8 +506,7 @@ function ChatApp() {
               <div className="bg-gray-100 px-4 py-2 fixed bottom-0 w-full md:w-3/4">
                 <form
                   onSubmit={editMessageId ? updateMessage : sendMessage}
-                  className="flex items-center space-x-4"
-                >
+                  className="flex items-center space-x-4">
                   <input
                     type="file"
                     onChange={handleFileChange}
@@ -532,13 +518,13 @@ function ChatApp() {
                     maxLength="200"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    className="flex-grow p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                    className="flex-grow p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-700"
                   />
                   <button
+                    className="bg-blue-500"
                     type="submit"
                     style={{
                       marginRight: "1rem",
-                      backgroundColor: "#10B981",
                       color: "white",
                       fontWeight: "bold",
                       padding: "0.5rem 1rem",
@@ -549,9 +535,8 @@ function ChatApp() {
                       (e.currentTarget.style.backgroundColor = "#059669")
                     }
                     onMouseOut={(e) =>
-                      (e.currentTarget.style.backgroundColor = "#10B981")
-                    }
-                  >
+                      (e.currentTarget.style.backgroundColor = "blue")
+                    }>
                     {editMessageId ? "Edit" : "Kirim"}
                   </button>
                   {editMessageId && (
@@ -610,11 +595,11 @@ function ChatApp() {
       }
 
         @media (max-width: 768px) {
-          .bg-white.w-full.md\\:rounded-r-lg.md\\:border-r.md\\:border-green-400.w-full.md\\:w-1\\/4 {
+          .bg-white.w-full.md\\:rounded-r-lg.md\\:border-r.md\\:border-blue-400.w-full.md\\:w-1\\/4 {
             display: ${selectedGroup ? "none" : "block"};
           }
 
-          .flex-grow.w-full.md\\:rounded-l-lg.md\\:border-l.md\\:border-green-400.md\\:w-3\\/4.flex.flex-col {
+          .flex-grow.w-full.md\\:rounded-l-lg.md\\:border-l.md\\:border-blue-400.md\\:w-3\\/4.flex.flex-col {
             display: ${selectedGroup ? "flex" : "none"};
           }
         }

@@ -4,7 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { API_DUMMY } from "../../../utils/api";
 import { Pagination } from "flowbite-react";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { Link } from "react-router-dom";
 
 const authConfig = {
   headers: {
@@ -27,6 +27,7 @@ function ResponseCompetition() {
         authConfig
       );
       setList(response.data.data);
+      console.log("data: ", response.data.data);
       setTotalPages(response.data.pagination.total_page);
     } catch (error) {
       console.log(error);
@@ -100,8 +101,7 @@ function ResponseCompetition() {
                   <select
                     value={limit}
                     onChange={handleLimitChange}
-                    className="flex-shrink-0 z-1 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
-                  >
+                    className="flex-shrink-0 z-1 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600">
                     <option value="10">10</option>
                     <option value="20">20</option>
                     <option value="50">50</option>
@@ -112,24 +112,21 @@ function ResponseCompetition() {
             <hr />
             <div className="overflow-x-auto shadow-md sm:rounded-lg mt-5">
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead className="text-center text-xs text-gray-500 border-t border-b border-t-gray-200 border-b-gray-200 uppercase bg-[#f1fcff] dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th
                       scope="col"
-                      className="whitespace-nowrap px-6 py-3 text-left"
-                    >
+                      className="whitespace-nowrap px-6 py-3 text-left">
                       No
                     </th>
                     <th
                       scope="col"
-                      className="whitespace-nowrap px-6 py-3 text-left"
-                    >
+                      className="whitespace-nowrap px-6 py-3 text-left">
                       Question Id
                     </th>
                     <th
                       scope="col"
-                      className="whitespace-nowrap px-6 py-3 text-left"
-                    >
+                      className="whitespace-nowrap px-6 py-3 text-left">
                       Jawaban
                     </th>
                     {localStorage.getItem("role") === "instructur" ? (
@@ -143,25 +140,23 @@ function ResponseCompetition() {
                     )}
                     <th
                       scope="col"
-                      className="whitespace-nowrap px-6 py-3 text-left"
-                    >
+                      className="whitespace-nowrap px-6 py-3 text-left">
                       Waktu menjawab client
                     </th>
                     <th
                       scope="col"
-                      className="whitespace-nowrap px-6 py-3 text-left"
-                    >
+                      className="whitespace-nowrap px-6 py-3 text-left">
                       Score
                     </th>
-                    {localStorage.getItem("role") === "instructur" ? (
-                      <>
-                        <th scope="col" className="px-6 py-3 text-left">
-                          Aksi
-                        </th>
-                      </>
-                    ) : (
-                      <></>
-                    )}
+                    {/* {localStorage.getItem("role") === "instructur" ? (
+                      <> */}
+                    <th scope="col" className="px-6 py-3 text-left">
+                      Aksi
+                    </th>
+                    {/* </>
+                    // ) : (
+                    //   <></>
+                    // )} */}
                   </tr>
                 </thead>
                 <tbody className="text-center">
@@ -169,8 +164,7 @@ function ResponseCompetition() {
                     <tr>
                       <td
                         colSpan="7"
-                        className="px-6 py-4 text-gray-500 dark:text-gray-400"
-                      >
+                        className="px-6 py-4 text-gray-500 dark:text-gray-400">
                         Data Tidak Ada
                       </td>
                     </tr>
@@ -179,12 +173,10 @@ function ResponseCompetition() {
                       {list.map((data, index) => (
                         <tr
                           key={index}
-                          className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                        >
+                          className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                           <th
                             scope="row"
-                            className="px-6 py-4 text-left font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                          >
+                            className="px-6 py-4 text-left font-medium text-gray-900 whitespace-nowrap dark:text-white">
                             {index + 1}
                           </th>
                           {/* <td className="px-6 py-4 text-left">
@@ -211,20 +203,30 @@ function ResponseCompetition() {
                           <td className="whitespace-nowrap px-6 py-4 text-left">
                             {data.score}
                           </td>
-                          {localStorage.getItem("role") === "instructur" ? (
-                            <>
-                              <td className="whitespace-nowrap px-6 py-4 text-left flex items-center">
+                          <td className="whitespace-nowrap px-6 py-4 text-left flex items-center">
+                            {localStorage.getItem("role") === "instructur" ? (
+                              <>
                                 <Link
                                   to={"/score-answer/" + data.id}
-                                  className="py-2 px-4 bg-green-500 rounded-lg text-white"
-                                >
+                                  className="py-2 px-4 bg-blue-500 rounded-lg text-white">
                                   <i className="fa-solid fa-star"></i>
                                 </Link>
-                              </td>
-                            </>
-                          ) : (
-                            <></>
-                          )}
+                              </>
+                            ) : (
+                              <>
+                                <Link
+                                  to={
+                                    "/details-answer/" +
+                                    class_id +
+                                    "/id/" +
+                                    data.id
+                                  }
+                                  className="py-2 px-4 bg-yellow-500 rounded-lg text-white">
+                                  <i class="fa-solid fa-circle-info"></i>
+                                </Link>
+                              </>
+                            )}
+                          </td>
                         </tr>
                       ))}
                     </>

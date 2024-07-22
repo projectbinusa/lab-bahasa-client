@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../component/Navbar1";
-import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom";
+
 import { API_DUMMY } from "../../../utils/api";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 
 function UpdateName() {
   const [email, setemail] = useState("");
@@ -12,7 +13,7 @@ function UpdateName() {
   const [departement, setDepartement] = useState("");
   const [password_prompt, setpassword_prompt] = useState("");
   const [password, setPassword] = useState("");
-  const history = useHistory();
+  const navigate = useNavigate();
   const param = useParams();
   const class_id = localStorage.getItem("class_id");
 
@@ -39,7 +40,7 @@ function UpdateName() {
         authConfig
       );
       if (response.status === 200) {
-        history.push("/manage-name/"+localStorage.getItem("class_id"));
+        navigate("/manage-name/" + localStorage.getItem("class_id"));
         Swal.fire({
           icon: "success",
           title: "Data password_prompt berhasil diperbarui.",
@@ -77,21 +78,23 @@ function UpdateName() {
     <>
       <div className="flex flex-col h-screen bg-gray-100">
         <Navbar />
-        <div className="content-page container mx-auto p-4 mt-5">
-          <div className="add-name bg-white p-8 rounded-xl shadow-xl border border-gray-300">
-            <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-5">
-              Edit Daftar Nama
-            </h1>
-            <form onSubmit={update}>
+        <div className="content-page container mx-auto mt-5">
+          <div className="add-name bg-white rounded-xl shadow-xl border border-gray-300">
+            <div className="bg-blue-400 rounded-t-xl">
+              <h1 className="text-xl sm:text-2xl font-bold text-white p-3 mb-5">
+                Edit Daftar Nama
+              </h1>
+            </div>
+            <form onSubmit={update} className="p-4">
               <div className="md:grid grid-cols-2 gap-4">
                 <div className="relative mb-4">
-                  <label className="block mb-2 text-sm font-semibold text-gray-700">
+                  <label className="block mb-2 text-sm font-bold text-gray-700">
                     Email
                   </label>
                   <input
                     type="text"
                     id="className"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                     placeholder="Masukkan Email"
                     required
                     value={email}
@@ -99,13 +102,13 @@ function UpdateName() {
                   />
                 </div>
                 <div className="relative mb-4">
-                  <label className="block mb-2 text-sm font-semibold text-gray-700">
+                  <label className="block mb-2 text-sm font-bold text-gray-700">
                     Nama
                   </label>
                   <input
                     type="text"
                     id="className"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                     placeholder="Masukkan Nama"
                     required
                     value={name}
@@ -113,29 +116,28 @@ function UpdateName() {
                   />
                 </div>
                 <div className="relative mb-4">
-                  <label className="block mb-2 text-sm font-semibold text-gray-700">
+                  <label className="block mb-2 text-sm font-bold text-gray-700">
                     Gender
                   </label>
                   <select
                     id="gender"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                     value={gender}
                     onChange={(e) => setGender(e.target.value)}
-                    required
-                  >
+                    required>
                     <option value="">Pilih Gender</option>
                     <option value="Laki-laki">Laki-laki</option>
                     <option value="Perempuan">Perempuan</option>
                   </select>
                 </div>
                 <div className="relative mb-4">
-                  <label className="block mb-2 text-sm font-semibold text-gray-700">
+                  <label className="block mb-2 text-sm font-bold text-gray-700">
                     Jurusan
                   </label>
                   <input
                     type="text"
                     id="className"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                     placeholder="Masukkan Jurusan"
                     required
                     value={departement}
@@ -143,13 +145,13 @@ function UpdateName() {
                   />
                 </div>
                 <div className="relative mb-4">
-                  <label className="block mb-2 text-sm font-semibold text-gray-700">
+                  <label className="block mb-2 text-sm font-bold text-gray-700">
                     Password prompt
                   </label>
                   <input
                     type="text"
                     id="className"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                     placeholder="Masukkan password_prompt"
                     required
                     value={password_prompt}
@@ -157,13 +159,13 @@ function UpdateName() {
                   />
                 </div>
                 <div className="relative mb-4">
-                  <label className="block mb-2 text-sm font-semibold text-gray-700">
+                  <label className="block mb-2 text-sm font-bold text-gray-700">
                     Password
                   </label>
                   <input
                     type="text"
                     id="className"
-                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                    className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                     placeholder="Masukkan Password"
                     required
                     value={password}
@@ -174,8 +176,7 @@ function UpdateName() {
               <div className="flex justify-end mt-4">
                 <button
                   type="submit"
-                  className="px-6 py-3 rounded-lg text-white bg-green-400 hover:bg-green-600 text-base font-semibold"
-                >
+                  className="px-6 py-3 rounded-lg text-white bg-blue-400 hover:bg-blue-600 text-base font-semibold">
                   Simpan
                 </button>
               </div>
