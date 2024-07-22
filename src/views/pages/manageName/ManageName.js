@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../component/Navbar1";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFileExport,
-  faFileImport,
-  faPlus,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
-import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -135,7 +127,7 @@ function ManageName() {
         text: response.data.message,
       });
 
-      getAllData(); // Refresh data after import
+      getAllData();
     } catch (error) {
       console.error("Error importing file:", error);
       Swal.fire({
@@ -178,8 +170,7 @@ function ManageName() {
                   <select
                     value={limit}
                     onChange={handleLimitChange}
-                    className="flex-shrink-0 z-1 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
-                  >
+                    className="flex-shrink-0 z-1 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600">
                     <option value="10">10</option>
                     <option value="20">20</option>
                     <option value="50">50</option>
@@ -189,18 +180,11 @@ function ManageName() {
                   <button
                     type="button"
                     onClick={handleAddNama}
-                    className="rounded-xl shadow py-2.5 px-3 border bg-green-500"
-                  >
-                    <FontAwesomeIcon
-                      icon={faPlus}
-                      className="text-xl text-white"
-                    />
+                    className="rounded-xl shadow py-2.5 px-3 border bg-blue-500">
+                    <i class="fa-solid fa-plus text-xl text-white"></i>
                   </button>
                   <label className="rounded-xl shadow py-2.5 px-3 my-1 border bg-blue-500 cursor-pointer">
-                    <FontAwesomeIcon
-                      icon={faFileImport}
-                      className="text-xl text-white"
-                    />
+                    <i class="fa-solid fa-file-import text-xl text-white"></i>
                     <input
                       type="file"
                       accept=".xlsx"
@@ -211,12 +195,8 @@ function ManageName() {
                   <button
                     type="button"
                     onClick={handleExport}
-                    className="rounded-xl shadow py-2.5 px-3 my-3 border bg-yellow-500"
-                  >
-                    <FontAwesomeIcon
-                      icon={faFileExport}
-                      className="text-xl text-white"
-                    />
+                    className="rounded-xl shadow py-2.5 px-3 my-3 border bg-yellow-500">
+                    <i class="fa-solid fa-file-export text-xl text-white"></i>
                   </button>
                 </div>
               </div>
@@ -225,54 +205,46 @@ function ManageName() {
             <div className="overflow-x-auto shadow-md sm:rounded-lg mt-5">
               <div className="custom-scrollbar">
                 <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                  <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                  <thead className="text-center text-xs text-gray-700 uppercase bg-[#f1fcff] dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                       <th
                         scope="col"
-                        className="whitespace-nowrap px-6 py-3 text-left"
-                      >
+                        className="whitespace-nowrap px-6 py-3 text-left">
                         No
                       </th>
                       <th
                         scope="col"
-                        className="whitespace-nowrap px-6 py-3 text-left"
-                      >
+                        className="whitespace-nowrap px-6 py-3 text-left">
                         ID Siswa
                       </th>
                       <th
                         scope="col"
-                        className="whitespace-nowrap px-6 py-3 text-left"
-                      >
+                        className="whitespace-nowrap px-6 py-3 text-left">
                         Nama
                       </th>
                       <th
                         scope="col"
-                        className="whitespace-nowrap px-6 py-3 text-left"
-                      >
+                        className="whitespace-nowrap px-6 py-3 text-left">
                         Gender
                       </th>
                       <th
                         scope="col"
-                        className="whitespace-nowrap px-6 py-3 text-left"
-                      >
+                        className="whitespace-nowrap px-6 py-3 text-left">
                         Jurusan
                       </th>
                       <th
                         scope="col"
-                        className="whitespace-nowrap px-6 py-3 text-left"
-                      >
+                        className="whitespace-nowrap px-6 py-3 text-left">
                         Kelas
                       </th>
                       <th
                         scope="col"
-                        className="whitespace-nowrap px-6 py-3 text-left"
-                      >
+                        className="whitespace-nowrap px-6 py-3 text-left">
                         Password
                       </th>
                       <th
                         scope="col"
-                        className="whitespace-nowrap px-6 py-3 text-left"
-                      >
+                        className="whitespace-nowrap px-6 py-3 text-left">
                         Aksi
                       </th>
                     </tr>
@@ -281,12 +253,10 @@ function ManageName() {
                     {userData.map((manage, index) => (
                       <tr
                         className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                        key={index}
-                      >
+                        key={index}>
                         <th
                           scope="row"
-                          className="px-6 py-4 text-left font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
+                          className="px-6 py-4 text-left font-medium text-gray-900 whitespace-nowrap dark:text-white">
                           {index + 1}
                         </th>
                         <td className="px-6 py-4 text-left">
@@ -310,21 +280,13 @@ function ManageName() {
                         <td className="px-6 py-4 flex items-center gap-5">
                           <Link
                             to={"/update-name/" + manage.id}
-                            className="py-2 px-3 bg-blue-500 rounded-lg text-white"
-                          >
-                            <FontAwesomeIcon
-                              className="text-lg"
-                              icon={faPenToSquare}
-                            />
+                            className="py-2 px-3 bg-blue-500 rounded-lg text-white">
+                            <i class="fa-solid fa-pen-to-square text-lg"></i>
                           </Link>
                           <button
                             className="py-2 px-3 bg-red-500 rounded-lg text-white"
-                            onClick={() => deleteData(manage.id)}
-                          >
-                            <FontAwesomeIcon
-                              className="text-lg"
-                              icon={faTrash}
-                            />
+                            onClick={() => deleteData(manage.id)}>
+                            <i class="fa-solid fa-delete-left text-lg"></i>
                           </button>
                         </td>
                       </tr>

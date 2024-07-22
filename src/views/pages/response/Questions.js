@@ -18,6 +18,7 @@ function Questions() {
   const [timeLeft, setTimeLeft] = useState(null);
   const [phase, setPhase] = useState("think");
   const [timer, setTimer] = useState(null);
+  const [multiple_question_id, setMultiple_questions_id] = useState("");
 
   const parseTimeToSeconds = (time) => {
     const [hours, minutes] = time.split(":").map(Number);
@@ -25,7 +26,7 @@ function Questions() {
     const target = new Date();
 
     target.setHours(hours, minutes, 0, 0);
-  
+
     // Check if the target time is in the past, if so, add one day to the target time
     if (target < now) {
       target.setDate(target.getDate() + 1);
@@ -41,10 +42,12 @@ function Questions() {
   };
 
   const saveChange = async () => {
+    // e.preventDefault();
     const data = {
       name: name,
       type: type,
       think_time: thinkTime,
+      // multiple_questions_id: multiple_question_id,
       answer_time: answerTime,
     };
     let url_hit = `${API_DUMMY}/api/instructur/class/${localStorage.getItem(
@@ -60,7 +63,7 @@ function Questions() {
           showConfirmButton: false,
           timer: 1500,
         });
-      } 
+      }
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -120,9 +123,9 @@ function Questions() {
         return "Kompetisi di mana siswa diberikan pertanyaan dan mereka berlomba untuk menjadi orang pertama yang memberikan jawaban yang benar.";
       case "Enter an Answer":
         return "Siswa memasukkan jawaban mereka ke dalam sistem. Jawaban ini kemudian dapat dinilai oleh guru.";
-      case "Demo to Answer":
-        return "Tekan tombol 'start' untuk memulai menjawab, hanya siswa pertama yang menekan tombol jawab yang dapat mendemonstrasikan layar kepada siswa lainnya.";
-      default:
+        // case "Demo to Answer":
+        //   return "Tekan tombol 'start' untuk memulai menjawab, hanya siswa pertama yang menekan tombol jawab yang dapat mendemonstrasikan layar kepada siswa lainnya.";
+        // default:
         return "";
     }
   };
@@ -145,11 +148,11 @@ function Questions() {
               id="type"
               value={type}
               onChange={(e) => setType(e.target.value)}
-              className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500">
+              className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-700 focus:border-blue-700">
               <option value="">Pilih jenis</option>
               <option value="First to Answer">Tinjau untuk menjawab</option>
               <option value="Enter an Answer">Masukkan jawaban</option>
-              <option value="Demo to Answer">Demo untuk menjawab</option>
+              {/* <option value="Demo to Answer">Demo untuk menjawab</option> */}
             </select>
           </div>
           <div className="mb-3">
@@ -163,7 +166,7 @@ function Questions() {
               id="pertanyaan"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+              className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-700 focus:border-blue-700"
             />
           </div>
           <div className="mb-3">
@@ -173,11 +176,11 @@ function Questions() {
               Waktu berpikir:
             </label>
             <input
-              type="time"
+              type="datetime-local"
               id="think-time"
               value={thinkTime}
               onChange={(e) => setThinkTime(e.target.value)}
-              className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+              className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-700 focus:border-blue-700"
             />
           </div>
           <div className="mb-3">
@@ -187,11 +190,11 @@ function Questions() {
               Waktu jawab:
             </label>
             <input
-              type="time"
+              type="datetime-local"
               id="answer-time"
               value={answerTime}
               onChange={(e) => setAnswerTime(e.target.value)}
-              className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
+              className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-700 focus:border-blue-700"
             />
           </div>
           <div className="mb-3 w-[70%]">
@@ -199,7 +202,7 @@ function Questions() {
             <p className="text-gray-700">{getInstructions()}</p>
           </div>
           <button
-            className="w-full py-2 font-semibold text-white bg-green-500 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 mb-2"
+            className="w-full py-2 font-semibold text-white bg-blue-700 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-700 mb-2"
             onClick={startCompetition}>
             Mulai Kompetisi
           </button>

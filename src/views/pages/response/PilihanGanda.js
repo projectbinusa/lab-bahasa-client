@@ -40,15 +40,23 @@ function PilihanGanda() {
     ]);
   };
 
+  const removeQuestion = (questionIndex) => {
+    const newQuestions = questions.filter(
+      (_, index) => index !== questionIndex
+    );
+    setQuestions(newQuestions);
+  };
+
   const saveQuestions = async () => {
     const data = questions.map((q) => ({
       question_text: q.name,
       options: q.options,
       correct_answer: q.correctOption,
+      chosen: 0,
     }));
     const url_hit = `${API_DUMMY}/api/instructur/class/${localStorage.getItem(
       "class_id"
-    )}/response_competition`;
+    )}/multiple_choice_questions`;
 
     try {
       const response = await axios.post(url_hit, data, authConfig);
@@ -59,6 +67,7 @@ function PilihanGanda() {
           showConfirmButton: false,
           timer: 1500,
         });
+        window.location.reload();
       }
     } catch (error) {
       Swal.fire({
@@ -71,75 +80,80 @@ function PilihanGanda() {
   };
 
   return (
-    <div className="flex flex-col h-screen">
-      <Navbar />
-      <div className="content-page container mx-auto mt-10">
-        <div className="w-11/12 p-3 bg-white rounded-lg shadow-lg border border-gray-300 mx-auto">
-          <h1 className="text-lg sm:text-xl font-bold text-gray-800">
-            Soal Pilihan Ganda
-          </h1>
-          {questions.map((question, questionIndex) => (
-            <div key={questionIndex} className="mb-5">
-              <div className="mb-3 mt-3">
+    <div className="content-page container mx-auto mt-3">
+      <div className="w-full p-3 bg-white mx-auto">
+        <h2 className="font-bold text-lg bg-blue-500 w-fit rounded-lg text-white px-2 mb-4">
+          Tambah Soal Pilihan Ganda
+        </h2>
+        {questions.map((question, questionIndex) => (
+          <div key={questionIndex} className="mb-5">
+            <div className="mb-3 mt-3">
+              <div className="flex justify-between items-center">
                 <label
                   htmlFor={`pertanyaan-${questionIndex}`}
-                  className="mb-1 text-sm font-semibold text-gray-700 block"
-                >
+                  className="mb-1 text-sm font-semibold text-gray-700 block">
                   Pertanyaan {questionIndex + 1}:
                 </label>
-                <input
-                  type="text"
-                  id={`pertanyaan-${questionIndex}`}
-                  value={question.name}
-                  onChange={(e) =>
-                    handleQuestionChange(questionIndex, e.target.value)
-                  }
-                  className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
-                />
+                {questionIndex > 0 && (
+                  <button
+                    onClick={() => removeQuestion(questionIndex)}
+                    className="text-red-500">
+                    <i className="fa-solid fa-circle-xmark"></i>
+                  </button>
+                )}
               </div>
-              <div className="mb-3">
-                <label className="mb-1 text-sm font-semibold text-gray-700 block">
-                  Pilihan Ganda:
-                </label>
-                {question.options.map((option, optionIndex) => (
-                  <div key={optionIndex} className="flex items-center mb-2">
-                    <input
-                      type="text"
-                      value={option}
-                      onChange={(e) =>
-                        handleOptionChange(
-                          questionIndex,
-                          optionIndex,
-                          e.target.value
-                        )
-                      }
-                      className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-green-500 focus:border-green-500"
-                      placeholder={`Pilihan ${optionIndex + 1}`}
-                    />
-                    <input
-                      type="radio"
-                      name={`correctOption-${questionIndex}`}
-                      checked={question.correctOption === optionIndex}
-                      onChange={() =>
-                        handleCorrectOptionChange(questionIndex, optionIndex)
-                      }
-                      className="ml-2"
-                    />
-                  </div>
-                ))}
-              </div>
+              <textarea
+                type="text"
+                id={`pertanyaan-${questionIndex}`}
+                value={question.name}
+                onChange={(e) =>
+                  handleQuestionChange(questionIndex, e.target.value)
+                }
+                className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              ></textarea>
             </div>
-          ))}
+            <div className="mb-3">
+              <label className="mb-1 text-sm font-semibold text-gray-700 block">
+                Pilihan Ganda:
+              </label>
+              {question.options.map((option, optionIndex) => (
+                <div key={optionIndex} className="flex items-center mb-2">
+                  <input
+                    type="text"
+                    value={option}
+                    onChange={(e) =>
+                      handleOptionChange(
+                        questionIndex,
+                        optionIndex,
+                        e.target.value
+                      )
+                    }
+                    className="block w-full p-2 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    placeholder={`Pilihan ${optionIndex + 1}`}
+                  />
+                  <input
+                    type="radio"
+                    name={`correctOption-${questionIndex}`}
+                    checked={question.correctOption === optionIndex}
+                    onChange={() =>
+                      handleCorrectOptionChange(questionIndex, optionIndex)
+                    }
+                    className="ml-2"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+        <div className="md:flex block gap-4">
           <button
             className="w-full py-2 font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-2"
-            onClick={addQuestion}
-          >
+            onClick={addQuestion}>
             Tambah Pertanyaan
           </button>
           <button
-            className="w-full py-2 font-semibold text-white bg-green-500 rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 mb-2"
-            onClick={saveQuestions}
-          >
+            className="w-full py-2 font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-2"
+            onClick={saveQuestions}>
             Submit
           </button>
         </div>

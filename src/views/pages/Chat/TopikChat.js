@@ -104,16 +104,17 @@ function TopikChat() {
         socket.emit("sendMessageTopic", newMessage);
         setContent("");
         setGambar(null);
+        getAllDatachatTopic(selectedTopic.id);
       }
     } catch (error) {
       console.error("Error sending message:", error);
     }
   };
 
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    setGambar(selectedFile);
-  };
+  // const handleFileChange = (e) => {
+  //   const selectedFile = e.target.files[0];
+  //   setGambar(selectedFile);
+  // };
 
   const cancelEdit = () => {
     setEditMessageId(null);
@@ -141,6 +142,7 @@ function TopikChat() {
         authConfig
       );
       setList(response.data.data);
+      getAllDatachatTopic(selectedTopic.id);
     } catch (error) {
       console.log(error);
     }
@@ -218,7 +220,7 @@ function TopikChat() {
     if (content) {
       formData.append("content", replayMessage ? `Re: ${content}` : content);
     }
-    formData.append("receiver_id", user_id);
+    // formData.append("receiver_id", user_id);
 
     try {
       const response = await axios.put(
@@ -241,22 +243,21 @@ function TopikChat() {
 
   const deleteMessage = async (messageId) => {
     try {
-        await axios.delete(
-          `${API_DUMMY}/api/chat/delete/${messageId}/class/${class_id}/topic_chat/${selectedTopic.id}`,
-          authConfig
-        );
+      await axios.delete(
+        `${API_DUMMY}/api/chat/delete/${messageId}/class/${class_id}/topic_chat/${selectedTopic.id}`,
+        authConfig
+      );
 
-        if (selectedTopic) {
-          getAllDatachatTopic(selectedTopic.id);
-          setReplayMessage(null);
-        }
+      if (selectedTopic) {
+        getAllDatachatTopic(selectedTopic.id);
+        setReplayMessage(null);
+      }
 
-        Swal.fire("Terhapus!", "Pesan berhasil dihapus.", "success");
+      Swal.fire("Terhapus!", "Pesan berhasil dihapus.", "success");
     } catch (error) {
       console.error("Error deleting message:", error);
     }
   };
-
 
   const handleDeleteTopic = async (topic_chat_id) => {
     const confirmDelete = await Swal.fire({
@@ -295,17 +296,17 @@ function TopikChat() {
         <Navbar />
         <div className="flex flex-grow flex-col md:flex-row md:justify-center gap-4 mt-3 mx-3">
           <div
-            className={`bg-white w-full md:rounded-r-lg md:border-r md:border-green-400 md:w-1/4 ${
+            className={`bg-white w-full md:rounded-r-lg md:border-r md:border-blue-400 md:w-1/4 ${
               selectedTopic ? "hidden md:block" : "block"
             }`}>
             <div className="flex">
               <button
                 onClick={handleTopic}
-                className="bg-green-500 flex-1 h-10 flex items-center justify-center text-white text-lg rounded-t-lg">
+                className="bg-blue-700 flex-1 h-10 flex items-center justify-center text-white text-lg rounded-t-lg">
                 Tambah Topik Chat
               </button>
             </div>
-            <div className="flex-grow md:p-2 overflow-y-scroll custom-scrollbar h-[90%]">
+            <div className="flex-grow md:p-2 overflow-y-scroll custom-scrollbar h-screen">
               {list.length === 0 ? (
                 <div className="text-center md:py-60 md:bg-transparent bg-gray-100 text-gray-500 md:mt-4">
                   <p className="md:my-0 py-6">Tidak ada topik yang dibahas.</p>
@@ -317,11 +318,11 @@ function TopikChat() {
                     onClick={() => setSelectedTopicChat(topic)}
                     className={`rounded-lg p-2 flex gap-4 md:mt-0 mt-2 cursor-pointer mb-2 ${
                       selectedTopic?.id === topic.id
-                        ? "bg-green-500 text-white"
-                        : "bg-green-300 text-gray-800"
+                        ? "bg-blue-700 text-white"
+                        : "bg-blue-300 text-gray-800"
                     }`}>
                     <div className="flex gap-3 items-center flex-grow">
-                      <div className="border-2 w-fit rounded-full border-green-500 ml-auto">
+                      <div className="border-2 w-fit rounded-full border-blue-700 ml-auto">
                         <img className="w-9" src={img} alt="" />
                       </div>
                       <div className="text-left flex-grow">
@@ -358,11 +359,11 @@ function TopikChat() {
           </div>
 
           <div
-            className={`flex-grow w-full md:rounded-l-lg md:border-l md:border-green-400 md:w-3/4 flex flex-col ${
+            className={`flex-grow w-full md:rounded-l-lg md:border-l md:border-blue-400 md:w-3/4 flex flex-col ${
               selectedTopic ? "" : "hidden md:flex"
             }`}>
-            <div className="flex-1 bg-white overflow-y-hidden h-96">
-              <div className="border-2 rounded-t-lg border-green-500 bg-green-500 h-10 flex items-center">
+            <div className="flex-1 bg-white overflow-y-auto h-screen">
+              <div className="border-2 rounded-t-lg border-blue-700 bg-blue-700 h-10 flex items-center">
                 <button
                   className="text-white text-lg ml-4 font-semibold md:hidden"
                   onClick={() => setSelectedTopic(null)}>
@@ -373,7 +374,7 @@ function TopikChat() {
                 </h1>
               </div>
 
-              <div className="flex-grow px-2 overflow-y-auto custom-scrollbar h-[84%]">
+              <div className="flex-grow px-2 overflow-y-auto custom-scrollbar h-screen">
                 {selectedTopic ? (
                   chatTopic.length === 0 ? (
                     <div className="flex items-center justify-center">
@@ -400,8 +401,8 @@ function TopikChat() {
                             <div
                               className={` ${
                                 message.sender_id == localStorage.getItem("id")
-                                  ? "bg-green-500 text-white"
-                                  : "bg-green-400"
+                                  ? "bg-blue-700 text-white"
+                                  : "bg-blue-400"
                               } text-white rounded-lg my-2 p-2 w-[90%] shadow ml-2`}>
                               {message.sender_id ==
                               localStorage.getItem("id") ? (
@@ -487,7 +488,8 @@ function TopikChat() {
                   className="flex items-center space-x-4">
                   <input
                     type="file"
-                    onChange={handleFileChange}
+                    // value={gambar}
+                    onChange={(e) => setGambar(e.target.files[0])}
                     id="file-upload"
                   />
                   <input
@@ -496,13 +498,13 @@ function TopikChat() {
                     maxLength="200"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
-                    className="flex-grow p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-green-500"
+                    className="flex-grow p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-700"
                   />
                   <button
+                    className="bg-blue-700"
                     type="submit"
                     style={{
                       marginRight: "1rem",
-                      backgroundColor: "#10B981",
                       color: "white",
                       fontWeight: "bold",
                       padding: "0.5rem 1rem",
@@ -572,11 +574,11 @@ function TopikChat() {
       }
 
         @media (max-width: 768px) {
-          .bg-white.w-full.md\\:rounded-r-lg.md\\:border-r.md\\:border-green-400.w-full.md\\:w-1\\/4 {
+          .bg-white.w-full.md\\:rounded-r-lg.md\\:border-r.md\\:border-blue-400.w-full.md\\:w-1\\/4 {
             display: ${selectedTopic ? "none" : "block"};
           }
 
-          .flex-grow.w-full.md\\:rounded-l-lg.md\\:border-l.md\\:border-green-400.md\\:w-3\\/4.flex.flex-col {
+          .flex-grow.w-full.md\\:rounded-l-lg.md\\:border-l.md\\:border-blue-400.md\\:w-3\\/4.flex.flex-col {
             display: ${selectedTopic ? "flex" : "none"};
           }
         }

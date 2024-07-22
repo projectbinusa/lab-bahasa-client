@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { API_DUMMY } from "../../../utils/api";
 import axios from "axios";
 import Swal from "sweetalert2";
-import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
+import {  useNavigate } from "react-router-dom";
+import verified from "../../../component/Asset/Verified.png";
 
 function VerifyCode() {
   const [email, setEmail] = useState("");
   const [code, setReset_code] = useState("");
-  const history = useHistory();
+  const navigate = useNavigate();
   const [show, setShow] = useState(false);
 
   const verify_code = async (e) => {
@@ -19,7 +20,7 @@ function VerifyCode() {
         code,
       });
       if (response.status == 200) {
-        history.push("/reset-password/" + code);
+        navigate("/reset-password/" + code);
         setShow(false);
         Swal.fire({
           icon: "success",
@@ -30,13 +31,13 @@ function VerifyCode() {
       }
     } catch (error) {
       console.log(error);
-      setShow(false)
+      setShow(false);
       Swal.fire({
-            icon: "error",
-            title: "Kode verify telah kadarluwarsa",
-            showConfirmButton: false,
-            timer: 1500,
-          });
+        icon: "error",
+        title: "Kode verify telah kadarluwarsa",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     }
   };
 
@@ -50,14 +51,11 @@ function VerifyCode() {
           {/* <!-- Row --> */}
           <div class="w-full xl:w-3/4 lg:w-11/12 flex">
             {/* <!-- Col --> */}
-            <div
-              class="w-full h-auto  hidden lg:block lg:w-1/2 bg-cover rounded-l-lg"
-              style={{
-                backgroundImage:
-                  "url('https://img.freepik.com/free-vector/hacker-breaking-lock-get-access-personal-information-computer-isometric_1284-63723.jpg?t=st=1715668915~exp=1715672515~hmac=9773a5d10213c22cc51796519f51bf5b421993274c5f247d2589bf784aebcecb&w=740')",
-              }}></div>
+            {/* <div class="hidden lg:block rounded-l-lg"> */}
+            <img style={{ width: "50%" }} className="hidden lg:block rounded-l-lg" src={verified} alt="" />
+            {/* </div> */}
             {/* <!-- Col --> */}
-            <div class="w-full lg:w-1/2 bg-white p-5 rounded-lg lg:rounded-l-none shadow-lg shadow-slate-400">
+            <div class="w-full lg:w-1/2 bg-white h-fit mt-3 p-5 rounded-lg lg:rounded-l-none shadow-lg shadow-slate-400">
               <div class="px-8 mb-4 text-center">
                 <h3 class="pt-4 mb-2 text-2xl">Verify Kode</h3>
                 <p class="mb-4 text-sm text-gray-700">
@@ -66,7 +64,7 @@ function VerifyCode() {
               </div>
               <form
                 onSubmit={verify_code}
-                class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
+                class="px-8 pt-6 h-fit bg-white rounded">
                 <div class="mb-4">
                   <label
                     class="block mb-2 text-sm font-bold text-gray-700"
@@ -101,7 +99,7 @@ function VerifyCode() {
                 </div>
                 <div class="mb-6 text-center">
                   <button
-                    class="w-full px-4 py-2 font-bold text-white bg-red-500 rounded-full hover:bg-red-700 focus:outline-none focus:shadow-outline"
+                    class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
                     type="submit">
                     Submit
                   </button>

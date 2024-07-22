@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Navbar from "../../../component/Navbar1";
 import axios from "axios";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+
 import { API_DUMMY } from "../../../utils/api";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const authConfig = {
   headers: {
@@ -16,7 +17,7 @@ function AddClass() {
   const [description, setDescription] = useState("");
   const [file, setFile] = useState(null);
   const [is_active, setis_active] = useState(0);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const saveChange = async (e) => {
     e.preventDefault();
@@ -29,7 +30,7 @@ function AddClass() {
     try {
       const response = await axios.post(url_hit, formData, authConfig);
       if (response.status == 200) {
-        history.push("/manage-class/"+localStorage.getItem("class_id"));
+        navigate("/manage-class/"+localStorage.getItem("class_id"));
         Swal.fire({
           icon: "success",
           title: "Berhasil Menambahkan Data.",
@@ -59,7 +60,7 @@ function AddClass() {
                 <input
                   type="text"
                   id="className"
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                   placeholder="Masukkan Nama Kelas"
                   required
                   value={name}
@@ -73,7 +74,7 @@ function AddClass() {
                 <input
                   type="text"
                   id="className"
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                   placeholder="Masukkan Deskripsi"
                   required
                   value={description}
@@ -87,7 +88,7 @@ function AddClass() {
                 <input
                   type="file"
                   id="className"
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                   placeholder="Masukkan Nama Kelas"
                   required
                   onChange={(e) => setFile(e.target.files[0])}
@@ -100,7 +101,7 @@ function AddClass() {
                 <input
                   type="text"
                   id="className"
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                   placeholder="Masukkan Nama Kelas"
                   required
                 />
@@ -108,7 +109,7 @@ function AddClass() {
               <div className="flex justify-end mt-8">
                 <button
                   type="submit"
-                  className="px-6 py-3 rounded-lg text-white bg-green-400 hover:bg-green-600 text-base font-semibold"
+                  className="px-6 py-3 rounded-lg text-white bg-blue-400 hover:bg-blue-600 text-base font-semibold"
                 >
                   Simpan
                 </button>

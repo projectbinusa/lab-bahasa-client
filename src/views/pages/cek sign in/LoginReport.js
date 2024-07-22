@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../component/Navbar1";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCheck, faPlus, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import axios from "axios";
 import { API_DUMMY } from "../../../utils/api";
 import Swal from "sweetalert2";
 import { Pagination } from "flowbite-react";
+import { Link } from "react-router-dom";
 
 const authConfig = {
   headers: {
@@ -173,15 +170,12 @@ function LoginReport() {
                         <Link
                           to={"/update-login-report/" + data.id}
                           className="py-3 px-4 bg-blue-500 rounded-lg text-white">
-                          <FontAwesomeIcon
-                            className="text-lg"
-                            icon={faPenToSquare}
-                          />
+                          <i class="fa-solid fa-pen-to-square text-lg"></i>
                         </Link>
                         <button
                           className="py-3 px-4 bg-red-500 rounded-lg text-white"
                           onClick={() => deleteData(data.id)}>
-                          <FontAwesomeIcon className="text-lg" icon={faTrash} />
+                         <i class="fa-solid fa-delete-left text-lg"></i>
                         </button>
                       </td>
                     </tr>
@@ -204,7 +198,7 @@ function LoginReport() {
                 Array.from({ length: pagination.total_page }, (_, i) => (
                   <button
                     key={i}
-                    className="px-3 py-1 mx-1 border rounded-md bg-green-500 text-white">
+                    className="px-3 py-1 mx-1 border rounded-md bg-blue-500 text-white">
                     {i + 1}
                   </button>
                 ))

@@ -1,16 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../component/Navbar1";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faArrowRight,
-  faCheck,
-  faFileExport,
-  faFileImport,
-  faPlus,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
-import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { API_DUMMY } from "../../../utils/api";
 import Swal from "sweetalert2";
@@ -204,9 +194,9 @@ function ManageClass() {
   return (
     <>
       <div className="flex flex-col min-h-screen">
-      <div className="sticky top-0 z-50">
-        <Navbar />
-      </div>
+        <div className="sticky top-0 z-50">
+          <Navbar />
+        </div>
         <div className="px-4 sm:px-8 md:px-16 lg:px-32">
           <div className="w-full p-4 text-center bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700 mt-8">
             <div className="flex justify-between">
@@ -222,7 +212,7 @@ function ManageClass() {
                         id="search-dropdown"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        class="block p-2.5 w-full md:w-full z-1 text-sm rounded-l-md text-gray-900 bg-gray-50 border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
+                        class="block p-2.5 w-full md:w-full z-1 text-sm rounded-l-md text-gray-900 bg-gray-50 border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-700 focus:border-blue-700 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-700"
                         placeholder="Search name..."
                         required
                       />
@@ -258,17 +248,11 @@ function ManageClass() {
                 <button
                   type="button"
                   onClick={handleAddClass}
-                  className="rounded-xl shadow p-2 px-3 border bg-green-500 mb-5 mr-2">
-                  <FontAwesomeIcon
-                    icon={faPlus}
-                    className="text-xl text-white"
-                  />
+                  className="rounded-xl shadow p-2 px-3 border bg-blue-500 mb-5 mr-2">
+                  <i class="fa-solid fa-plus text-white text-xl"></i>
                 </button>
-                <label className="rounded-xl shadow p-2 px-3 border bg-blue-500 mb-5 mr-2 cursor-pointer">
-                  <FontAwesomeIcon
-                    icon={faFileImport}
-                    className="text-xl text-white"
-                  />
+                <label className="rounded-xl shadow p-2 px-3 border bg-blue-700 mb-5 mr-2 cursor-pointer">
+                  <i class="fa-solid fa-file-import text-xl text-white"></i>
                   <input
                     type="file"
                     accept=".xlsx"
@@ -280,17 +264,14 @@ function ManageClass() {
                   type="button"
                   onClick={handleExport}
                   className="rounded-xl shadow p-2 px-3 border bg-yellow-500 mb-5">
-                  <FontAwesomeIcon
-                    icon={faFileExport}
-                    className="text-xl text-white"
-                  />
+                  <i class="fa-solid fa-file-export text-xl text-white"></i>
                 </button>
               </div>
             </div>
             <hr />
             <div className="overflow-x-auto shadow-md sm:rounded-lg mt-5">
               <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                <thead className="text-center text-xs text-gray-500 border-t border-b border-t-gray-200 border-b-gray-200 uppercase bg-[#f1fcff] dark:bg-gray-700 dark:text-gray-400">
                   <tr>
                     <th scope="col" className="px-6 py-3 text-left">
                       No
@@ -328,8 +309,12 @@ function ManageClass() {
                       <td className="px-6 py-4 text-left">
                         <img src={data.gambar} alt="" />
                       </td>
-                      <td className="px-6 py-4 text-left capitalize">{data.user_name}</td>
-                      <td className="px-6 py-4 text-left capitalize">{data.name}</td>
+                      <td className="px-6 py-4 text-left capitalize">
+                        {data.user_name}
+                      </td>
+                      <td className="px-6 py-4 text-left capitalize">
+                        {data.name}
+                      </td>
                       <td className="px-6 py-4 text-left capitalize">
                         {data.description}
                       </td>
@@ -341,26 +326,23 @@ function ManageClass() {
                           className={`py-3 px-4 rounded-lg text-white ${
                             data.is_active
                               ? "bg-gray-500 cursor-not-allowed"
-                              : "bg-green-500"
+                              : "bg-blue-500"
                           }`}
                           onClick={() =>
                             !data.is_active && handleActivateClass(data.id)
                           }
                           disabled={data.is_active}>
-                          <FontAwesomeIcon className="text-lg" icon={faCheck} />
+                          <i class="fa-solid fa-check text-lg"></i>
                         </button>
                         <Link
                           to={"/update-class/" + data.id}
-                          className="py-3 px-4 bg-blue-500 rounded-lg text-white">
-                          <FontAwesomeIcon
-                            className="text-lg"
-                            icon={faPenToSquare}
-                          />
+                          className="py-3 px-4 bg-blue-700 rounded-lg text-white">
+                          <i class="fa-solid fa-pen-to-square text-lg"></i>
                         </Link>
                         <button
                           className="py-3 px-4 bg-red-500 rounded-lg text-white"
                           onClick={() => deleteData(data.id)}>
-                          <FontAwesomeIcon className="text-lg" icon={faTrash} />
+                          <i class="fa-solid fa-delete-left text-lg"></i>
                         </button>
                       </td>
                     </tr>
@@ -383,7 +365,7 @@ function ManageClass() {
                 Array.from({ length: pagination.total_page }, (_, i) => (
                   <button
                     key={i}
-                    className="px-3 py-1 mx-1 border rounded-md bg-green-500 text-white">
+                    className="px-3 py-1 mx-1 border rounded-md bg-blue-700 text-white">
                     {i + 1}
                   </button>
                 ))

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Navbar from "../../../component/Navbar1";
 import axios from "axios";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+
 import { API_DUMMY } from "../../../utils/api";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const authConfig = {
   headers: {
@@ -15,7 +16,7 @@ function AddGroup() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const class_id = localStorage.getItem("class_id");
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const saveChange = async (e) => {
     e.preventDefault();
@@ -58,7 +59,7 @@ function AddGroup() {
                 <input
                   type="text"
                   id="className"
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                   placeholder="Masukkan Nama Grup"
                   required
                   value={name}
@@ -72,7 +73,7 @@ function AddGroup() {
                 <input
                   type="text"
                   id="classDescription"
-                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-base rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2"
                   placeholder="Masukkan Deskripsi"
                   required
                   value={description}
@@ -82,7 +83,7 @@ function AddGroup() {
               <div className="flex justify-end mt-8">
                 <button
                   type="submit"
-                  className="px-6 py-3 rounded-lg text-white bg-green-400 hover:bg-green-600 text-base font-semibold"
+                  className="px-6 py-3 rounded-lg text-white bg-blue-400 hover:bg-blue-600 text-base font-semibold"
                 >
                   Simpan
                 </button>

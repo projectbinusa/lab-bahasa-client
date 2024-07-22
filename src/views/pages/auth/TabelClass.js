@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowRight, faCheck } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import axios from "axios";
 import { API_DUMMY } from "../../../utils/api";
 import Swal from "sweetalert2";
 import { Pagination } from "flowbite-react";
+import { useNavigate } from "react-router-dom";
 
 const authConfig = {
   headers: {
@@ -21,7 +19,7 @@ function TabelClass() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [show, setShow] = useState(false);
-  const history = useHistory();
+  const navigate = useNavigate();
   const role = localStorage.getItem("role");
 
   const getAllData = async () => {
@@ -115,7 +113,7 @@ function TabelClass() {
   }, [searchTerm, limit, currentPage]);
 
   const handleNextPage = () => {
-    history.push("/");
+    navigate("/");
   };
 
   return (
@@ -141,8 +139,7 @@ function TabelClass() {
                   <select
                     value={limit}
                     onChange={handleLimitChange}
-                    className="flex-shrink-0 z-1 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
-                  >
+                    className="flex-shrink-0 z-1 inline-flex rounded-r-md items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600">
                     <option value="10">10</option>
                     <option value="20">20</option>
                     <option value="50">50</option>
@@ -182,12 +179,10 @@ function TabelClass() {
                   {list.map((data, index) => (
                     <tr
                       key={index}
-                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                    >
+                      className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                       <th
                         scope="row"
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                      >
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {index + 1}
                       </th>
                       <td className="px-6 py-4">
@@ -207,29 +202,21 @@ function TabelClass() {
                             className={`py-3 px-4 rounded-lg text-white ${
                               data.is_active
                                 ? "bg-gray-500 cursor-not-allowed"
-                                : "bg-green-500"
+                                : "bg-blue-500"
                             }`}
                             onClick={() =>
                               !data.is_active && handleActivateClass(data.id)
                             }
-                            disabled={data.is_active}
-                          >
-                            <FontAwesomeIcon
-                              className="text-lg"
-                              icon={faCheck}
-                            />
+                            disabled={data.is_active}>
+                            <i class="fa-solid fa-check text-lg"></i>
                           </button>
                         )}
                         {data.id ===
                           Number(localStorage.getItem("class_id")) && (
                           <button
-                            className="py-3 px-4 rounded-lg text-white bg-green-500"
-                            onClick={handleNextPage}
-                          >
-                            <FontAwesomeIcon
-                              className="text-lg"
-                              icon={faArrowRight}
-                            />
+                            className="py-3 px-4 rounded-lg text-white bg-blue-500"
+                            onClick={handleNextPage}>
+                            <i class="fa-solid fa-arrow-right text-lg"></i>
                           </button>
                         )}
                       </td>

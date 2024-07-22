@@ -1,9 +1,10 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import ikon dari react-icons
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+
 import Swal from "sweetalert2";
 import { API_DUMMY } from "../../../utils/api";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
   const [password, setPassword] = useState("");
@@ -14,8 +15,8 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // State untuk mengontrol apakah password ditampilkan atau tidak
   const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State untuk mengontrol apakah konfirmasi password ditampilkan atau tidak
-  const history = useHistory()
-  
+  const navigate = useNavigate()
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,7 +53,7 @@ function Register() {
           showConfirmButton: false,
           timer: 1500,
         });
-        history.push("/");
+        navigate("/");
         setTimeout(() => {
           window.location.reload();
         }, 1500);
@@ -183,7 +184,7 @@ function Register() {
                 </div>
                 <div class="mb-6 text-center">
                   <button
-                    class="w-full px-4 py-2 font-bold text-white bg-green-500 rounded-full hover:bg-green-700 focus:outline-none focus:shadow-outline"
+                    class="w-full px-4 py-2 font-bold text-white bg-blue-500 rounded-full hover:bg-blue-700 focus:outline-none focus:shadow-outline"
                     type="submit"
                   >
                     Daftar Akun
