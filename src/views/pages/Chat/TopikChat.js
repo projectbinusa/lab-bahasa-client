@@ -196,6 +196,10 @@ function TopikChat() {
     }
   };
 
+  const hideDropdown = () => {
+    setDropdownIndex2(null);
+  };
+
   const editMessage = (messageId, messageContent) => {
     setEditMessageId(messageId);
     if (messageContent.startsWith("Re: ")) {
@@ -298,11 +302,13 @@ function TopikChat() {
           <div
             className={`bg-white w-full md:rounded-r-lg md:border-r md:border-blue-400 md:w-1/4 ${
               selectedTopic ? "hidden md:block" : "block"
-            }`}>
+            }`}
+          >
             <div className="flex">
               <button
                 onClick={handleTopic}
-                className="bg-blue-700 flex-1 h-10 flex items-center justify-center text-white text-lg rounded-t-lg">
+                className="bg-blue-700 flex-1 h-10 flex items-center justify-center text-white text-lg rounded-t-lg"
+              >
                 Tambah Topik Chat
               </button>
             </div>
@@ -320,7 +326,8 @@ function TopikChat() {
                       selectedTopic?.id === topic.id
                         ? "bg-blue-700 text-white"
                         : "bg-blue-300 text-gray-800"
-                    }`}>
+                    }`}
+                  >
                     <div className="flex gap-3 items-center flex-grow">
                       <div className="border-2 w-fit rounded-full border-blue-700 ml-auto">
                         <img className="w-9" src={img} alt="" />
@@ -336,7 +343,8 @@ function TopikChat() {
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleDropdown(index, 1);
-                        }}>
+                        }}
+                      >
                         &#x2022;&#x2022;&#x2022;
                       </button>
                       {dropdownIndex1 === index && (
@@ -346,7 +354,8 @@ function TopikChat() {
                               e.stopPropagation();
                               handleDeleteTopic(topic.id);
                             }}
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left">
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 w-full text-left"
+                          >
                             Hapus Topic Chat
                           </button>
                         </div>
@@ -361,12 +370,14 @@ function TopikChat() {
           <div
             className={`flex-grow w-full md:rounded-l-lg md:border-l md:border-blue-400 md:w-3/4 flex flex-col ${
               selectedTopic ? "" : "hidden md:flex"
-            }`}>
+            }`}
+          >
             <div className="flex-1 bg-white overflow-y-auto h-screen">
               <div className="border-2 rounded-t-lg border-blue-700 bg-blue-700 h-10 flex items-center">
                 <button
                   className="text-white text-lg ml-4 font-semibold md:hidden"
-                  onClick={() => setSelectedTopic(null)}>
+                  onClick={() => setSelectedTopic(null)}
+                >
                   &lt;Kembali
                 </button>
                 <h1 className="text-white text-lg ml-4 font-semibold">
@@ -391,7 +402,8 @@ function TopikChat() {
                             message.sender_id == localStorage.getItem("id")
                               ? "flex justify-end"
                               : "flex justify-start"
-                          }`}>
+                          }`}
+                        >
                           <div className="flex w-80 items-center">
                             <img
                               className="w-8 h-8 rounded-full"
@@ -403,22 +415,34 @@ function TopikChat() {
                                 message.sender_id == localStorage.getItem("id")
                                   ? "bg-blue-700 text-white"
                                   : "bg-blue-400"
-                              } text-white rounded-lg my-2 p-2 w-[90%] shadow ml-2`}>
+                              } text-white rounded-lg my-2 p-2 w-[90%] shadow ml-2`}
+                            >
                               {message.sender_id ==
                               localStorage.getItem("id") ? (
                                 <>
-                                  <div className="flex justify-between">
+                                  <div className="flex justify-between relative dropdown">
                                     <p>{message.content}</p>
-                                    <div className="">
-                                      <button
-                                        className=""
-                                        onClick={() =>
-                                          toggleDropdown(index, 2)
-                                        }>
+                                    <div
+                                      onMouseEnter={() =>
+                                        toggleDropdown(index, 2)
+                                      }
+                                      onMouseLeave={hideDropdown}
+                                    >
+                                      <button className="text-sm font-semibold flex items-center focus:outline-none">
                                         <i className="fa-solid fa-ellipsis-vertical"></i>
                                       </button>
-                                      {dropdownIndex2 === index && (
-                                        <div className="absolute right-0 w-24 bg-white text-black border rounded shadow-lg">
+                                      <ul
+                                        className={`absolute right-0 mt-8 w-24 bg-white text-black border rounded shadow-lg ${
+                                          dropdownIndex2 === index
+                                            ? ""
+                                            : "hidden"
+                                        }`}
+                                        onMouseEnter={() =>
+                                          toggleDropdown(index, 2)
+                                        }
+                                        onMouseLeave={hideDropdown}
+                                      >
+                                        <li>
                                           <button
                                             className="block px-4 py-2 text-left w-full hover:bg-gray-200"
                                             onClick={() =>
@@ -426,18 +450,22 @@ function TopikChat() {
                                                 message.id,
                                                 message.content
                                               )
-                                            }>
+                                            }
+                                          >
                                             Edit
                                           </button>
+                                        </li>
+                                        <li>
                                           <button
                                             className="block px-4 py-2 text-left w-full text-black hover:bg-gray-200"
                                             onClick={() =>
                                               deleteMessage(message.id)
-                                            }>
+                                            }
+                                          >
                                             Delete
                                           </button>
-                                        </div>
-                                      )}
+                                        </li>
+                                      </ul>
                                     </div>
                                   </div>
                                 </>
@@ -447,7 +475,8 @@ function TopikChat() {
                                     className="mb-2 font-semibold"
                                     style={{
                                       color: userColors[message.sender_id],
-                                    }}>
+                                    }}
+                                  >
                                     {message.sender_name}
                                   </p>
                                   <p>{message.content}</p>
@@ -485,7 +514,8 @@ function TopikChat() {
               <div className="bg-gray-100 px-4 py-2 fixed bottom-0 w-full md:w-3/4">
                 <form
                   onSubmit={editMessageId ? updateMessage : sendMessage}
-                  className="flex items-center space-x-4">
+                  className="flex items-center space-x-4"
+                >
                   <input
                     type="file"
                     // value={gambar}
@@ -516,7 +546,8 @@ function TopikChat() {
                     }
                     onMouseOut={(e) =>
                       (e.currentTarget.style.backgroundColor = "#10B981")
-                    }>
+                    }
+                  >
                     {editMessageId ? "Edit" : "Kirim"}
                   </button>
                   {editMessageId && (
@@ -537,7 +568,8 @@ function TopikChat() {
                       }
                       onMouseOut={(e) =>
                         (e.currentTarget.style.backgroundColor = "#EF4444")
-                      }>
+                      }
+                    >
                       Batalkan
                     </button>
                   )}
